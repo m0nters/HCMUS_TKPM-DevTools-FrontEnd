@@ -1,15 +1,25 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { BrowserRouter as Router } from "react-router-dom";
+import Header from "./components/layout/Header";
+import AppRoutes from "./routes";
+import Footer from "./components/layout/Footer";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
   return (
-    <>
-      <h1>Hello world</h1>
-    </>
+    <Router>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        {/* Header appears on all pages */}
+        <Header />
+
+        {/* Main content */}
+        <main className="flex-grow flex justify-center pt-16">
+          <AppRoutes />
+        </main>
+
+        {/* Footer appears on all pages */}
+        <Footer />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
