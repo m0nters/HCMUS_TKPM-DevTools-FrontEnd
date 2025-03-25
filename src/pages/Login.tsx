@@ -55,7 +55,7 @@ const Login = () => {
           </a>
         </div>
 
-        <button className="w-full py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+        <button className="w-full py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black cursor-pointer">
           Đăng nhập
         </button>
       </form>

@@ -1,9 +1,27 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getAllTools } from "../data/toolsData";
+import { getAllPlugins } from "../data/pluginsData";
+import { Plugin } from "../types/plugins";
 
 function Home() {
-  // Example tool categories
-  const tools = getAllTools();
+  const [plugins, setPlugins] = useState<Plugin[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAllPlugins = async () => {
+      setIsLoading(true);
+      try {
+        const result = await getAllPlugins();
+        setPlugins(result);
+      } catch (error) {
+        console.error("Failed to load tools:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllPlugins();
+  }, []);
 
   return (
     <div className="w-full mx-auto pt-24 px-6 pb-12">
@@ -43,21 +61,39 @@ function Home() {
         </div>
       </div>
 
-      {/* Categories */}
+      {/* Tools */}
       <div className="mt-16">
         <h2 className="text-2xl font-bold mb-8 text-center">All the tools</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {tools.map((category) => (
-            <Link
-              to={category.path}
-              key={category.name}
-              className="flex flex-col items-center justify-center p-8 border border-gray-200 rounded-lg hover:border-black hover:shadow-md transition-all duration-200"
-            >
-              <span className="text-4xl mb-3">{category.icon}</span>
-              <h3 className="font-medium text-center">{category.name}</h3>
-            </Link>
-          ))}
-        </div>
+
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {plugins.map((plugin) => (
+              <Link
+                to={`/${plugin.name.toLowerCase().replace(/\s+/g, "-")}`}
+                key={plugin.id}
+                className="flex flex-col items-center justify-center p-8 border border-gray-200 rounded-lg hover:border-black hover:shadow-md transition-all duration-200 relative"
+              >
+                {plugin.isPremium && (
+                  <span className="absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded-full">
+                    Premium
+                  </span>
+                )}
+                <span
+                  className="w-12 h-12 mb-3 text-gray-800 flex items-center justify-center"
+                  dangerouslySetInnerHTML={{ __html: plugin.icon || "" }}
+                />
+                <h3 className="font-medium text-center">{plugin.name}</h3>
+                <p className="text-xs text-gray-500 mt-2 text-center line-clamp-2 max-w-full">
+                  {plugin.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
