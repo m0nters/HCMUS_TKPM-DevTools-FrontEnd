@@ -4,6 +4,7 @@ export interface Plugin {
   id: number;
   name: string;
   category: number;
+  categoryName?: string; // only used in the UI
   description?: string;
   icon?: ReactNode;
   isPremium: boolean;

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import SidePanel from "./SidePanel";
 import { useState, useEffect } from "react";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 function Header() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -24,7 +25,7 @@ function Header() {
 
   return (
     <>
-      <header className="fixed top-0 w-full z-50">
+      <header className="fixed top-0 w-full z-5">
         <div className="flex justify-between items-center px-6 py-4 bg-white shadow-sm border-b border-gray-100">
           <div className="flex items-center">
             <button
@@ -32,20 +33,7 @@ function Header() {
               className="mr-4 hover:bg-gray-100 p-1 rounded-md transition-colors cursor-pointer"
               aria-label="Menu"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-6 h-6"
-              >
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
+              <Bars3Icon className="w-6 h-6" />
             </button>
             <Link
               to="/"

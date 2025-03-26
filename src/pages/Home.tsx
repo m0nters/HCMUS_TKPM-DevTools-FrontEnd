@@ -1,101 +1,151 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getAllPlugins } from "../data/pluginsData";
+import { getAllCategories } from "../services/plugins/categories";
 import { Plugin } from "../types/plugins";
+import { ArrowRightIcon, SparklesIcon } from "@heroicons/react/24/outline";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+import PluginCard from "../components/common/PluginCard";
+import Button from "../components/common/Button";
 
 function Home() {
-  const [plugins, setPlugins] = useState<Plugin[]>([]);
+  const [featuredPlugins, setFeaturedPlugins] = useState<Plugin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAllPlugins = async () => {
-      setIsLoading(true);
+    const fetchData = async () => {
       try {
-        const result = await getAllPlugins();
-        setPlugins(result);
+        const categoriesData = await getAllCategories();
+
+        // Get 4 plugins to feature
+        const featured = categoriesData
+          .flatMap((category) => category.plugins)
+          .slice(0, 4);
+
+        setFeaturedPlugins(featured);
       } catch (error) {
-        console.error("Failed to load tools:", error);
+        console.error("Failed to load data:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchAllPlugins();
+    fetchData();
   }, []);
 
   return (
-    <div className="w-full mx-auto pt-24 px-6 pb-12">
-      {/* Hero Section */}
-      <div className="flex flex-col items-center text-center mb-16 mt-12">
-        <h1 className="text-5xl md:text-6xl font-bold mb-6">
-          Developer Tools That{" "}
-          <span className="bg-black text-white">Simplify</span> Your Workflow
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mb-8">
-          A collection of essential utilities designed for developers to
-          optimize daily tasks and enhance productivity
-        </p>
+    <>
+      <article>
+        <title>Home | IT Tools</title>
+        <meta
+          name="description"
+          content="A collection of essential utilities designed for developers to optimize daily tasks and enhance productivity"
+        />
+      </article>
+      <div className="w-full mx-auto pt-24 px-6 pb-12">
+        {/* Hero Section */}
+        <div className="flex flex-col items-center text-center mb-16 mt-12">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            Developer Tools That{" "}
+            <span className="bg-black text-white px-2">Simplify</span> Your
+            Workflow
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mb-10">
+            A collection of essential utilities designed for developers to
+            optimize daily tasks and enhance productivity
+          </p>
 
-        {/* Search Bar */}
-        <div className="w-full max-w-xl relative">
-          <input
-            type="text"
-            placeholder="Search for tools..."
-            className="w-full py-3 px-5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-          />
-          <button className="absolute right-3 top-3 text-gray-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-5 h-5"
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button to="/explore" variant="secondary" size="lg">
+              Explore All Tools
+            </Button>
+            <Button to="/register" variant="secondary" size="lg">
+              Create Account
+            </Button>
+          </div>
+        </div>
+
+        {/* Featured Tools Section */}
+        <div className="mt-24 mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            Featured Tools
+          </h2>
+
+          {isLoading ? (
+            LoadingSpinner({ size: "large" })
+          ) : featuredPlugins.length === 0 ? (
+            <div className="flex flex-col items-center justify-center px-4 text-center">
+              <SparklesIcon className="h-16 w-16 text-gray-400 mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-1">
+                No Featured Tools Yet
+              </h3>
+              <p className="text-gray-500 max-w-md">
+                We're preparing some amazing developer tools for you. Check back
+                soon or explore our categories.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {featuredPlugins.map((plugin) => PluginCard({ plugin }))}
+            </div>
+          )}
+
+          <div className="flex justify-center mt-10">
+            <Link
+              to="/explore"
+              className="flex items-center text-black hover:text-gray-700 font-medium gap-2 hover:gap-4 transition-all ease-in-out duration-200"
             >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>{" "}
+              View All Tools By Categories
+              <ArrowRightIcon className="w-8 h-8" />
+            </Link>
+          </div>
+        </div>
+
+        {/* How it works Section */}
+        <div className="mt-24 max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold mb-7 text-center">How It Works</h2>
+
+          <div className="bg-white border-2 border-gray-200 rounded-lg p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center text-2xl font-bold mb-4">
+                  1
+                </div>
+                <h3 className="text-xl font-medium mb-2">Choose a Tool</h3>
+                <p className="text-gray-600">
+                  Browse our collection of developer utilities and select the
+                  one you need
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center text-2xl font-bold mb-4">
+                  2
+                </div>
+                <h3 className="text-xl font-medium mb-2">Input Your Data</h3>
+                <p className="text-gray-600">
+                  Enter the information you want to process using our simple
+                  interface
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center text-2xl font-bold mb-4">
+                  3
+                </div>
+                <h3 className="text-xl font-medium mb-2">
+                  Get Results Instantly
+                </h3>
+                <p className="text-gray-600">
+                  Receive your processed data immediately, ready to use in your
+                  projects
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Tools */}
-      <div className="mt-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">All the tools</h2>
-
-        {isLoading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {plugins.map((plugin) => (
-              <Link
-                to={`/${plugin.name.toLowerCase().replace(/\s+/g, "-")}`}
-                key={plugin.id}
-                className="flex flex-col items-center justify-center p-8 border border-gray-200 rounded-lg hover:border-black hover:shadow-md transition-all duration-200 relative"
-              >
-                {plugin.isPremium && (
-                  <span className="absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded-full">
-                    Premium
-                  </span>
-                )}
-                <span
-                  className="w-12 h-12 mb-3 text-gray-800 flex items-center justify-center"
-                  dangerouslySetInnerHTML={{ __html: plugin.icon || "" }}
-                />
-                <h3 className="font-medium text-center">{plugin.name}</h3>
-                <p className="text-xs text-gray-500 mt-2 text-center line-clamp-2 max-w-full">
-                  {plugin.description}
-                </p>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
 
