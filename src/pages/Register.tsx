@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Button from "../components/common/Button";
+import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
 const Register = () => {

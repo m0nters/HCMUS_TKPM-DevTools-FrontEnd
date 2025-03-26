@@ -1,15 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import { getAllCategories as getAllCategories } from "../services/plugins/categories";
 import { Plugin, PluginCategory } from "../types/plugins";
 import {
   MagnifyingGlassIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
-import { slugify } from "../utils/string";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import PremiumBadge from "../components/common/PremiumBadge";
-import PluginCard from "../components/common/PluginCard";
+import { LoadingSpinner, PluginCard } from "../components/common";
 
 function PluginExplorer() {
   const [categories, setCategories] = useState<PluginCategory[]>([]);

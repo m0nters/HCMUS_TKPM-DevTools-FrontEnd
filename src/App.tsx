@@ -11,7 +11,7 @@ const App = () => {
         <Header />
 
         {/* Main content */}
-        <main className="flex-grow flex justify-center pt-16">
+        <main className="flex-grow flex justify-center pt-[74px]">
           <AppRoutes />
         </main>
 

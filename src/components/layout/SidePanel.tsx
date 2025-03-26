@@ -9,8 +9,7 @@ import {
   ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
 import { slugify, truncate } from "../../utils/string";
-import LoadingSpinner from "../common/LoadingSpinner";
-import PremiumBadge from "../common/PremiumBadge";
+import { LoadingSpinner, PremiumBadge } from "../common";
 
 interface SidePanelProps {
   isOpen: boolean;
@@ -25,20 +24,20 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
   // Track which categories are expanded
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]); // Array of category names
 
+  const fetchAllCategories = async () => {
+    setIsLoading(true);
+    try {
+      const result = await getCategories();
+      setCategories(result);
+    } catch (error) {
+      console.error("Failed to load categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Fetch categories on component mount
   useEffect(() => {
-    const fetchAllCategories = async () => {
-      setIsLoading(true);
-      try {
-        const result = await getCategories();
-        setCategories(result);
-      } catch (error) {
-        console.error("Failed to load categories:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchAllCategories();
   }, []);
 
@@ -99,7 +98,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
                 at the moment. Try refreshing the page.
               </p>
               <button
-                onClick={() => window.location.reload()}
+                onClick={fetchAllCategories}
                 className="mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-sm font-medium transition-colors"
               >
                 Refresh

@@ -2,8 +2,11 @@ import { PluginCategory } from "../../types/plugins";
 import { slugify } from "../../utils/string";
 import { apiRequest } from "../api/base";
 
-// Get all categories with their plugins from API
-export async function getAllCategories(): Promise<PluginCategory[]> {
+/**
+ * Fetches all available plugin categories from the API.
+ * @returns Promise resolving to an array of `PluginCategory` objects
+ */
+export const getAllCategories = async (): Promise<PluginCategory[]> => {
   try {
     const data = await apiRequest<any[]>("/PluginCategory/Categories");
 
@@ -15,7 +18,7 @@ export async function getAllCategories(): Promise<PluginCategory[]> {
         name: plugin.name,
         category: category.id,
         categoryName: category.name,
-        description: plugin.description || `A tool for ${plugin.name}`,
+        description: plugin.description || "",
         icon: plugin.icon || "",
         isPremium: plugin.isPremium,
         path: `/${slugify(plugin.name)}`,
@@ -25,4 +28,4 @@ export async function getAllCategories(): Promise<PluginCategory[]> {
     console.error("Error fetching categories:", error);
     return [];
   }
-}
+};

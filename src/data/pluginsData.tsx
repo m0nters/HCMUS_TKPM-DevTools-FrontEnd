@@ -1,7 +1,11 @@
 import { PluginCategory } from "../types/plugins";
 import { getAllCategories } from "../services/plugins/categories";
 
-// Get categories and their plugins from API
+/**
+ * Fetches the plugin categories from the API.
+ * If the API is not available, it will fallback to empty data
+ * @returns Promise that resolves to an array of `PluginCategory` objects
+ */
 export const getCategories = async (): Promise<PluginCategory[]> => {
   try {
     const apiCategories = await getAllCategories();
