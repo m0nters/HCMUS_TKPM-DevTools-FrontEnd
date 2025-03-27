@@ -8,21 +8,64 @@ import { apiRequest } from "../api/base";
  */
 export const getAllPlugins = async (): Promise<Plugin[]> => {
   try {
-    const plugins = await apiRequest<any[]>("/plugins/plugins");
+    const plugins = await apiRequest<any[]>("/Plugin");
 
     // Transform the API response to match our Plugin type
     return plugins.map((plugin) => ({
       id: plugin.id,
       name: plugin.name,
-      category: plugin.category,
-      categoryName: "", // This will be filled in later if needed
+      categoryId: plugin.categoryId,
+      categoryName: plugin.categoryName || "",
       description: plugin.description || "",
       isPremium: plugin.isPremium || false,
       icon: plugin.icon || "",
-      path: `/${[slugify(plugin.name)]}`,
+      path: `/${slugify(plugin.name)}`,
     }));
   } catch (error) {
     console.error("Failed to fetch plugins:", error);
+    return [];
+  }
+};
+
+/**
+ * Searches for plugins based on name, category, and premium status
+ * @param name - Optional name filter
+ * @param categoryId - Optional category ID filter
+ * @param premium - Optional premium status filter
+ * @returns Promise resolving to filtered Plugin array
+ */
+export const getSearchedPlugins = async (
+  name: string | null,
+  categoryId: number | null,
+  premium: boolean | null
+): Promise<Plugin[]> => {
+  try {
+    // Build query parameters
+    const params = new URLSearchParams();
+    if (name) params.append("Name", name);
+    if (categoryId) params.append("CategoryId", categoryId.toString());
+    if (premium) params.append("Premium", premium.toString());
+
+    // Create the endpoint with query string
+    const queryString = params.toString();
+    const endpoint = `/Plugin/search${queryString ? `?${queryString}` : ""}`;
+
+    // Make the API request
+    const plugins = await apiRequest<any[]>(endpoint);
+
+    // Transform the API response to match our Plugin type
+    return plugins.map((plugin) => ({
+      id: plugin.id,
+      name: plugin.name,
+      categoryId: plugin.categoryId,
+      categoryName: plugin.categoryName || "",
+      description: plugin.description || "",
+      isPremium: plugin.isPremium || false,
+      icon: plugin.icon || "",
+      path: `/${slugify(plugin.name)}`,
+    }));
+  } catch (error) {
+    console.error("Failed to search plugins:", error);
     return [];
   }
 };

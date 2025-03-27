@@ -8,9 +8,11 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
+      // Proxy all /api requests to the backend server
       "/api": {
         target: "http://localhost:5175",
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

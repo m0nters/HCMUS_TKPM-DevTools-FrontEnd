@@ -1,8 +1,42 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { login as apiLogin } from "../services/authService";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      setError("Username and password are required");
+      return;
+    }
+
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const userInfo = await apiLogin({ userName: username, password });
+      login(userInfo, rememberMe);
+      navigate("/"); // Redirect to home after successful login
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      setError(error.message || "Invalid username or password");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <article>
@@ -15,19 +49,28 @@ const Login = () => {
       <div className="w-full max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
         <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
 
-        <form className="space-y-5">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 mb-4">
+            {error}
+          </div>
+        )}
+
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-700"
             >
-              Email
+              Username
             </label>
             <input
-              id="email"
-              type="email"
-              placeholder="email@example.com"
+              id="username"
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              disabled={isLoading}
             />
           </div>
 
@@ -42,7 +85,10 @@ const Login = () => {
               id="password"
               type="password"
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              disabled={isLoading}
             />
           </div>
 
@@ -51,7 +97,10 @@ const Login = () => {
               <input
                 id="remember"
                 type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                disabled={isLoading}
               />
               <label
                 htmlFor="remember"
@@ -60,15 +109,23 @@ const Login = () => {
                 Remember me
               </label>
             </div>
-            <a href="#" className="text-sm text-gray-600 hover:text-black">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-gray-600 hover:text-black"
+            >
               Forgot password?
-            </a>
+            </Link>
           </div>
 
-          <Button type="submit" className="w-full" variant="primary">
+          <Button
+            type="submit"
+            className="w-full"
+            variant="primary"
+            disabled={isLoading}
+          >
             <div className="flex justify-center items-center w-full gap-2 group-hover:gap-4 transition-all duration-50">
-              <span>Login</span>
-              <ArrowUpRightIcon className="w-4 h-4" />
+              <span>{isLoading ? "Logging in..." : "Login"}</span>
+              {!isLoading && <ArrowUpRightIcon className="w-4 h-4" />}
             </div>
           </Button>
         </form>

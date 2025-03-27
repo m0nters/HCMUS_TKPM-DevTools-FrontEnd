@@ -1,5 +1,28 @@
 import React, { useEffect, useRef } from "react";
 
+/**
+ * Fuzzy text component
+ * @param children - The text content to display inside the fuzzy text component.
+ * @param fontSize - Specifies the font size of the text. Accepts any valid CSS font-size value or a number (interpreted as pixels). (default: `clamp(2rem, 10vw, 10rem)`)
+ * @param fontWeight - Specifies the font weight of the text. (default: `900`)
+ * @param fontFamily - Specifies the font family of the text. 'inherit' uses the computed style from the parent.
+ * @param color - Specifies the text color. (default: `#fff`)
+ * @param enableHover - Enable hover effect (default: `true`)
+ * @param baseIntensity - The fuzz intensity when the text is not hovered. (default: `0.18`)
+ * @param hoverIntensity - The fuzz intensity when the text is hovered. (default: `0.5`)
+ * @returns Fuzzy text component
+ * @example
+ * ```tsx
+ * <FuzzyText 
+  baseIntensity={0.2} 
+  hoverIntensity={hoverIntensity} 
+  enableHover={enableHover}
+>
+  404
+</FuzzyText>
+ * ```
+ */
+
 const FuzzyText = ({
   children,
   fontSize = "clamp(2rem, 10vw, 10rem)",

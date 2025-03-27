@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 export interface Plugin {
   id: number;
   name: string;
-  category: number;
+  categoryId: number;
   categoryName?: string; // only used in UI
   description?: string;
   icon?: ReactNode;

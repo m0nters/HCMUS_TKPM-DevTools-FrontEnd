@@ -4,6 +4,25 @@ import { Link } from "react-router-dom";
 type ButtonVariant = "primary" | "secondary";
 type ButtonSize = "sm" | "md" | "lg";
 
+/**
+ * Button component with primary and secondary variants
+ * @param children - Button text
+ * @param variant - Button variant (primary or secondary)
+ * @param size - Button size (sm, md, lg)
+ * @param to - React Router link
+ * @param href - External link
+ * @param onClick - Action button
+ * @param className - Additional custom classes
+ * @param type - Button type (button, submit, reset)
+ * @param disabled - Disable button
+ * @returns Button component
+ * @example
+ * ```tsx
+ * <Button to="/login" variant="primary" size="md">
+ *  Login
+ * </Button>
+ * ```
+ */
 interface ButtonProps {
   children: ReactNode;
   variant?: ButtonVariant; // primary (black) or secondary (white)

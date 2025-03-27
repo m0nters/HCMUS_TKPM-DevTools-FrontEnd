@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import SidePanel from "./SidePanel";
 import { useState, useEffect } from "react";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "../../hooks/useAuth";
 
 function Header() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { user, isAuth, logout } = useAuth();
 
   // press Escape key => close panel
   useEffect(() => {
@@ -22,6 +25,21 @@ function Header() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isPanelOpen]);
+
+  // Handle clicks outside the user menu
+  useEffect(() => {
+    if (!isUserMenuOpen) return;
+
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("#user-menu")) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, [isUserMenuOpen]);
 
   return (
     <>
@@ -45,18 +63,69 @@ function Header() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Link
-              to="/login"
-              className="px-4 py-2 border border-black text-black hover:bg-black hover:text-white transition-all duration-200 rounded-md"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded-md"
-            >
-              Register
-            </Link>
+            {isAuth ? (
+              <div className="relative" id="user-menu">
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center space-x-2 hover:bg-gray-100 px-3 py-2 rounded-md transition-colors"
+                >
+                  <UserCircleIcon className="w-6 h-6" />
+                  <span className="hidden md:block">
+                    {user?.fullName || user?.userName}
+                  </span>
+                </button>
+
+                {/* Dropdown menu */}
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-sm font-medium">{user?.fullName}</p>
+                      <p className="text-xs text-gray-500">{user?.email}</p>
+                    </div>
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    {user?.role === "Admin" && (
+                      <Link
+                        to="/admin"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsUserMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 border border-black text-black hover:bg-black hover:text-white transition-all duration-200 rounded-md"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded-md"
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>

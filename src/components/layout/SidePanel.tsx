@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getCategories } from "../../data/pluginsData";
+import { getAllCategories } from "../../services/plugins";
 import { PluginCategory } from "../../types/plugins";
 import {
   XMarkIcon,
@@ -27,7 +27,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
   const fetchAllCategories = async () => {
     setIsLoading(true);
     try {
-      const result = await getCategories();
+      const result = await getAllCategories();
       setCategories(result);
     } catch (error) {
       console.error("Failed to load categories:", error);

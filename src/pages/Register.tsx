@@ -26,7 +26,22 @@ const Register = () => {
             <input
               id="name"
               type="text"
-              placeholder="Full Name"
+              placeholder="Full Name (John Doe)"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="userName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
+            <input
+              id="userName"
+              type="text"
+              placeholder="Username (e.g. micheal123)"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
           </div>

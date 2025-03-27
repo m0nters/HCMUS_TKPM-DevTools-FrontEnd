@@ -3,12 +3,13 @@ import { slugify } from "../../utils/string";
 import { apiRequest } from "../api/base";
 
 /**
- * Fetches all available plugin categories from the API.
+ * Fetches all available plugin categories and children plugins from the API.
+ * Only use for SidePanel component.
  * @returns Promise resolving to an array of `PluginCategory` objects
  */
 export const getAllCategories = async (): Promise<PluginCategory[]> => {
   try {
-    const data = await apiRequest<any[]>("/PluginCategory/Categories");
+    const data = await apiRequest<any[]>("/PluginCategory");
 
     return data.map((category) => ({
       id: category.id,
@@ -16,8 +17,8 @@ export const getAllCategories = async (): Promise<PluginCategory[]> => {
       plugins: category.plugins.map((plugin: any) => ({
         id: plugin.id,
         name: plugin.name,
-        category: category.id,
-        categoryName: category.name,
+        categoryId: category.id,
+        categoryName: category.name || "",
         description: plugin.description || "",
         icon: plugin.icon || "",
         isPremium: plugin.isPremium,

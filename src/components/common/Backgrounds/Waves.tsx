@@ -86,6 +86,40 @@ class Noise {
   }
 }
 
+/**
+ * Waves component
+ * @param lineColor - Defines the color of the wave lines drawn on the canvas. (default: `black`)
+ * @param backgroundColor - Sets the background color of the waves container. (default: `transparent`)
+ * @param waveSpeedX - Horizontal speed factor for the wave animation. (default: `0.0125`)
+ * @param waveSpeedY - Vertical speed factor for the wave animation. (default: `0.005`)
+ * @param waveAmpX - Horizontal amplitude of each wave. (default: `32`)
+ * @param waveAmpY - Vertical amplitude of each wave. (default: `16`)
+ * @param xGap - Horizontal gap between individual wave lines. (default: `10`)
+ * @param yGap - Vertical gap between points on each wave line. (default: `32`)
+ * @param friction - Controls how quickly the cursor effect slows down. (default: `0.925`)
+ * @param tension - Determines the 'springiness' of the cursor effect on points. (default: `0.005`)
+ * @param maxCursorMove - Limits how far each point can shift due to cursor movement. (default: `100`)
+ * @param style - Inline styles applied to the container element.
+ * @param className - Custom class name(s) applied to the container element.
+ * @returns Waves component
+ * @example
+ * ```tsx
+ * <Waves
+ *   lineColor="#fff"
+ *   backgroundColor="rgba(255, 255, 255, 0.2)"
+ *   waveSpeedX={0.02}
+ *   waveSpeedY={0.01}
+ *   waveAmpX={40}
+ *   waveAmpY={20}
+ *   friction={0.9}
+ *   tension={0.01}
+ *   maxCursorMove={120}
+ *   xGap={12}
+ *   yGap={36}
+ * />
+ * ```
+ */
+
 const Waves = ({
   lineColor = "black",
   backgroundColor = "transparent",

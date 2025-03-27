@@ -12,17 +12,35 @@ import {
 import { getAllPlugins } from "../services/plugins/plugins";
 
 function Home() {
+  // Hooks
   const [featuredPlugins, setFeaturedPlugins] = useState<Plugin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const featuredSectionRef = useRef<HTMLDivElement>(null);
-  const heroSectionRef = useRef<HTMLDivElement>(null);
   const [hasScrolled, setHasScrolled] = useState(false);
-
   const [show1stText, setShow1stText] = useState(false);
   const [show2ndTextBg, setShow2ndTextBg] = useState(false);
   const [show2ndText, setshow2ndText] = useState(false);
   const [show3rdText, setShow3rdText] = useState(false);
   const [show4ndText, setShow4ndText] = useState(false);
+
+  // Refs
+  const featuredSectionRef = useRef<HTMLDivElement>(null);
+  const heroSectionRef = useRef<HTMLDivElement>(null);
+
+  const fetchFeaturedTools = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getAllPlugins();
+
+      // Get 4 plugins to feature
+      const featured = data.slice(0, 4);
+
+      setFeaturedPlugins(featured);
+    } catch (error) {
+      console.error("Failed to load data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Set up the animation sequence on component mount
   useEffect(() => {
@@ -59,22 +77,7 @@ function Home() {
 
   // Fetch featured plugins on component mount
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllPlugins();
-
-        // Get 4 plugins to feature
-        const featured = data.slice(0, 4);
-
-        setFeaturedPlugins(featured);
-      } catch (error) {
-        console.error("Failed to load data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchFeaturedTools();
   }, []);
 
   // Scroll handler to automatically scroll the user to the next section
@@ -137,20 +140,7 @@ function Home() {
       <div className="w-full mx-auto pb-12">
         {/* Hero Section */}
         <div ref={heroSectionRef} className="relative h-screen mb-16">
-          <Waves
-            lineColor="black"
-            backgroundColor="white"
-            waveSpeedX={0.02}
-            waveSpeedY={0.01}
-            waveAmpX={40}
-            waveAmpY={20}
-            friction={0.9}
-            tension={0.01}
-            maxCursorMove={200}
-            xGap={12}
-            yGap={36}
-            className="opacity-40"
-          />
+          <Waves className="opacity-40" />
 
           <div className="relative flex flex-col items-center justify-center text-center py-16 h-full">
             {show1stText && (
@@ -279,10 +269,18 @@ function Home() {
                 We're preparing some amazing developer tools for you. Check back
                 soon or explore our categories.
               </p>
+              <button
+                onClick={fetchFeaturedTools}
+                className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium transition-colors"
+              >
+                Refresh
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-              {featuredPlugins.map((plugin) => PluginCard({ plugin }))}
+              {featuredPlugins.map((plugin) => (
+                <PluginCard key={plugin.id} plugin={plugin} iconSize="md" />
+              ))}
             </div>
           )}
 
