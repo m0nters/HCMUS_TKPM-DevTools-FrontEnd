@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Plugin } from "../../../types/plugins";
 import { slugify } from "../../../utils/string";
 import PremiumBadge from "./PremiumBadge";
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 
 interface PluginCardProps {
   plugin: Plugin;
@@ -21,12 +21,36 @@ interface PluginCardProps {
  */
 function PluginCard({ plugin, iconSize = "md" }: PluginCardProps) {
   const [isHovering, setIsHovering] = useState(false);
-
+  const [isTextTruncated, setIsTextTruncated] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const sizeClasses = {
     sm: "w-12 h-12",
     md: "w-16 h-16",
     lg: "w-20 h-20",
   };
+
+  // Check if text is truncated when component mounts and on window resize
+  useEffect(() => {
+    const checkIfTruncated = () => {
+      if (descriptionRef.current) {
+        // Compare the scroll height to client height to detect truncation
+        const isTruncated =
+          descriptionRef.current.scrollHeight >
+          descriptionRef.current.clientHeight;
+        setIsTextTruncated(isTruncated);
+      }
+    };
+
+    // Initial check
+    checkIfTruncated();
+
+    // Check again if window resizes
+    window.addEventListener("resize", checkIfTruncated);
+
+    return () => {
+      window.removeEventListener("resize", checkIfTruncated);
+    };
+  }, [plugin.description]);
 
   return (
     <Link
@@ -50,12 +74,15 @@ function PluginCard({ plugin, iconSize = "md" }: PluginCardProps) {
       <h3 className="font-medium text-center text-lg">{plugin.name}</h3>
       {plugin.description && (
         <div className="relative">
-          <p className="text-sm text-gray-500 mt-2 text-center line-clamp-2 max-w-full">
-            {plugin.description || ""}
+          <p
+            ref={descriptionRef}
+            className="text-sm text-gray-500 mt-2 text-center line-clamp-2 max-w-full"
+          >
+            {plugin.description}
           </p>
 
           {/* Full description tooltip on hover */}
-          {isHovering && (
+          {isHovering && isTextTruncated && (
             <div className="absolute left-0 right-0 -bottom-2 transform translate-y-full bg-black text-white p-3 rounded-md shadow-lg z-10 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               {plugin.description}
               <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black rotate-45"></div>

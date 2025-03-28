@@ -31,7 +31,7 @@ const Login = () => {
       navigate("/"); // Redirect to home after successful login
     } catch (error: any) {
       console.error("Login failed:", error);
-      setError(error.message || "Invalid username or password");
+      setError("Invalid username or password");
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +99,7 @@ const Login = () => {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                className="h-4 w-4 focus:ring-black border-gray-300 rounded accent-black"
                 disabled={isLoading}
               />
               <label

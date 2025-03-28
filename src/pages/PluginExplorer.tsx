@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { LoadingSpinner, PluginCard } from "../components/common";
 import { getAllPlugins, getSearchedPlugins } from "../services/plugins/plugins";
+import { useDebounce } from "../hooks/useDebounce";
 
 function PluginExplorer() {
   // Hooks
@@ -15,12 +16,16 @@ function PluginExplorer() {
   const [filteredPlugins, setFilteredPlugins] = useState<Plugin[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<number | null>(null);
   const [showPremiumOnly, setShowPremiumOnly] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Refs
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Debounce the search query to avoid too many API calls
+  const debouncedSearchQuery = useDebounce(searchQuery);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -47,7 +52,7 @@ function PluginExplorer() {
     const fetchFilteredPlugins = async () => {
       let result = allPlugins;
 
-      // Client side code
+      // // Client side code
       // const search = () => {
       //   if (searchQuery.trim()) {
       //     result = result.filter(
@@ -75,16 +80,23 @@ function PluginExplorer() {
       // filter();
       // search();
 
-      result = await getSearchedPlugins(
-        searchQuery,
-        categoryFilter,
-        showPremiumOnly
-      );
-      setFilteredPlugins(result);
+      // server side code
+      try {
+        result = await getSearchedPlugins(
+          searchQuery,
+          categoryFilter,
+          showPremiumOnly
+        );
+        setFilteredPlugins(result);
+      } catch (error) {
+        console.error("Error searching plugins:", error);
+      } finally {
+        setIsSearching(false);
+      }
     };
 
     fetchFilteredPlugins();
-  }, [searchQuery, categoryFilter, showPremiumOnly, allPlugins]);
+  }, [debouncedSearchQuery, categoryFilter, showPremiumOnly]);
 
   // Add ESC key and click outside => close dropdown
   useEffect(() => {
@@ -137,10 +149,47 @@ function PluginExplorer() {
                 type="text"
                 placeholder="Search tools..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  if (e.target.value !== "") setIsSearching(true);
+                }}
                 className="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
-              <MagnifyingGlassIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500" />
+
+              {/* Dynamic icon: Show spinner when searching, otherwise show magnifying glass */}
+              {isSearching ? (
+                <div className="absolute right-3 top-2.5 animate-spin">
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                </div>
+              ) : (
+                <MagnifyingGlassIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500" />
+              )}
+
+              {/* Optional: Add "Searching..." text below input when searching */}
+              {isSearching && (
+                <div className="absolute -bottom-5 left-0 text-xs text-gray-500">
+                  Searching...
+                </div>
+              )}
             </div>
             {/* Category Filter */}
             <div className="w-full md:w-1/3 relative" ref={dropdownRef}>

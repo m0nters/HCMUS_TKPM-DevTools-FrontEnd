@@ -1,21 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import {
-  UserInfo,
-  getUserInfo,
-  isAuthenticated,
-  logout,
-} from "../services/authService";
-
-type AuthUser = Omit<UserInfo, "token">;
-
-interface AuthContextType {
-  user: AuthUser | null;
-  isAuth: boolean;
-  isPremium: boolean;
-  isAdmin: boolean;
-  login: (user: UserInfo, rememberMe: boolean) => void;
-  logout: () => void;
-}
+import { getUserInfo, isAuthenticated, logout } from "../services/authService";
+import { UserInfo } from "../types/auth";
+import { AuthUser, AuthContextType } from "../types/authContext";
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,

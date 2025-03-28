@@ -81,6 +81,7 @@ function Header() {
                     <div className="px-4 py-2 border-b border-gray-100">
                       <p className="text-sm font-medium">{user?.fullName}</p>
                       <p className="text-xs text-gray-500">{user?.email}</p>
+                      <p className="text-xs font-bold">{user?.role}</p>
                     </div>
                     <Link
                       to="/profile"

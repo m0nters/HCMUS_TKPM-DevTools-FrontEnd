@@ -1,16 +1,22 @@
-interface LoginCredentials {
-  userName: string;
-  password: string;
-}
+import { LoginCredentials, UserInfo } from "../types/auth";
 
-export interface UserInfo {
-  fullName: string;
-  userName: string;
-  email: string;
-  token: string;
-  isPremium?: boolean;
-  role?: string;
-}
+/**
+ * Decodes a JWT token and returns the payload as an object
+ */
+const decodeJwtToken = (token: string): any => {
+  try {
+    // JWT token has 3 parts separated by dots: header.payload.signature
+    const base64Url = token.split(".")[1];
+    // Convert base64Url to base64
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    // Decode and parse JSON
+    const payload = JSON.parse(window.atob(base64));
+    return payload;
+  } catch (error) {
+    console.error("Error decoding JWT token:", error);
+    return {};
+  }
+};
 
 /**
  * Logs in a user and returns user information with JWT token
@@ -33,7 +39,16 @@ export const login = async (
     }
 
     const userData: UserInfo = await response.json();
-    return userData;
+
+    // Decode JWT token to get additional claims
+    const tokenPayload = decodeJwtToken(userData.token);
+
+    // Extract claims from token payload
+    return {
+      ...userData,
+      isPremium: tokenPayload.IsPremium === "True",
+      role: tokenPayload.role || "User",
+    };
   } catch (error) {
     console.error("Login error:", error);
     throw error;

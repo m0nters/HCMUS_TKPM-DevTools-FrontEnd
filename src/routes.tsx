@@ -6,14 +6,28 @@ import PluginExplorer from "./pages/PluginExplorer";
 import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/404";
 import Profile from "./pages/Profile";
-import { ProtectedRoute } from "./components/common";
+import { ProtectedRoute, UnauthenticatedRoute } from "./components/common";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/login"
+        element={
+          <UnauthenticatedRoute>
+            <Login />
+          </UnauthenticatedRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <UnauthenticatedRoute>
+            <Register />
+          </UnauthenticatedRoute>
+        }
+      />
       <Route path="/explore" element={<PluginExplorer />} />
       <Route path="/terms" element={<TermsOfService />} />
       {/* Protected routes */}
