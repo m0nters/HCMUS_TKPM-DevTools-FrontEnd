@@ -4,6 +4,7 @@ import { Plugin, PluginCategory } from "../types/plugins";
 import {
   MagnifyingGlassIcon,
   ChevronDownIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { LoadingSpinner, PluginCard } from "../components/common";
 import { getAllPlugins, getSearchedPlugins } from "../services/plugins/plugins";
@@ -50,49 +51,51 @@ function PluginExplorer() {
   // Search and filter
   useEffect(() => {
     const fetchFilteredPlugins = async () => {
+      // Client side code
       let result = allPlugins;
 
-      // // Client side code
-      // const search = () => {
-      //   if (searchQuery.trim()) {
-      //     result = result.filter(
-      //       (plugin) =>
-      //         plugin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      //         plugin.description
-      //           ?.toLowerCase()
-      //           .includes(searchQuery.toLowerCase())
-      //     );
-      //   }
-      // };
+      const search = () => {
+        if (searchQuery.trim()) {
+          result = result.filter(
+            (plugin) =>
+              plugin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              plugin.description
+                ?.toLowerCase()
+                .includes(searchQuery.toLowerCase())
+          );
+        }
+      };
 
-      // const filter = () => {
-      //   if (categoryFilter !== null) {
-      //     result = result.filter(
-      //       (plugin) => plugin.categoryId === categoryFilter
-      //     );
-      //   }
+      const filter = () => {
+        if (categoryFilter !== null) {
+          result = result.filter(
+            (plugin) => plugin.categoryId === categoryFilter
+          );
+        }
 
-      //   if (showPremiumOnly) {
-      //     result = result.filter((plugin) => plugin.isPremium);
-      //   }
-      // };
+        if (showPremiumOnly) {
+          result = result.filter((plugin) => plugin.isPremium);
+        }
+      };
 
-      // filter();
-      // search();
+      filter();
+      search();
+      setFilteredPlugins(result);
+      setIsSearching(false);
 
-      // server side code
-      try {
-        result = await getSearchedPlugins(
-          searchQuery,
-          categoryFilter,
-          showPremiumOnly
-        );
-        setFilteredPlugins(result);
-      } catch (error) {
-        console.error("Error searching plugins:", error);
-      } finally {
-        setIsSearching(false);
-      }
+      // // server side code (suck! but it mitigates the client's load)
+      // try {
+      //   const result = await getSearchedPlugins(
+      //     searchQuery,
+      //     categoryFilter,
+      //     showPremiumOnly
+      //   );
+      //   setFilteredPlugins(result);
+      // } catch (error) {
+      //   console.error("Error searching plugins:", error);
+      // } finally {
+      //   setIsSearching(false);
+      // }
     };
 
     fetchFilteredPlugins();
@@ -151,35 +154,14 @@ function PluginExplorer() {
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
-                  if (e.target.value !== "") setIsSearching(true);
+                  setIsSearching(true);
                 }}
                 className="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
 
               {/* Dynamic icon: Show spinner when searching, otherwise show magnifying glass */}
               {isSearching ? (
-                <div className="absolute right-3 top-2.5 animate-spin">
-                  <svg
-                    className="w-5 h-5 text-gray-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                </div>
+                <ArrowPathIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500 animate-spin" />
               ) : (
                 <MagnifyingGlassIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500" />
               )}

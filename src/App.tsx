@@ -1,7 +1,7 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Header from "./components/layout/Header";
-import AppRoutes from "./routes";
+import AppRoutes from "./routes/index";
 import Footer from "./components/layout/Footer";
 
 const App = () => {

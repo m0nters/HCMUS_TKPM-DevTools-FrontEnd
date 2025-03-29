@@ -4,6 +4,7 @@ import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { login as apiLogin } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
+import { Threads } from "../components/common/";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,99 +47,96 @@ const Login = () => {
           content="Login to access your account and manage your tools"
         />
       </article>
-      <div className="w-full max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
-        <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 mb-4">
-            {error}
-          </div>
-        )}
-
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-              disabled={isLoading}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-              disabled={isLoading}
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
+      <div className="relative w-full mx-auto">
+        <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
+        <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
+          <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 mb-4">
+              {error}
+            </div>
+          )}
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div className="space-y-2">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Username
+              </label>
               <input
-                id="remember"
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 focus:ring-black border-gray-300 rounded accent-black"
+                id="username"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                 disabled={isLoading}
               />
+            </div>
+            <div className="space-y-2">
               <label
-                htmlFor="remember"
-                className="ml-2 block text-sm text-gray-700"
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
               >
-                Remember me
+                Password
               </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                disabled={isLoading}
+              />
             </div>
-            <Link
-              to="/forgot-password"
-              className="text-sm text-gray-600 hover:text-black"
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 focus:ring-black border-gray-300 rounded accent-black"
+                  disabled={isLoading}
+                />
+                <label
+                  htmlFor="remember"
+                  className="ml-2 block text-sm text-gray-700"
+                >
+                  Remember me
+                </label>
+              </div>
+              <Link
+                to="/forgot-password"
+                className="text-sm text-gray-600 hover:text-black"
+              >
+                Forgot password?
+              </Link>
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              variant="primary"
+              disabled={isLoading}
             >
-              Forgot password?
+              <div className="flex justify-center items-center w-full gap-2 group-hover:gap-4 transition-all duration-50">
+                <span>{isLoading ? "Logging in..." : "Login"}</span>
+                {!isLoading && <ArrowUpRightIcon className="w-4 h-4" />}
+              </div>
+            </Button>
+          </form>
+          <p className="text-center text-gray-600 mt-6">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-black font-medium hover:underline"
+            >
+              Register now
             </Link>
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full"
-            variant="primary"
-            disabled={isLoading}
-          >
-            <div className="flex justify-center items-center w-full gap-2 group-hover:gap-4 transition-all duration-50">
-              <span>{isLoading ? "Logging in..." : "Login"}</span>
-              {!isLoading && <ArrowUpRightIcon className="w-4 h-4" />}
-            </div>
-          </Button>
-        </form>
-
-        <p className="text-center text-gray-600 mt-6">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className="text-black font-medium hover:underline"
-          >
-            Register now
-          </Link>
-        </p>
+          </p>
+        </div>
       </div>
     </>
   );
