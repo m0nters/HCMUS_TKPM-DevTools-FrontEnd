@@ -74,21 +74,6 @@ export const storeAuthInfo = (userInfo: UserInfo, rememberMe: boolean) => {
 };
 
 /**
- * Gets the current authentication token
- */
-export const getAuthToken = (): string | null => {
-  // First check session storage (not remember me)
-  let token = sessionStorage.getItem("authToken");
-
-  // If not in session storage, try local storage (remember me)
-  if (!token) {
-    token = localStorage.getItem("authToken");
-  }
-
-  return token;
-};
-
-/**
  * Gets the current user information
  */
 export const getUserInfo = (): Omit<UserInfo, "token"> | null => {
@@ -105,13 +90,6 @@ export const getUserInfo = (): Omit<UserInfo, "token"> | null => {
   }
 
   return null;
-};
-
-/**
- * Checks if the user is currently authenticated
- */
-export const isAuthenticated = (): boolean => {
-  return getAuthToken() !== null;
 };
 
 /**

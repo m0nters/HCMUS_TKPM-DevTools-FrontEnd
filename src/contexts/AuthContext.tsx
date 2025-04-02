@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getUserInfo, isAuthenticated, logout } from "../services/authService";
+import { getUserInfo, logout } from "../services/authService";
 import { UserInfo } from "../types/auth";
 import { AuthUser, AuthContextType } from "../types/authContext";
 
@@ -21,15 +21,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    // Check if user is authenticated on load
-    const authenticated = isAuthenticated();
-
-    if (authenticated) {
-      const userInfo = getUserInfo();
-      if (userInfo) {
-        setUser(userInfo);
-        setIsAuth(true);
-      }
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      setUser(userInfo);
+      setIsAuth(true);
     }
   }, []);
 
