@@ -19,7 +19,7 @@ export const getAllPlugins = async (): Promise<Plugin[]> => {
       description: plugin.description || "",
       isPremium: plugin.isPremium || false,
       icon: plugin.icon || "",
-      path: `/${slugify(plugin.name)}`,
+      path: `/tools/${slugify(plugin.name)}`,
     }));
   } catch (error) {
     console.error("Failed to fetch plugins:", error);

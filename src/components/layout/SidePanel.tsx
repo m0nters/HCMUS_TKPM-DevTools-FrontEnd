@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getAllCategories } from "../../services/plugins";
+import { getAllCategories } from "../../services/plugins/categories";
 import { PluginCategory } from "../../types/plugins";
 import {
   XMarkIcon,
@@ -132,7 +132,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
                     <>
                       {category.plugins.map((plugin) => (
                         <Link
-                          to={`/${slugify(plugin.name)}`}
+                          to={`/tools/${slugify(plugin.name)}`}
                           key={plugin.id}
                           className="bg-white flex items-center justify-between p-3 hover:bg-gray-50 border-t border-gray-100 group"
                           onClick={onClose}

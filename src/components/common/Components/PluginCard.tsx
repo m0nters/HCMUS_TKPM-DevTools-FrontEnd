@@ -54,7 +54,7 @@ function PluginCard({ plugin, iconSize = "md" }: PluginCardProps) {
 
   return (
     <Link
-      to={`/${slugify(plugin.name)}`}
+      to={`/tools/${slugify(plugin.name)}`}
       key={plugin.id}
       className="flex flex-col p-6 border bg-white border-gray-200 rounded-lg hover:border-black hover:shadow-md transition-all duration-200 relative group"
       onMouseEnter={() => setIsHovering(true)}

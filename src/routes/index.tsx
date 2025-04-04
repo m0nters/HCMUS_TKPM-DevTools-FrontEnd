@@ -1,6 +1,6 @@
 import { Routes } from "react-router-dom";
 import { PublicRoutes } from "./public";
-import { PrivateRoutes } from "./protected";
+import { ProtectedRoutes } from "./protected";
 import { UnauthenticatedRoutes } from "./unauthenticated";
 
 /**
@@ -16,7 +16,7 @@ const AppRoutes = () => {
       {PublicRoutes}
 
       {/* Protected routes - require authentication */}
-      {PrivateRoutes}
+      {ProtectedRoutes}
 
       {/* Routes accessible only when not logged in */}
       {UnauthenticatedRoutes}

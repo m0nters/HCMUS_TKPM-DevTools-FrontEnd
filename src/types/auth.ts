@@ -8,6 +8,5 @@ export interface UserInfo {
   userName: string;
   email: string;
   token: string;
-  isPremium?: boolean;
-  role?: string;
+  role: "User" | "Premium" | "Admin";
 }

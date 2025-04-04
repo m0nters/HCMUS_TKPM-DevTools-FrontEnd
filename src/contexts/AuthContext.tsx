@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getUserInfo, logout } from "../services/authService";
+import { getUserInfo, storeAuthInfo, logout } from "../services/authService";
 import { UserInfo } from "../types/auth";
 import { AuthUser, AuthContextType } from "../types/authContext";
 
@@ -30,19 +30,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const loginUser = (userInfo: UserInfo, rememberMe: boolean) => {
     // Store the auth info
-    import("../services/authService").then((authService) => {
-      authService.storeAuthInfo(userInfo, rememberMe);
+    storeAuthInfo(userInfo, rememberMe);
 
-      // Update state
-      setUser({
-        fullName: userInfo.fullName,
-        userName: userInfo.userName,
-        email: userInfo.email,
-        isPremium: userInfo.isPremium || false,
-        role: userInfo.role || "User",
-      });
-      setIsAuth(true);
+    // Update state
+    setUser({
+      fullName: userInfo.fullName,
+      userName: userInfo.userName,
+      email: userInfo.email,
+      role: userInfo.role || "User",
     });
+    setIsAuth(true);
   };
 
   const logoutUser = () => {
@@ -51,7 +48,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsAuth(false);
   };
 
-  const isPremium = user?.isPremium || false;
+  const isPremium = user?.role === "Premium" || user?.role === "Admin";
   const isAdmin = user?.role === "Admin";
 
   return (

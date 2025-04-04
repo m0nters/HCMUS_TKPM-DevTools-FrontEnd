@@ -1,13 +1,13 @@
-import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Header from "./components/layout/Header";
 import AppRoutes from "./routes/index";
 import Footer from "./components/layout/Footer";
+import { PluginsProvider } from "./contexts/PluginsContext";
 
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
+      <PluginsProvider>
         <div className="min-h-screen bg-gray-50 flex flex-col">
           {/* Header appears on all pages */}
           <Header />
@@ -18,7 +18,7 @@ const App = () => {
           {/* Footer appears on all pages */}
           <Footer />
         </div>
-      </Router>
+      </PluginsProvider>
     </AuthProvider>
   );
 };

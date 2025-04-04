@@ -1,3 +1,3 @@
 import { User } from "./UserRoutes";
 
-export const PrivateRoutes = [...User];
+export const ProtectedRoutes = [...User];

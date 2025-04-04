@@ -46,7 +46,6 @@ export const login = async (
     // Extract claims from token payload
     return {
       ...userData,
-      isPremium: tokenPayload.IsPremium === "True",
       role: tokenPayload.role || "User",
     };
   } catch (error) {
@@ -60,17 +59,9 @@ export const login = async (
  */
 export const storeAuthInfo = (userInfo: UserInfo, rememberMe: boolean) => {
   const storage = rememberMe ? localStorage : sessionStorage;
-  storage.setItem("authToken", userInfo.token);
-  storage.setItem(
-    "userInfo",
-    JSON.stringify({
-      fullName: userInfo.fullName,
-      userName: userInfo.userName,
-      email: userInfo.email,
-      isPremium: userInfo.isPremium || false,
-      role: userInfo.role || "User",
-    })
-  );
+  const { token, ...userInfoWithoutToken } = userInfo;
+  storage.setItem("token", token);
+  storage.setItem("userInfo", JSON.stringify(userInfoWithoutToken));
 };
 
 /**
@@ -97,8 +88,8 @@ export const getUserInfo = (): Omit<UserInfo, "token"> | null => {
  */
 export const logout = () => {
   // Clear both storages to ensure complete logout
-  sessionStorage.removeItem("authToken");
   sessionStorage.removeItem("userInfo");
-  localStorage.removeItem("authToken");
+  sessionStorage.removeItem("token");
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("token");
 };

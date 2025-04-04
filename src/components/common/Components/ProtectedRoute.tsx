@@ -24,7 +24,7 @@ const ProtectedRoute = ({
 
   // Check if admin access is required but user is not admin
   if (requireAdmin && !isAdmin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/401" replace />;
   }
 
   // Check if premium access is required but user doesn't have premium
@@ -32,7 +32,7 @@ const ProtectedRoute = ({
     return <Navigate to="/premium" replace />;
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 export default ProtectedRoute;
