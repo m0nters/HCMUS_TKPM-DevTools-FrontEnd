@@ -10,6 +10,7 @@ import {
   Waves,
 } from "../components/common";
 import { getAllPlugins } from "../services/plugins/plugins";
+import { useAuth } from "../hooks/useAuth";
 
 function Home() {
   // Hooks
@@ -21,6 +22,8 @@ function Home() {
   const [show2ndText, setshow2ndText] = useState(false);
   const [show3rdText, setShow3rdText] = useState(false);
   const [show4ndText, setShow4ndText] = useState(false);
+
+  const { isAuth } = useAuth();
 
   // Refs
   const featuredSectionRef = useRef<HTMLDivElement>(null);
@@ -242,11 +245,13 @@ function Home() {
                   Explore All Tools
                 </Button>
               </div>
-              <div className="animate-fade-in-up">
-                <Button to="/register" variant="secondary" size="lg">
-                  Create Account
-                </Button>
-              </div>
+              {!isAuth && (
+                <div className="animate-fade-in-up">
+                  <Button to="/register" variant="secondary" size="lg">
+                    Create Account
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

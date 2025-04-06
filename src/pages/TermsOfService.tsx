@@ -10,7 +10,7 @@ function TermsOfService() {
           content="Read the terms of service for using IT Tools"
         />
       </article>
-      <div className="w-full max-w-4xl mx-auto pt-24 px-6 pb-12">
+      <div className="w-full max-w-5xl mx-auto pt-24 px-6 pb-12">
         <h1 className="text-3xl font-bold mb-8">Terms of Service</h1>
         <div className="bg-white rounded-lg border border-gray-200 p-8 mb-6">
           <h2 className="text-xl font-semibold mb-4">1. Introduction</h2>

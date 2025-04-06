@@ -11,7 +11,7 @@ function NotFound() {
           content="The page you are looking for doesn't exist or has been moved."
         />
       </article>
-      <div className="w-full max-w-4xl mx-auto text-center pt-24 px-6 pb-12">
+      <div className="w-full max-w-5xl mx-auto text-center pt-24 px-6 pb-12">
         <div className="flex flex-col items-center justify-center py-16">
           <div className="flex justify-center items-center mb-8">
             <FuzzyText

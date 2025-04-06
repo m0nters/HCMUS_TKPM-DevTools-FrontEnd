@@ -2,9 +2,9 @@
 export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]+/g, "")
-    .replace(/--+/g, "-")
+    .replace(/\s+/g, "-") // Replace spaces with dashes
+    .replace(/[^\w-]+/g, "") // Remove special characters
+    .replace(/--+/g, "-") // Replace multiple dashes with a single dash
     .trim();
 }
 

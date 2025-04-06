@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { getAllCategories as getAllCategories } from "../services/plugins/categories";
 import { Plugin, PluginCategory } from "../types/plugins";
 import {
   MagnifyingGlassIcon,
-  ChevronDownIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
+import DropdownMenu from "../components/common/Components/DropdownMenu";
 import { LoadingSpinner, PluginCard } from "../components/common";
 import { getAllPlugins, getSearchedPlugins } from "../services/plugins/plugins";
 import { useDebounce } from "../hooks/useDebounce";
@@ -20,10 +20,6 @@ function PluginExplorer() {
   const [isSearching, setIsSearching] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<number | null>(null);
   const [showPremiumOnly, setShowPremiumOnly] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  // Refs
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Debounce the search query to avoid too many API calls
   const debouncedSearchQuery = useDebounce(searchQuery);
@@ -42,6 +38,14 @@ function PluginExplorer() {
       setIsLoading(false);
     }
   };
+
+  const categoryOptions = [
+    { value: null, label: "All Categories" },
+    ...allCategories.map((category) => ({
+      value: category.id,
+      label: category.name,
+    })),
+  ];
 
   // Fetch all plugins and categories at first for initial data
   useEffect(() => {
@@ -101,40 +105,6 @@ function PluginExplorer() {
     fetchFilteredPlugins();
   }, [debouncedSearchQuery, categoryFilter, showPremiumOnly]);
 
-  // Add ESC key and click outside => close dropdown
-  useEffect(() => {
-    function handleEscKey(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setDropdownOpen(false);
-      }
-    }
-
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    }
-
-    // Add both outside click and ESC key listeners
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscKey);
-
-    // Clean up both listeners
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscKey);
-    };
-  }, []);
-
-  // Get the name of the current category
-  const selectedCategoryName =
-    categoryFilter !== null
-      ? allCategories.find((c) => c.id === categoryFilter)?.name || "Unknown" // the "Unknown" part should never happen
-      : "All Categories";
-
   return (
     <>
       <article>
@@ -174,60 +144,13 @@ function PluginExplorer() {
               )}
             </div>
             {/* Category Filter */}
-            <div className="w-full md:w-1/3 relative" ref={dropdownRef}>
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="w-full flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md hover:border-gray-400 transition-colors text-left focus:outline-none focus:ring-2 focus:ring-black"
-              >
-                <span className="truncate">{selectedCategoryName}</span>
-                <ChevronDownIcon
-                  className={`w-4 h-4 transition-transform ${
-                    dropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {/* Dropdown Options */}
-              <div
-                className={`absolute mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg transition-all duration-200 origin-top ${
-                  dropdownOpen
-                    ? "opacity-100 transform scale-y-100 max-h-60"
-                    : "opacity-0 transform scale-y-0 max-h-0"
-                } overflow-y-auto z-20`}
-              >
-                <div
-                  className="p-1"
-                  style={{ display: dropdownOpen ? "block" : "none" }}
-                >
-                  <button
-                    onClick={() => {
-                      setCategoryFilter(null);
-                      setDropdownOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded hover:bg-gray-100 ${
-                      categoryFilter === null ? "bg-gray-100 font-medium" : ""
-                    }`}
-                  >
-                    All Categories
-                  </button>
-                  {allCategories.map((category) => (
-                    <button
-                      key={category.id}
-                      onClick={() => {
-                        setCategoryFilter(category.id);
-                        setDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded hover:bg-gray-100 ${
-                        categoryFilter === category.id
-                          ? "bg-gray-100 font-medium"
-                          : ""
-                      }`}
-                    >
-                      {category.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <DropdownMenu
+              options={categoryOptions}
+              selectedValue={categoryFilter}
+              onSelect={(value) => setCategoryFilter(value as number | null)}
+              className="w-full md:w-1/3"
+              disabled={isLoading}
+            />
             {/* Premium Filter */}
             <div className="w-full md:w-1/6 flex items-center">
               <label className="inline-flex items-center cursor-pointer">

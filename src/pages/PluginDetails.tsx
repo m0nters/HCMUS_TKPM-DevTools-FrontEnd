@@ -4,9 +4,11 @@ import { useAuth } from "../hooks/useAuth";
 import { getPluginSchema } from "../services/plugins/schema";
 import { PluginSchema } from "../types/pluginSchema";
 import { LoadingSpinner, PremiumBadge } from "../components/common";
-import DynamicPluginUI from "../components/plugins/dynamic-ui/DynamicPluginUI";
+import DynamicPluginUI from "../components/plugins/DynamicPluginUI";
 import { ArrowLeftIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import { getAllPlugins } from "../services/plugins/plugins";
+import { Plugin } from "../types/plugins";
+import { slugify } from "../utils/string";
 
 function PluginDetails() {
   const { pluginName } = useParams<{ pluginName: string }>();
@@ -18,7 +20,9 @@ function PluginDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [targetPlugin, setTargetPlugin] = useState<Plugin | null>(null);
 
+  // Fetch plugin schema details based on the plugin name from the URL
   useEffect(() => {
     async function fetchPluginDetails() {
       try {
@@ -27,14 +31,7 @@ function PluginDetails() {
         // First, get all plugins to find the ID from the name
         const plugins = await getAllPlugins();
         const matchedPlugin = plugins.find(
-          (p) =>
-            pluginName ===
-            p.name
-              .toLowerCase()
-              .replace(/\s+/g, "-") // Replace spaces with dashes
-              .replace(/[^\w-]+/g, "") // Remove special characters
-              .replace(/--+/g, "-") // Replace multiple dashes with a single dash
-              .trim()
+          (p) => pluginName === slugify(p.name)
         );
 
         if (!matchedPlugin) {
@@ -43,12 +40,13 @@ function PluginDetails() {
           return;
         }
 
+        setTargetPlugin(matchedPlugin);
         // Now fetch the detailed schema using the ID
-        const schema = await getPluginSchema(matchedPlugin.id);
-        setPluginSchemaData(schema);
+        const fetchedSchemaData = await getPluginSchema(matchedPlugin.id);
+        setPluginSchemaData(fetchedSchemaData);
 
         // Check premium access
-        if (schema.isPremium && !isPremium) {
+        if (matchedPlugin?.isPremium && !isPremium) {
           setError("premium");
         }
       } catch (err) {
@@ -63,22 +61,22 @@ function PluginDetails() {
   }, []);
 
   const handlePluginSuccess = (result: any) => {
-    setShowSuccessMessage(true);
-    setTimeout(() => setShowSuccessMessage(false), 3000);
+    /* Normally, this will be commented out since I've realized
+    for every change happens and the success message shows up
+    will be very annoying, uncomment to debug if you want */
+    // setShowSuccessMessage(true);
+    // setTimeout(() => setShowSuccessMessage(false), 3000);
   };
 
   const handlePluginError = (error: Error) => {
     setError(error.message);
-    setTimeout(
-      () => setError(error.message === "premium" ? "premium" : null),
-      5000
-    );
+    setTimeout(() => setError(null), 3000);
   };
 
   // Render loading state
   if (isLoading) {
     return (
-      <div className="w-full max-w-4xl mx-auto pt-24 px-6 pb-12">
+      <div className="w-full max-w-5xl mx-auto pt-24 px-6 pb-12">
         <div className="flex justify-center items-center py-12">
           <LoadingSpinner size="large" />
         </div>
@@ -86,27 +84,10 @@ function PluginDetails() {
     );
   }
 
-  // Render error state
-  if (error && error !== "premium") {
-    return (
-      <div className="w-full max-w-4xl mx-auto pt-24 px-6 pb-12">
-        <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-4 mb-6">
-          <p>{error}</p>
-        </div>
-        <Link
-          to="/explore"
-          className="flex items-center text-black hover:underline"
-        >
-          <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back to all tools
-        </Link>
-      </div>
-    );
-  }
-
   // Premium content locked
   if (error === "premium" && pluginSchemaData) {
     return (
-      <div className="w-full max-w-4xl mx-auto pt-24 px-6 pb-12">
+      <div className="w-full max-w-5xl mx-auto pt-24 px-6 pb-12">
         <div className="mb-6">
           <Link
             to="/explore"
@@ -115,8 +96,8 @@ function PluginDetails() {
             <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back to all tools
           </Link>
 
-          <h1 className="text-3xl font-bold mb-2">{pluginSchemaData?.name}</h1>
-          <p className="text-gray-500 mb-6">{pluginSchemaData?.description}</p>
+          <h1 className="text-3xl font-bold mb-2">{targetPlugin?.name}</h1>
+          <p className="text-gray-500 mb-6">{targetPlugin?.description}</p>
         </div>
 
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-12 text-center">
@@ -159,10 +140,21 @@ function PluginDetails() {
   // Render plugin UI
   if (pluginSchemaData) {
     return (
-      <div className="w-full max-w-4xl mx-auto pt-24 px-6 pb-12">
+      <div className="w-full mx-auto pt-24 max-w-5xl pb-12">
         {showSuccessMessage && (
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md transition-opacity">
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
             Operation completed successfully!
+          </div>
+        )}
+
+        {/* Show other errors than "premium" 
+        For "premium" error, it's already been handled above */}
+        {error && (
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-50 border border-red-200 text-red-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
+            <div className="flex flex-col items-center">
+              <span>The processing can't be finished!</span>
+              <span>Error detail: {error}</span>
+            </div>
           </div>
         )}
 
@@ -176,13 +168,12 @@ function PluginDetails() {
 
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold">{pluginSchemaData.name}</h1>
-              {pluginSchemaData.isPremium && <PremiumBadge />}
+              <h1 className="text-3xl font-bold">{targetPlugin?.name}</h1>
+              {targetPlugin?.isPremium && <PremiumBadge />}
             </div>
-            <p className="text-gray-500 mb-6">{pluginSchemaData.description}</p>
+            <p className="text-gray-500 mb-6">{targetPlugin?.description}</p>
           </div>
         </div>
-
         <div className="bg-white border border-gray-200 rounded-lg p-6">
           <DynamicPluginUI
             schema={pluginSchemaData}

@@ -1,64 +1,49 @@
 export interface PluginSchema {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  icon: string;
-  isPremium: boolean;
-  uiSchema: UISchema;
-  api: {
-    process: string;
-  };
+  id: number; // this is Plugin ID!
+  uiSchemas: UISchema[];
 }
 
 export interface UISchema {
+  name?: string;
   inputs: InputField[];
   outputs: OutputField[];
-  controls: Control[];
-  options?: Option[];
 }
 
 // Base field properties
 interface BaseField {
   id: string;
-  label: string;
+  label?: string;
   description?: string;
   type: string;
-  required?: boolean;
+  required: boolean;
 }
 
 // Input field types
 export interface InputField extends BaseField {
-  type: "text" | "textarea" | "number" | "color" | "date";
+  type:
+    | "text"
+    | "textarea"
+    | "number"
+    | "color"
+    | "date"
+    | "slider"
+    | "dropdown"
+    | "checkbox"
+    | "radio"
+    | "toggle";
   placeholder?: string;
   defaultValue?: any;
-  min?: number;
-  max?: number;
+  min?: number; // minimum value for number related, like number inputs, sliders (ranges)
+  max?: number; // similar to min
   step?: number;
-  rows?: number;
-  options?: { value: string; label: string }[];
+  rows?: number; // number of rows for textarea
+  options?: { value: string; label: string }[]; // list of selectable choices with their labels like `select`, `checkbox`, `radio`, `toggle`
 }
 
 // Output field types
 export interface OutputField extends BaseField {
   type: "text" | "textarea";
-  readonly: boolean;
-  rows?: number;
-}
-
-// Control types (buttons, links)
-export interface Control {
-  id: string;
-  label: string;
-  action: string;
-  primary?: boolean;
-}
-
-// Option types for plugin configuration
-export interface Option {
-  id: string;
-  label: string;
-  type: "checkbox" | "radio" | "select" | "toggle";
-  defaultValue?: any;
-  options?: { value: string; label: string }[]; // list of selectable choices for multi-choice option types like dropdown menus or radio button groups.
+  placeholder?: string;
+  rows?: number; // number of rows for textarea
+  resize?: "none" | "both" | "x" | "y"; // resize options for textarea
 }
