@@ -61,11 +61,8 @@ function PluginDetails() {
   }, []);
 
   const handlePluginSuccess = (result: any) => {
-    /* Normally, this will be commented out since I've realized
-    for every change happens and the success message shows up
-    will be very annoying, uncomment to debug if you want */
-    // setShowSuccessMessage(true);
-    // setTimeout(() => setShowSuccessMessage(false), 3000);
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 3000);
   };
 
   const handlePluginError = (error: Error) => {
@@ -141,11 +138,14 @@ function PluginDetails() {
   if (pluginSchemaData) {
     return (
       <div className="w-full mx-auto pt-24 max-w-5xl pb-12">
-        {showSuccessMessage && (
+        {/* Normally, this will be commented out since I've realized
+          for every change happens and the success message shows up
+          will be very annoying, uncomment to debug if you want */}
+        {/* {showSuccessMessage && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
             Operation completed successfully!
           </div>
-        )}
+        )} */}
 
         {/* Show other errors than "premium" 
         For "premium" error, it's already been handled above */}

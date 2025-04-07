@@ -27,8 +27,36 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
   >({});
   const debouncedInputs = useDebounce(inputs);
 
+  // initialize some default values for required fields if not set
+  const handleMissingImportantValues = () => {
+    schema.uiSchemas.forEach((section) => {
+      section.inputs.forEach((input) => {
+        if (["number", "slider"].includes(input.type)) {
+          if (!input.min) input.min = 0;
+          if (!input.max) input.max = 100;
+          if (!input.step) input.step = 1;
+          if (!input.defaultValue && !input.placeholder)
+            input.defaultValue = input.min;
+        } else if (input.type === "color") {
+          if (!input.defaultValue && !input.placeholder)
+            input.defaultValue = "#000000";
+        } else if (input.type === "date") {
+          if (!input.defaultValue)
+            input.defaultValue = new Date().toISOString().split("T")[0];
+        }
+        if (["checkbox", "toggle", "radio", "dropdown"].includes(input.type)) {
+          if (!input.defaultValue) input.defaultValue = {};
+        }
+      });
+      section.outputs.forEach((output) => {
+        if (!output.placeholder) output.placeholder = "No output available";
+      });
+    });
+  };
+
   // Fill in default values for inputs across all sections
   useEffect(() => {
+    handleMissingImportantValues();
     const initialInputs: Record<string, any> = {};
     schema.uiSchemas.forEach((section) => {
       section.inputs.forEach((input) => {
@@ -123,9 +151,9 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
         {schema.uiSchemas.map((section, index) => (
           <div
             key={index}
-            className={`section-container ${
-              sectionCount > 1 ? `border border-gray-200` : ``
-            }  rounded-lg overflow-hidden bg-white`}
+            className={`section-container${
+              sectionCount > 1 ? ` border border-gray-200` : ``
+            } rounded-lg overflow-hidden bg-white`}
           >
             {/* Section Header with Name (if available) */}
             {section.name && (

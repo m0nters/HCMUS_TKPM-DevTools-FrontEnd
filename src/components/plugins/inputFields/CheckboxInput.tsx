@@ -2,7 +2,7 @@ import { InputFieldProps } from "../InputField";
 
 function CheckboxInput({ field, value, onChange, error }: InputFieldProps) {
   // Initialize the value as an object if it's not already
-  const valueObject = typeof value === "object" && value !== null ? value : {};
+  const valueObject = value;
 
   return (
     <div className="space-y-4">

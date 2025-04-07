@@ -5,7 +5,7 @@ function DateInput({ field, value, onChange, error }: InputFieldProps) {
     <input
       type="date"
       id={field.id}
-      value={value || ""}
+      value={value}
       onChange={(e) => onChange(e.target.value)}
       required={field.required}
       className={`w-full p-3 border ${

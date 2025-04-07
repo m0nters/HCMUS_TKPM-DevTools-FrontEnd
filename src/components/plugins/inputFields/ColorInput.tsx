@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 function ColorInput({ field, value, onChange, error }: InputFieldProps) {
   const [textColor, setTextColor] = useState<string>("white");
-  const colorValue = value || "#000000";
+  const colorValue = value;
 
   // Calculate contrasting text color (black or white) based on background color brightness
   useEffect(() => {

@@ -72,7 +72,7 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
           <textarea
             value={displayValue}
             readOnly
-            placeholder={field.placeholder || "Waiting for input..."}
+            placeholder={field.placeholder}
             rows={field.rows || 5}
             className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 ${resizeClass} ${
               isLoading ? "animate-pulse" : ""
@@ -87,9 +87,7 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
             }`}
           >
             {displayValue || (
-              <span className="text-gray-400">
-                {field.placeholder || "Waiting for input..."}
-              </span>
+              <span className="text-gray-400">{field.placeholder}</span>
             )}{" "}
           </div>
         );
@@ -120,17 +118,17 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
             onClick={copyToClipboard}
             className="text-gray-500 hover:text-black transition-colors"
             title="Copy to clipboard"
-            disabled={isLoading}
+            disabled={isLoading || copied}
           >
             {copied ? (
               <>
                 <CheckIcon className="w-5 h-5 text-green-600" />
                 <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md z-50 animate-fade-in-up">
-                  Operation completed successfully!
+                  Copied to clipboard!
                 </div>
               </>
             ) : (
-              <ClipboardDocumentIcon className="w-5 h-5" />
+              <ClipboardDocumentIcon className="w-5 h-5 cursor-pointer" />
             )}
           </button>
         )}

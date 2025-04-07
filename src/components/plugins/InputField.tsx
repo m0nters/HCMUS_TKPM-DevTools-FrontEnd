@@ -23,12 +23,6 @@ export interface InputFieldProps {
  * Factory component that renders the appropriate input field based on type
  */
 function InputField({ field, value, onChange, error }: InputFieldProps) {
-  // field.options = [
-  //   { value: "nut1", label: "Uppercase (ABC...)" },
-  //   { value: "nut2", label: "Numbers (123...)" },
-  //   { value: "nut3", label: "Lowercase (abc...)" },
-  // ];
-
   // Render the input element based on field type
   const renderInputElement = () => {
     switch (field.type) {
@@ -137,7 +131,7 @@ function InputField({ field, value, onChange, error }: InputFieldProps) {
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md">
             <p className="text-sm text-yellow-800">
               Unsupported input type: {field.type}, the schema data for input
-              fetched from backend is wrong.
+              objects fetched from backend is wrong.
             </p>
           </div>
         );

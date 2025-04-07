@@ -7,7 +7,7 @@ function DropDownMenuInput({ field, value, onChange, error }: InputFieldProps) {
     <div>
       <DropdownMenu
         options={field.options as DropdownOption[]}
-        selectedValue={value || ""}
+        selectedValue={value}
         onSelect={(selectedValue) => onChange(selectedValue)}
         buttonClassName={error ? "border-red-500" : ""}
       />
