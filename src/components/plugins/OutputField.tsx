@@ -73,7 +73,7 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
             value={displayValue}
             readOnly
             placeholder={field.placeholder}
-            rows={field.rows || 5}
+            rows={field.rows}
             className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 ${resizeClass} ${
               isLoading ? "animate-pulse" : ""
             }`}
@@ -82,7 +82,7 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
       case "text":
         return (
           <div
-            className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 min-h-11 max-h-[250px] overflow-y-auto${
+            className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 min-h-11 max-h-[250px] overflow-y-auto ${
               isLoading ? "animate-pulse" : ""
             }`}
           >
