@@ -5,7 +5,11 @@ import { getPluginSchema } from "../services/plugins/schema";
 import { PluginSchema } from "../types/pluginSchema";
 import { LoadingSpinner, PremiumBadge } from "../components/common";
 import DynamicPluginUI from "../components/plugins/DynamicPluginUI";
-import { ArrowLeftIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  LockClosedIcon,
+  WrenchScrewdriverIcon,
+} from "@heroicons/react/24/outline";
 import { getAllPlugins } from "../services/plugins/plugins";
 import { Plugin } from "../types/plugins";
 import { slugify } from "../utils/string";
@@ -186,7 +190,49 @@ function PluginDetails() {
   }
 
   // Fallback
-  return null;
+  return (
+    <div className="w-full mx-auto pt-24 max-w-5xl px-6 pb-12">
+      <div className="mb-6">
+        <Link
+          to="/explore"
+          className="flex items-center text-black hover:underline mb-6"
+        >
+          <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back to all tools
+        </Link>
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-lg p-12 flex flex-col items-center justify-center text-center">
+        <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-6">
+          <WrenchScrewdriverIcon className="w-10 h-10 text-gray-400" />
+        </div>
+
+        <h2 className="text-2xl font-semibold mb-2">
+          This Tool Is Currently Unavailable
+        </h2>
+
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+          We're sorry, but this tool is not available at the moment. Our team is
+          working on it and it should be back online soon.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            to="/explore"
+            className="px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors"
+          >
+            Browse Other Tools
+          </Link>
+
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default PluginDetails;
