@@ -27,7 +27,26 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
   >({});
   const debouncedInputs = useDebounce(inputs);
 
-  // initialize some default values for required fields if not set
+  // Initialize default values for inputs and validate schema
+  useEffect(() => {
+    handleMissingImportantValues();
+    const initialInputs: Record<string, any> = {};
+    schema.uiSchemas.forEach((section) => {
+      section.inputs.forEach((input) => {
+        initialInputs[input.id] =
+          input.defaultValue !== undefined ? input.defaultValue : null;
+      });
+    });
+    setInputs(initialInputs);
+  }, [schema]);
+
+  // Handle input changes with debounce for auto-processing
+  useEffect(() => {
+    if (Object.keys(debouncedInputs).length === 0) return;
+    handleAction();
+  }, [debouncedInputs]);
+
+  // Initialize default values for required fields
   const handleMissingImportantValues = () => {
     schema.uiSchemas.forEach((section) => {
       section.inputs.forEach((input) => {
@@ -59,36 +78,9 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
     });
   };
 
-  // Fill in default values for inputs across all sections
-  useEffect(() => {
-    handleMissingImportantValues();
-    const initialInputs: Record<string, any> = {};
-    schema.uiSchemas.forEach((section) => {
-      section.inputs.forEach((input) => {
-        initialInputs[input.id] =
-          input.defaultValue !== undefined ? input.defaultValue : null;
-      });
-    });
-    setInputs(initialInputs);
-  }, [schema]);
-
-  // Process data when inputs change (with debounce)
-  useEffect(() => {
-    // Skip the first render when debouncedInputs is empty
-    if (Object.keys(debouncedInputs).length === 0) return;
-
-    handleAction();
-  }, [debouncedInputs]);
-
-  /**
-   * Handle input field changes
-   *
-   * Note flow: when `inputs` changes, `debouncedInputs` will be changed too,
-   * then it will trigger `handleAction()` function below (see related `useEffect`)
-   */
+  // Update input values and clear validation errors
   const handleInputChange = (fieldId: string, value: any) => {
     setInputs((prevInputs) => ({ ...prevInputs, [fieldId]: value }));
-    // Clear validation error when user changes the field
     if (validationErrors[fieldId]) {
       setValidationErrors((prev) => {
         const { [fieldId]: _, ...rest } = prev;
@@ -97,13 +89,10 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
     }
   };
 
-  /**
-   * Handle API processing action
-   */
+  // Process the plugin data
   const handleAction = async () => {
     // Validate required fields
     const errors: Record<string, string> = {};
-
     schema.uiSchemas.forEach((section) => {
       section.inputs.forEach((input) => {
         if (
@@ -118,7 +107,7 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
       });
     });
 
-    // If there are validation errors, display them and stop processing
+    // Show validation errors and stop processing if needed
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
       return;
@@ -132,83 +121,108 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
       if (onSuccess) onSuccess(result);
     } catch (error) {
       console.error("Error executing plugin:", error);
-
       if (onError) onError(error as Error);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Calculate number of sections to determine grid layout
-  const sectionCount = schema.uiSchemas.length;
-  const gridCols = sectionCount > 2 ? 3 : sectionCount;
+  // Calculate grid layout classes based on section count
+  const getGridLayoutClasses = () => {
+    const sectionCount = schema.uiSchemas.length;
+    if (sectionCount <= 1) return "";
+
+    // Define specific classes to avoid dynamic class generation issues in Tailwind
+    if (sectionCount === 2) {
+      return "grid grid-cols-1 md:grid-cols-2 gap-6";
+    } else {
+      return "grid grid-cols-1 md:grid-cols-3 gap-6";
+    }
+  };
+
+  // Get section container classes based on layout
+  const getSectionContainerClasses = (hasMultipleSections: boolean) => {
+    if (!hasMultipleSections)
+      return "section-container rounded-lg overflow-hidden bg-white";
+    return "section-container border border-gray-200 rounded-lg overflow-hidden bg-white";
+  };
+
+  // Get section content padding classes
+  const getSectionContentClasses = (hasMultipleSections: boolean) => {
+    return hasMultipleSections ? "p-5" : "";
+  };
+
+  // Grid layout classes for the container
+  const gridLayoutClasses = getGridLayoutClasses();
+
+  // Multiple sections flag for reuse
+  const hasMultipleSections = schema.uiSchemas.length > 1;
 
   return (
     <div className="plugin-ui-container">
       {/* Horizontal layout for sections */}
-      <div
-        className={`${
-          sectionCount > 1
-            ? `grid grid-cols-1 md:grid-cols-${gridCols} gap-6`
-            : ""
-        }`}
-      >
-        {schema.uiSchemas.map((section, index) => (
-          <div
-            key={index}
-            className={`section-container ${
-              sectionCount > 1 ? ` border border-gray-200` : ``
-            } rounded-lg overflow-hidden bg-white`}
-          >
-            {/* Section Header with Name (if available) */}
-            {section.name && (
-              <div className="bg-gray-50 border-b border-gray-200 px-5 py-3">
-                <h2 className="font-medium text-lg">{section.name}</h2>
+      <div className={gridLayoutClasses}>
+        {schema.uiSchemas.map((section, index) => {
+          // Section-specific classes
+          const sectionContainerClasses =
+            getSectionContainerClasses(hasMultipleSections);
+          const sectionContentClasses =
+            getSectionContentClasses(hasMultipleSections);
+
+          return (
+            <div key={index} className={sectionContainerClasses}>
+              {/* Section Header with Name (if available) */}
+              {section.name && (
+                <div className="bg-gray-50 border-b border-gray-200 px-5 py-3">
+                  <h2 className="font-medium text-lg">{section.name}</h2>
+                </div>
+              )}
+
+              <div className={sectionContentClasses}>
+                {/* Input Fields for this section */}
+                {section.inputs.length > 0 && (
+                  <div className="inputs-container mb-6">
+                    <h3 className="text-md font-medium text-gray-700 mb-4">
+                      {section.inputs.length > 1 ? "Inputs" : "Input"}
+                    </h3>
+                    <div className="space-y-4">
+                      {section.inputs.map((input) => (
+                        <InputField
+                          key={input.id}
+                          field={input}
+                          value={inputs[input.id]}
+                          onChange={(value) =>
+                            handleInputChange(input.id, value)
+                          }
+                          error={validationErrors[input.id]}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Output Fields for this section */}
+                {section.outputs.length > 0 && (
+                  <div className="outputs-container">
+                    <h3 className="text-md font-medium text-gray-700 mb-4">
+                      {section.outputs.length > 1 ? "Outputs" : "Output"}
+                    </h3>
+                    <div className="space-y-4">
+                      {section.outputs.map((output) => (
+                        <OutputField
+                          key={output.id}
+                          field={output}
+                          value={outputs[output.id]}
+                          isLoading={isProcessing}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-
-            <div className={`${sectionCount > 1 ? `p-5` : ``}`}>
-              {/* Input Fields for this section */}
-              {section.inputs.length > 0 && (
-                <div className="inputs-container mb-6">
-                  <h3 className="text-md font-medium text-gray-700 mb-4">
-                    {section.name ? "Inputs" : "Input"}
-                  </h3>
-                  <div className="space-y-4">
-                    {section.inputs.map((input) => (
-                      <InputField
-                        key={input.id}
-                        field={input}
-                        value={inputs[input.id]}
-                        onChange={(value) => handleInputChange(input.id, value)}
-                        error={validationErrors[input.id]}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Output Fields for this section */}
-              {section.outputs.length > 0 && (
-                <div className="outputs-container">
-                  <h3 className="text-md font-medium text-gray-700 mb-4">
-                    {section.name ? "Outputs" : "Output"}
-                  </h3>
-                  <div className="space-y-4">
-                    {section.outputs.map((output) => (
-                      <OutputField
-                        key={output.id}
-                        field={output}
-                        value={outputs[output.id]}
-                        isLoading={isProcessing}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
