@@ -1,14 +1,10 @@
 import { InputFieldProps } from "../InputField";
 
 function CheckboxInput({ field, value, onChange, error }: InputFieldProps) {
-  // Initialize the value as an object if it's not already
-  const valueObject = value;
-
   return (
     <div className="space-y-4">
       {field.options?.map((option) => {
-        // Check if this option is checked
-        const isChecked = valueObject[option.value] === true;
+        const isChecked = value ? value[option.value] === true : false;
 
         return (
           <div key={option.value} className="flex items-center gap-2">
@@ -18,9 +14,8 @@ function CheckboxInput({ field, value, onChange, error }: InputFieldProps) {
               name={field.id}
               checked={isChecked}
               onChange={() => {
-                // Toggle this specific option in the object
                 onChange({
-                  ...valueObject,
+                  ...value,
                   [option.value]: !isChecked,
                 });
               }}

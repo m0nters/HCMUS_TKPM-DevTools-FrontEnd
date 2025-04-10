@@ -4,6 +4,7 @@ import InputField from "./InputField";
 import OutputField from "./OutputField";
 import { executePlugin } from "../../services/plugins/execute";
 import { useDebounce } from "../../hooks/useDebounce";
+import { hasValue } from "../../utils/string";
 
 interface DynamicPluginUIProps {
   schema: PluginSchema;
@@ -96,13 +97,7 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
     const errors: Record<string, string> = {};
     schema.uiSchemas.forEach((section) => {
       section.inputs.forEach((input) => {
-        if (
-          input.required &&
-          (inputs[input.id] === null ||
-            inputs[input.id] === undefined ||
-            (typeof inputs[input.id] === "string" &&
-              inputs[input.id].trim() === ""))
-        ) {
+        if (input.required && hasValue(inputs[input.id])) {
           errors[input.id] = "This field is required";
         }
       });
@@ -133,7 +128,7 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
   // Calculate grid layout classes based on section count
   const getGridLayoutClasses = () => {
     const sectionCount = schema.uiSchemas.length;
-    if (sectionCount <= 1) return "";
+    if (sectionCount === 1) return "";
 
     // Define specific classes to avoid dynamic class generation issues in Tailwind
     if (sectionCount === 2) {
@@ -145,14 +140,13 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
 
   // Get section container classes based on layout
   const getSectionContainerClasses = (hasMultipleSections: boolean) => {
-    if (!hasMultipleSections)
-      return "section-container rounded-lg overflow-hidden bg-white";
-    return "section-container border border-gray-200 rounded-lg overflow-hidden bg-white";
+    if (hasMultipleSections)
+      return "section-container border border-gray-200 rounded-lg overflow-hidden bg-white";
   };
 
   // Get section content padding classes
   const getSectionContentClasses = (hasMultipleSections: boolean) => {
-    return hasMultipleSections ? "p-5" : "";
+    if (hasMultipleSections) return "p-5";
   };
 
   // Grid layout classes for the container

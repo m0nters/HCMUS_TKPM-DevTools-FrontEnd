@@ -58,16 +58,16 @@ function Button({
 
   // Variant specific classes
   const variantClasses = {
-    primary: `bg-black text-white hover:bg-black`,
+    primary: `bg-black border-2 border-black text-white hover:bg-black`,
     secondary: `bg-white text-black border-2 border-black hover:text-white`,
   };
 
   // Hover effect spans
   const hoverEffect =
     variant === "primary" ? (
-      <span className="absolute inset-0 w-0 bg-white rounded-md border-2 border-black transition-all duration-300 ease-in-out group-hover:w-full"></span>
+      <span className="absolute inset-0 w-0 bg-white rounded-sm transition-all duration-300 ease-in-out group-hover:w-full"></span>
     ) : (
-      <span className="absolute inset-0 w-0 bg-black transition-all duration-300 ease-in-out group-hover:w-full"></span>
+      <span className="absolute inset-0 w-0 bg-black rounded-sm transition-all duration-300 ease-in-out group-hover:w-full"></span>
     );
 
   // Text that changes color on hover

@@ -4,35 +4,26 @@ function ToggleInput({ field, value, onChange, error }: InputFieldProps) {
   return (
     <div className="space-y-4">
       {field.options?.map((option) => {
-        // Check if this option is toggled on
-        const isToggled = Array.isArray(value)
-          ? value.includes(option.value)
-          : typeof value === "object" && value !== null
-          ? value[option.value] === true
-          : false;
+        const isToggled = value ? value[option.value] === true : false;
 
         return (
           <div key={option.value} className="flex items-center justify-between">
-            <label className="text-sm text-gray-700">{option.label}</label>
+            <label
+              className="text-sm text-gray-700"
+              htmlFor={`${field.id}-${option.value}`}
+            >
+              {option.label}
+            </label>
             <button
               type="button"
+              id={`${field.id}-${option.value}`}
               role="switch"
               aria-checked={isToggled}
               onClick={() => {
-                if (Array.isArray(value)) {
-                  // Handle array value type
-                  if (isToggled) {
-                    onChange(value.filter((v) => v !== option.value));
-                  } else {
-                    onChange([...value, option.value]);
-                  }
-                } else {
-                  // Handle object value type (preferred)
-                  onChange({
-                    ...value,
-                    [option.value]: !isToggled,
-                  });
-                }
+                onChange({
+                  ...value,
+                  [option.value]: !isToggled,
+                });
               }}
               className={`${
                 isToggled ? "bg-black" : "bg-gray-200"

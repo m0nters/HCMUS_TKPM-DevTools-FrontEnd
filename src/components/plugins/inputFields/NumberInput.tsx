@@ -7,7 +7,7 @@ function NumberInput({ field, value, onChange, error }: InputFieldProps) {
       id={field.id}
       placeholder={field.placeholder}
       value={value ?? ""}
-      onChange={(e) => onChange(e.target.valueAsNumber || null)}
+      onChange={(e) => onChange(e.target.valueAsNumber)}
       min={field.min}
       max={field.max}
       className={`w-full p-3 border ${

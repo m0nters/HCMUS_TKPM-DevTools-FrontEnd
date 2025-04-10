@@ -37,6 +37,7 @@ export interface InputField extends BaseField {
   max?: number; // similar to min
   step?: number;
   rows?: number; // number of rows for textarea
+  resize?: "none" | "both" | "x" | "y"; // resize options for textarea
   options?: { value: string; label: string }[]; // list of selectable choices with their labels like `select`, `checkbox`, `radio`, `toggle`
 }
 

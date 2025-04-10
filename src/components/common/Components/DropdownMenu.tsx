@@ -87,7 +87,7 @@ function DropdownMenu({
         <div className="p-1" style={{ display: isOpen ? "block" : "none" }}>
           {options.map((option) => (
             <button
-              key={String(option.value)}
+              key={option.value}
               onClick={() => {
                 onSelect(option.value);
                 setIsOpen(false);

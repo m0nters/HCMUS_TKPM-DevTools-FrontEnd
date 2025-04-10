@@ -1,10 +1,15 @@
 import { OutputField as OutputFieldType } from "../../types/pluginSchema";
 import { useState, useEffect } from "react";
 import { ClipboardDocumentIcon, CheckIcon } from "@heroicons/react/24/outline";
-import ReactJson from "react-json-view";
-import XMLViewer from "react-xml-viewer";
+import { hasValue } from "../../utils/string";
+import {
+  JSONOutput,
+  TextAreaOutput,
+  TextOutput,
+  XMLOutput,
+} from "./outputFields";
 
-interface OutputFieldProps {
+export interface OutputFieldProps {
   field: OutputFieldType;
   value: any;
   isLoading?: boolean;
@@ -38,102 +43,19 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
       console.error("Failed to copy text: ", err);
     }
   };
-  // Create a formatted display value
-  const displayValue = (() => {
-    if (isLoading) {
-      return "Processing...";
-    }
-
-    if (value === undefined || value === null) {
-      return "";
-    }
-
-    if (typeof value === "object") {
-      return JSON.stringify(value, null, 2);
-    }
-
-    return String(value);
-  })();
 
   const renderOutputElement = () => {
     switch (field.type) {
       case "textarea":
-        // Determine the resize class based on the resize attribute
-        const resizeClass =
-          field.resize === "x"
-            ? "resize-x"
-            : field.resize === "y"
-            ? "resize-y"
-            : field.resize === "both"
-            ? "resize"
-            : field.resize === "none"
-            ? "resize-none"
-            : "resize-y"; // Default to vertical resize
-
         return (
-          <textarea
-            value={displayValue}
-            readOnly
-            placeholder={field.placeholder}
-            rows={field.rows}
-            className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 ${resizeClass} ${
-              isLoading ? "animate-pulse" : ""
-            }`}
-          />
+          <TextAreaOutput field={field} value={value} isLoading={isLoading} />
         );
       case "text":
-        return (
-          <div
-            className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 min-h-11 max-h-[250px] overflow-y-auto ${
-              isLoading ? "animate-pulse" : ""
-            }`}
-          >
-            {displayValue || (
-              <span className="text-gray-400">{field.placeholder}</span>
-            )}{" "}
-          </div>
-        );
+        return <TextOutput field={field} value={value} isLoading={isLoading} />;
       case "json":
-        return (
-          <div
-            className={`border border-gray-300 rounded-md ${
-              isLoading ? "animate-pulse" : ""
-            }`}
-          >
-            {value ? (
-              <ReactJson
-                src={typeof value === "string" ? JSON.parse(value) : value}
-                displayDataTypes={false}
-                enableClipboard={false}
-                style={{
-                  padding: "12px",
-                  borderRadius: "0.375rem",
-                  maxHeight: "250px",
-                  overflow: "auto",
-                }}
-              />
-            ) : (
-              <span className="text-gray-400">{field.placeholder}</span>
-            )}
-          </div>
-        );
+        return <JSONOutput field={field} value={value} isLoading={isLoading} />;
       case "xml":
-        return (
-          <div
-            className={`border border-gray-300 rounded-md p-4 ${
-              isLoading ? "animate-pulse" : ""
-            }`}
-          >
-            {value ? (
-              <XMLViewer
-                xml={typeof value === "string" ? value : JSON.stringify(value)}
-                collapsible={true}
-              />
-            ) : (
-              <span className="text-gray-400">{field.placeholder}</span>
-            )}
-          </div>
-        );
+        return <XMLOutput field={field} value={value} isLoading={isLoading} />;
       default:
         return (
           <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md">
@@ -145,18 +67,13 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
     }
   };
 
-  const hasValue =
-    value !== undefined &&
-    value !== null &&
-    (typeof value === "string" ? value.trim() !== "" : true);
-
   return (
     <div className="output-field-container">
       <div className="flex items-center justify-between mb-1">
         <label className="block text-sm font-medium text-gray-700">
           {field.label}
         </label>
-        {hasValue && (
+        {hasValue(value) && (
           <button
             onClick={copyToClipboard}
             className="text-gray-500 hover:text-black transition-colors"

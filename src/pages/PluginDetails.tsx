@@ -3,10 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { getPluginSchema } from "../services/plugins/schema";
 import { PluginSchema } from "../types/pluginSchema";
-import { LoadingSpinner, PremiumBadge } from "../components/common";
+import {
+  LoadingSpinner,
+  PremiumBadge,
+  BackLink,
+  Button,
+} from "../components/common";
 import DynamicPluginUI from "../components/plugins/DynamicPluginUI";
 import {
-  ArrowLeftIcon,
   LockClosedIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
@@ -87,74 +91,53 @@ function PluginDetails() {
   }
 
   // Premium content locked
-  if (error === "premium" && pluginSchemaData) {
+  const premiumContentLocked = () => {
     return (
-      <div className="w-full max-w-5xl mx-auto pt-24 px-6 pb-12">
-        <div className="mb-6">
-          <Link
-            to="/explore"
-            className="flex items-center text-black hover:underline mb-6"
-          >
-            <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back to all tools
-          </Link>
-
-          <h1 className="text-3xl font-bold mb-2">{targetPlugin?.name}</h1>
-          <p className="text-gray-500 mb-6">{targetPlugin?.description}</p>
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-12 text-center">
+        <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+          <LockClosedIcon className="w-8 h-8 text-gray-400" />
         </div>
-
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-12 text-center">
-          <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-            <LockClosedIcon className="w-8 h-8 text-gray-400" />
-          </div>
-          <h2 className="text-2xl font-semibold mb-2">Premium Feature</h2>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
-            This tool requires a premium account. Please upgrade to access this
-            feature.
-          </p>
-          {!isAuth ? (
-            <div className="space-y-2">
-              <Link
-                to="/login"
-                className="inline-block px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-              >
-                Log In
+        <h2 className="text-2xl font-semibold mb-2">Premium Feature</h2>
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+          This tool requires a premium account. Please upgrade to access this
+          feature.
+        </p>
+        {!isAuth ? (
+          <>
+            <Button to="/login" variant="primary" size="md">
+              Login
+            </Button>
+            <p className="text-sm text-gray-500 mt-6">
+              Don't have an account?{" "}
+              <Link to="/register" className="text-black hover:underline">
+                Register now
               </Link>
-              <p className="text-sm text-gray-500 mt-2">
-                Don't have an account?{" "}
-                <Link to="/register" className="text-black hover:underline">
-                  Register now
-                </Link>
-              </p>
-            </div>
-          ) : (
-            <Link
-              to="/premium"
-              className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-            >
-              Upgrade to Premium
-            </Link>
-          )}
-        </div>
+            </p>
+          </>
+        ) : (
+          <Button to="/premium" variant="primary" size="md">
+            Premium
+          </Button>
+        )}
       </div>
     );
-  }
+  };
 
   // Render plugin UI
-  if (pluginSchemaData) {
+  const pluginUI = () => {
     return (
-      <div className="w-full mx-auto pt-24 max-w-5xl pb-12">
+      <>
         {/* Normally, this will be commented out since I've realized
-          for every change happens and the success message shows up
-          will be very annoying, uncomment to debug if you want */}
+            for every change happens and the success message shows up
+            will be very annoying, uncomment to debug if you want */}
         {/* {showSuccessMessage && (
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
-            Operation completed successfully!
-          </div>
-        )} */}
-
-        {/* Show other errors than "premium" 
-        For "premium" error, it's already been handled above */}
-        {error && (
+            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
+              Operation completed successfully!
+            </div>
+          )} */}
+        {/* Show other errors than "premium"
+          For "premium" error, it's already been handled above */}
+        {error && error !== "premium" && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-50 border border-red-200 text-red-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
             <div className="flex flex-col items-center">
               <span>The processing can't be finished!</span>
@@ -162,76 +145,74 @@ function PluginDetails() {
             </div>
           </div>
         )}
-
-        <div className="mb-6">
-          <Link
-            to="/explore"
-            className="flex items-center text-black hover:underline mb-6"
-          >
-            <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back to all tools
-          </Link>
-
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold">{targetPlugin?.name}</h1>
-              {targetPlugin?.isPremium && <PremiumBadge />}
-            </div>
-            <p className="text-gray-500 mb-6">{targetPlugin?.description}</p>
-          </div>
-        </div>
         <div className="bg-white border border-gray-200 rounded-lg p-6">
           <DynamicPluginUI
-            schema={pluginSchemaData}
+            schema={pluginSchemaData!}
             onSuccess={handlePluginSuccess}
             onError={handlePluginError}
           />
         </div>
-      </div>
+      </>
     );
-  }
+  };
+
+  const notAvailableContent = () => {
+    return (
+      <>
+        <div className="bg-white border border-gray-200 rounded-lg p-12 flex flex-col items-center justify-center text-center">
+          <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-6">
+            <WrenchScrewdriverIcon className="w-10 h-10 text-gray-400" />
+          </div>
+
+          <h2 className="text-2xl font-semibold mb-2">
+            This Tool Is Currently Unavailable
+          </h2>
+
+          <p className="text-gray-600 mb-6 max-w-md mx-auto">
+            We're sorry, but this tool is not available at the moment. Our team
+            is working on it and it should be back online soon.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/explore"
+              className="px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors"
+            >
+              Browse Other Tools
+            </Link>
+
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  };
 
   // Fallback
   return (
-    <div className="w-full mx-auto pt-24 max-w-5xl px-6 pb-12">
+    <div className="w-full mx-auto pt-24 max-w-5xl pb-12">
       <div className="mb-6">
-        <Link
-          to="/explore"
-          className="flex items-center text-black hover:underline mb-6"
-        >
-          <ArrowLeftIcon className="w-4 h-4 mr-2" /> Back to all tools
-        </Link>
-      </div>
+        <BackLink to="/explore" label="Back to all tools" className="mb-6" />
 
-      <div className="bg-white border border-gray-200 rounded-lg p-12 flex flex-col items-center justify-center text-center">
-        <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-6">
-          <WrenchScrewdriverIcon className="w-10 h-10 text-gray-400" />
-        </div>
-
-        <h2 className="text-2xl font-semibold mb-2">
-          This Tool Is Currently Unavailable
-        </h2>
-
-        <p className="text-gray-600 mb-6 max-w-md mx-auto">
-          We're sorry, but this tool is not available at the moment. Our team is
-          working on it and it should be back online soon.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/explore"
-            className="px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors"
-          >
-            Browse Other Tools
-          </Link>
-
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-          >
-            Try Again
-          </button>
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-3xl font-bold">{targetPlugin?.name}</h1>
+            {targetPlugin?.isPremium && <PremiumBadge />}
+          </div>
+          <p className="text-gray-500 mb-6">{targetPlugin?.description}</p>
         </div>
       </div>
+
+      {error === "premium" && !isAuth
+        ? premiumContentLocked()
+        : pluginSchemaData
+        ? pluginUI()
+        : notAvailableContent()}
     </div>
   );
 }
