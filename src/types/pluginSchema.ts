@@ -42,7 +42,7 @@ export interface InputField extends BaseField {
 
 // Output field types
 export interface OutputField extends BaseField {
-  type: "text" | "textarea";
+  type: "text" | "textarea" | "json" | "xml";
   placeholder?: string;
   rows?: number; // number of rows for textarea
   resize?: "none" | "both" | "x" | "y"; // resize options for textarea

@@ -47,6 +47,7 @@ function PluginDetails() {
         setTargetPlugin(matchedPlugin);
         // Now fetch the detailed schema using the ID
         const fetchedSchemaData = await getPluginSchema(matchedPlugin.id);
+        console.log("Fetched schema data:", fetchedSchemaData);
         setPluginSchemaData(fetchedSchemaData);
 
         // Check premium access

@@ -1,6 +1,8 @@
 import { OutputField as OutputFieldType } from "../../types/pluginSchema";
 import { useState, useEffect } from "react";
 import { ClipboardDocumentIcon, CheckIcon } from "@heroicons/react/24/outline";
+import ReactJson from "react-json-view";
+import XMLViewer from "react-xml-viewer";
 
 interface OutputFieldProps {
   field: OutputFieldType;
@@ -89,6 +91,47 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
             {displayValue || (
               <span className="text-gray-400">{field.placeholder}</span>
             )}{" "}
+          </div>
+        );
+      case "json":
+        return (
+          <div
+            className={`border border-gray-300 rounded-md ${
+              isLoading ? "animate-pulse" : ""
+            }`}
+          >
+            {value ? (
+              <ReactJson
+                src={typeof value === "string" ? JSON.parse(value) : value}
+                displayDataTypes={false}
+                enableClipboard={false}
+                style={{
+                  padding: "12px",
+                  borderRadius: "0.375rem",
+                  maxHeight: "250px",
+                  overflow: "auto",
+                }}
+              />
+            ) : (
+              <span className="text-gray-400">{field.placeholder}</span>
+            )}
+          </div>
+        );
+      case "xml":
+        return (
+          <div
+            className={`border border-gray-300 rounded-md p-4 ${
+              isLoading ? "animate-pulse" : ""
+            }`}
+          >
+            {value ? (
+              <XMLViewer
+                xml={typeof value === "string" ? value : JSON.stringify(value)}
+                collapsible={true}
+              />
+            ) : (
+              <span className="text-gray-400">{field.placeholder}</span>
+            )}
           </div>
         );
       default:

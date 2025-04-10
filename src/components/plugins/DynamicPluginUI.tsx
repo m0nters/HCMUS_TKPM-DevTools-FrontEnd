@@ -117,10 +117,11 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
     // Process the plugin
     setIsProcessing(true);
     try {
-      console.log(inputs);
-      const result = await executePlugin(schema.id, inputs);
-      setOutputs(result);
-      if (onSuccess) onSuccess(result);
+      console.log("Input object", inputs);
+      const outputs = await executePlugin(schema.id, inputs);
+      console.log("Output object", outputs);
+      setOutputs(outputs);
+      if (onSuccess) onSuccess(outputs);
     } catch (error) {
       console.error("Error executing plugin:", error);
       if (onError) onError(error as Error);
