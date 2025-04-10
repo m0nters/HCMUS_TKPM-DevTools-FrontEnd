@@ -18,7 +18,7 @@ export const getPluginSchema = async (
   }
 
   try {
-    const schema = await apiRequest<PluginSchema>(`/Plugin/${pluginId}/schema`);
+    const schema = await apiRequest<PluginSchema>(`/plugin/${pluginId}/schema`);
     schemaCache[pluginId] = { schema, timestamp: Date.now() };
     return schema;
   } catch (error) {

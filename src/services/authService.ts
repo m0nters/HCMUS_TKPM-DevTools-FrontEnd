@@ -1,4 +1,5 @@
 import { LoginCredentials, UserInfo } from "../types/auth";
+import { apiRequest } from "./api/base";
 
 /**
  * Decodes a JWT token and returns the payload as an object
@@ -25,20 +26,10 @@ export const login = async (
   credentials: LoginCredentials
 ): Promise<UserInfo> => {
   try {
-    const response = await fetch("/api/Account/Login", {
+    const userData = await apiRequest<UserInfo>("/account/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(credentials),
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to login");
-    }
-
-    const userData: UserInfo = await response.json();
 
     // Decode JWT token to get additional claims
     const tokenPayload = decodeJwtToken(userData.token);

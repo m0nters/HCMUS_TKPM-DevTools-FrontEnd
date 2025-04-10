@@ -141,13 +141,15 @@ function InputField({ field, value, onChange, error }: InputFieldProps) {
   // Common wrapper for all supported input types
   return (
     <div className="input-field-container">
-      <label
-        htmlFor={field.id}
-        className="block text-sm font-medium text-gray-700 mb-1"
-      >
-        {field.label}
-        {field.required && <span className="text-red-500 ml-1">*</span>}
-      </label>
+      {field.label && (
+        <label
+          htmlFor={field.id}
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          {field.label}
+          {field.required && <span className="text-red-500 ml-1">*</span>}
+        </label>
+      )}
 
       {field.description && (
         <p className="mt-1 text-sm text-gray-500 mb-2">

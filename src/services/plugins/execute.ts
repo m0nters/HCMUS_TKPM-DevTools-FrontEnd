@@ -9,7 +9,7 @@ export const executePlugin = async (
 ): Promise<Record<string, any>> => {
   try {
     const response = await apiRequest<Record<string, any>>(
-      `/Plugin/${pluginId}/execute`,
+      `/plugin/${pluginId}/execution`,
       {
         method: "POST",
         body: JSON.stringify(inputData),

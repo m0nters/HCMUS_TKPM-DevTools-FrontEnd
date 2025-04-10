@@ -9,7 +9,7 @@ import { apiRequest } from "../api/base";
  */
 export const getAllCategories = async (): Promise<PluginCategory[]> => {
   try {
-    const data = await apiRequest<any[]>("/PluginCategory");
+    const data = await apiRequest<any[]>("/plugin-category");
 
     return data.map((category) => ({
       id: category.id,

@@ -8,7 +8,7 @@ import { apiRequest } from "../api/base";
  */
 export const getAllPlugins = async (): Promise<Plugin[]> => {
   try {
-    const plugins = await apiRequest<any[]>("/Plugin");
+    const plugins = await apiRequest<any[]>("/plugin");
 
     // Transform the API response to match our Plugin type
     return plugins.map((plugin) => ({
@@ -48,7 +48,7 @@ export const getSearchedPlugins = async (
 
     // Create the endpoint with query string
     const queryString = params.toString();
-    const endpoint = `/Plugin/search${queryString ? `?${queryString}` : ""}`;
+    const endpoint = `/plugin/search${queryString ? `?${queryString}` : ""}`;
 
     // Make the API request
     const plugins = await apiRequest<any[]>(endpoint);

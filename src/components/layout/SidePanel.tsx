@@ -132,6 +132,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
                     <>
                       {category.plugins.map((plugin) => (
                         <Link
+                          reloadDocument
                           to={`/tools/${slugify(plugin.name)}`}
                           key={plugin.id}
                           className="bg-white flex items-center justify-between p-3 hover:bg-gray-50 border-t border-gray-100 group"

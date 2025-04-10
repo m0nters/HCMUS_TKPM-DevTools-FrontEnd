@@ -50,17 +50,18 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
   const handleMissingImportantValues = () => {
     schema.uiSchemas.forEach((section) => {
       section.inputs.forEach((input) => {
-        if (input.type === "textarea") {
+        if (input.type === "text") {
+          if (!input.placeholder) input.placeholder = "Enter something here...";
+        } else if (input.type === "textarea") {
           if (!input.rows) input.rows = 5;
+          if (!input.placeholder) input.placeholder = "Enter something here...";
         } else if (["number", "slider"].includes(input.type)) {
           if (!input.min) input.min = 0;
           if (!input.max) input.max = 100;
           if (!input.step) input.step = 1;
-          if (!input.defaultValue && !input.placeholder)
-            input.defaultValue = input.min;
+          if (!input.defaultValue) input.defaultValue = input.min;
         } else if (input.type === "color") {
-          if (!input.defaultValue && !input.placeholder)
-            input.defaultValue = "#000000";
+          if (!input.defaultValue) input.defaultValue = "#000000";
         } else if (input.type === "date") {
           if (!input.defaultValue)
             input.defaultValue = new Date().toISOString().split("T")[0];
@@ -116,6 +117,7 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
     // Process the plugin
     setIsProcessing(true);
     try {
+      console.log(inputs);
       const result = await executePlugin(schema.id, inputs);
       setOutputs(result);
       if (onSuccess) onSuccess(result);
