@@ -1,4 +1,4 @@
-import { LoginCredentials, UserInfo } from "../types/auth";
+import { RegisterCredentials, LoginCredentials, UserInfo } from "../types/auth";
 import { apiRequest } from "./api/base";
 
 /**
@@ -16,6 +16,23 @@ const decodeJwtToken = (token: string): any => {
   } catch (error) {
     console.error("Error decoding JWT token:", error);
     return {};
+  }
+};
+
+/**
+ * Registers a new user
+ */
+export const register = async (
+  userData: RegisterCredentials
+): Promise<void> => {
+  try {
+    await apiRequest<void>("/account/register", {
+      method: "POST",
+      body: JSON.stringify(userData),
+    });
+  } catch (error) {
+    console.error("Registration error:", error);
+    throw error;
   }
 };
 

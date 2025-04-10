@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../components/common";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { AlertMessage, Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { login as apiLogin } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
@@ -38,6 +38,9 @@ const Login = () => {
     }
   };
 
+  const location = useLocation();
+  const registrationMessage = location.state?.message;
+
   return (
     <>
       <article>
@@ -51,6 +54,16 @@ const Login = () => {
         <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
+          {registrationMessage && (
+            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
+              <AlertMessage
+                message={registrationMessage}
+                isError={false}
+                duration={5000}
+                onDismiss={() => navigate("/login")}
+              />
+            </div>
+          )}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 mb-4">
               {error}

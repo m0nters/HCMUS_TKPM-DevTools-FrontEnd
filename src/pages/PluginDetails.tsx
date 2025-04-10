@@ -8,6 +8,7 @@ import {
   PremiumBadge,
   BackLink,
   Button,
+  AlertMessage,
 } from "../components/common";
 import DynamicPluginUI from "../components/plugins/DynamicPluginUI";
 import {
@@ -131,18 +132,24 @@ function PluginDetails() {
             for every change happens and the success message shows up
             will be very annoying, uncomment to debug if you want */}
         {/* {showSuccessMessage && (
-            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
-              Operation completed successfully!
-            </div>
-          )} */}
-        {/* Show other errors than "premium"
-          For "premium" error, it's already been handled above */}
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
+            <AlertMessage
+              message={"Operation completed successfully!"}
+              isError={false}
+              duration={5000}
+              onDismiss={() => setError(null)}
+            />
+          </div>
+        )} */}
+
         {error && error !== "premium" && (
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-50 border border-red-200 text-red-800 rounded-md p-4 shadow-md z-50 animate-fade-in-down">
-            <div className="flex flex-col items-center">
-              <span>The processing can't be finished!</span>
-              <span>Error detail: {error}</span>
-            </div>
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
+            <AlertMessage
+              message={error}
+              isError={true}
+              duration={5000}
+              onDismiss={() => setError(null)}
+            />
           </div>
         )}
         <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -208,7 +215,7 @@ function PluginDetails() {
         </div>
       </div>
 
-      {error === "premium" && !isAuth
+      {error === "premium" && !isPremium
         ? premiumContentLocked()
         : pluginSchemaData
         ? pluginUI()
