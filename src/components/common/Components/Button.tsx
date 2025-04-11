@@ -54,7 +54,7 @@ function Button({
   };
 
   // Base classes that apply to both variants
-  const baseClasses = `font-medium rounded-md relative overflow-hidden group transition-colors cursor-pointer ${sizeClasses[size]}`;
+  const baseClasses = `font-medium rounded-md w-full relative overflow-hidden group transition-colors cursor-pointer ${sizeClasses[size]}`;
 
   // Variant specific classes
   const variantClasses = {

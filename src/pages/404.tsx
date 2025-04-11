@@ -27,9 +27,9 @@ function NotFound() {
           <p className="text-xl text-gray-600 mb-10 max-w-lg mx-auto">
             The page you are looking for doesn't exist or has been moved.
           </p>
-          <Button to="/" className="w-fit" variant="primary">
-            <div className="flex justify-center items-center w-full gap-2 group-hover:gap-4 transition-all duration-50">
-              <HomeIcon className="w-5 h-5" />
+          <Button to="/" variant="primary">
+            <div className="inline-flex justify-center items-start gap-2 group-hover:gap-4 transition-all duration-50">
+              <HomeIcon className="w-5 h-5 relative -bottom-0.5" />
               <span>Go Back Home</span>
             </div>
           </Button>
