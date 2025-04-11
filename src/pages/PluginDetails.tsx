@@ -209,7 +209,7 @@ function PluginDetails() {
         <div>
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-3xl font-bold">{targetPlugin?.name}</h1>
-            {targetPlugin?.isPremium && <PremiumBadge />}
+            {targetPlugin?.isPremium && <PremiumBadge size="md" />}
           </div>
           <p className="text-gray-500 mb-6">{targetPlugin?.description}</p>
         </div>

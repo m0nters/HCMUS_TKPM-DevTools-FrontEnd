@@ -6,3 +6,4 @@ export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as BackLink } from "./BackLink";
 export { default as AlertMessage } from "./AlertMessage";
+export { default as PasswordInput } from "./PasswordInput";

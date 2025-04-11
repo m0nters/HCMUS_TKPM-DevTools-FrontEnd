@@ -4,7 +4,7 @@ import { AlertMessage, Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { login as apiLogin } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
-import { Threads } from "../components/common/";
+import { Threads, PasswordInput } from "../components/common/";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -87,23 +87,14 @@ const Login = () => {
                 disabled={isLoading}
               />
             </div>
-            <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                disabled={isLoading}
-              />
-            </div>
+
+            <PasswordInput
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input

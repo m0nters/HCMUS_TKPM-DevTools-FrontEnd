@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import { Threads, AlertMessage } from "../components/common/";
+import { Threads, AlertMessage, PasswordInput } from "../components/common/";
 import { register } from "../services/authService";
 
 const Register = () => {
@@ -12,6 +12,7 @@ const Register = () => {
     userName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [error, setError] = useState("");
@@ -57,6 +58,12 @@ const Register = () => {
       setError(
         "Password must be at least 8 characters and include uppercase, lowercase, number and special character"
       );
+      return;
+    }
+
+    // Confirm password validation
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
       return;
     }
 
@@ -162,23 +169,23 @@ const Register = () => {
                 disabled={isLoading}
               />
             </div>
-            <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                disabled={isLoading}
-              />
-            </div>
+            <PasswordInput
+              id="password"
+              label="Password"
+              placeholder="Enter new password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              helpText="Required: Minimum 8 characters, with uppercase, lowercase, number and special character."
+            />
+            <PasswordInput
+              id="confirmPassword"
+              label="Confirm password"
+              placeholder="Re-enter your password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
             <div className="flex items-center">
               <input
                 id="terms"
