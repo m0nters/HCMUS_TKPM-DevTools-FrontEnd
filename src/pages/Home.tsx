@@ -9,7 +9,7 @@ import {
   SplitText,
   Waves,
 } from "../components/common";
-import { getAllPlugins } from "../services/plugins/plugins";
+import { getAllPlugins } from "../services/plugins/";
 import { useAuth } from "../hooks/useAuth";
 
 function Home() {

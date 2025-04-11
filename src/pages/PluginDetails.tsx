@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { getPluginSchema } from "../services/plugins/schema";
 import { PluginSchema } from "../types/pluginSchema";
 import {
   LoadingSpinner,
@@ -15,7 +14,7 @@ import {
   LockClosedIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
-import { getAllPlugins } from "../services/plugins/plugins";
+import { getPluginSchema, getAllPlugins } from "../services/plugins/";
 import { Plugin } from "../types/plugins";
 import { slugify } from "../utils/string";
 

@@ -1,4 +1,4 @@
-import { apiRequest } from "../api/base";
+import { apiRequest } from "../api/request";
 
 /**
  * Executes a plugin with the given input data

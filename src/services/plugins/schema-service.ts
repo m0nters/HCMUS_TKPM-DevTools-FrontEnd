@@ -1,5 +1,5 @@
 import { PluginSchema } from "../../types/pluginSchema";
-import { apiRequest } from "../api/base";
+import { apiRequest } from "../api/request";
 
 /**
  * Fetches the schema for a specific plugin

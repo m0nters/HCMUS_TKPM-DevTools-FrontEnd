@@ -54,7 +54,7 @@ function Button({
   };
 
   // Base classes that apply to both variants
-  const baseClasses = `font-medium rounded-md relative overflow-hidden group transition-colors cursor-pointer ${sizeClasses[size]} ${className}`;
+  const baseClasses = `font-medium rounded-md relative overflow-hidden group transition-colors cursor-pointer ${sizeClasses[size]}`;
 
   // Variant specific classes
   const variantClasses = {
@@ -91,13 +91,15 @@ function Button({
   // Render as Link for React Router navigation
   if (to) {
     return (
-      <Link
-        to={to}
-        className={`${baseClasses} ${variantClasses[variant]} ${disabledClasses}`}
-      >
-        {hoverEffect}
-        {buttonText}
-      </Link>
+      <div className={`${className}`}>
+        <Link
+          to={to}
+          className={`${baseClasses} ${variantClasses[variant]} ${disabledClasses}`}
+        >
+          {hoverEffect}
+          {buttonText}
+        </Link>
+      </div>
     );
   }
 
@@ -118,15 +120,17 @@ function Button({
 
   // Render as button for actions
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${disabledClasses}`}
-    >
-      {hoverEffect}
-      {buttonText}
-    </button>
+    <div className={`${className}`}>
+      <button
+        type={type}
+        onClick={onClick}
+        disabled={disabled}
+        className={`${baseClasses} ${variantClasses[variant]} ${disabledClasses}`}
+      >
+        {hoverEffect}
+        {buttonText}
+      </button>
+    </div>
   );
 }
 

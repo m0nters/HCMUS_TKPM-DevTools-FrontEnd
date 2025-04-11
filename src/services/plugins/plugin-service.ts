@@ -1,6 +1,6 @@
 import { Plugin } from "../../types/plugins";
 import { slugify } from "../../utils/string";
-import { apiRequest } from "../api/base";
+import { apiRequest } from "../api/request";
 
 /**
  * Fetches all available plugins from the API

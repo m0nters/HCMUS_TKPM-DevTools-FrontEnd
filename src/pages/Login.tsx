@@ -5,6 +5,8 @@ import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { login as apiLogin } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
 import { Threads, PasswordInput } from "../components/common/";
+import { memo } from "react";
+const MemoizedThreads = memo(Threads);
 
 const Login = () => {
   const navigate = useNavigate();
@@ -51,7 +53,12 @@ const Login = () => {
         />
       </article>
       <div className="relative w-full mx-auto">
-        <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
+        <MemoizedThreads
+          amplitude={1}
+          distance={0}
+          enableMouseInteraction={true}
+        />
+        ;
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
           {registrationMessage && (

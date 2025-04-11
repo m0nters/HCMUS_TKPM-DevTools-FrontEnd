@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { PluginSchema } from "../../types/pluginSchema";
 import InputField from "./InputField";
 import OutputField from "./OutputField";
-import { executePlugin } from "../../services/plugins/execute";
+import { executePlugin } from "../../services/plugins/";
 import { useDebounce } from "../../hooks/useDebounce";
 import { hasValue } from "../../utils/string";
 

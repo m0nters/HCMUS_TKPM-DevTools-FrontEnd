@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import Profile from "../../pages/Profile";
+import Profile from "../../pages/profile/Profile";
 import { ProtectedRoute } from "../../components/common";
 
 export const User = [

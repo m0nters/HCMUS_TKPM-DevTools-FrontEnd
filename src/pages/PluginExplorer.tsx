@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { getAllCategories as getAllCategories } from "../services/plugins/categories";
 import { Plugin, PluginCategory } from "../types/plugins";
 import {
   MagnifyingGlassIcon,
@@ -7,7 +6,11 @@ import {
 } from "@heroicons/react/24/outline";
 import DropdownMenu from "../components/common/Components/DropdownMenu";
 import { LoadingSpinner, PluginCard } from "../components/common";
-import { getAllPlugins, getSearchedPlugins } from "../services/plugins/plugins";
+import {
+  getAllPlugins,
+  getSearchedPlugins,
+  getAllCategories,
+} from "../services/plugins/";
 import { useDebounce } from "../hooks/useDebounce";
 
 function PluginExplorer() {

@@ -16,7 +16,6 @@ const ProtectedRoute = ({
   requirePremium = false,
 }: ProtectedRouteProps) => {
   const { isAuth, isAdmin, isPremium, isLoading } = useAuth();
-  console.log(isAuth);
   const location = useLocation();
   if (isLoading) {
     return <LoadingSpinner />;

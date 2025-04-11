@@ -4,6 +4,8 @@ import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { Threads, AlertMessage, PasswordInput } from "../components/common/";
 import { register } from "../services/authService";
+import { memo } from "react";
+const MemoizedThreads = memo(Threads);
 
 const Register = () => {
   const navigate = useNavigate();
@@ -28,12 +30,7 @@ const Register = () => {
     setError("");
 
     // Validation
-    if (
-      !formData.fullName ||
-      !formData.userName ||
-      !formData.email ||
-      !formData.password
-    ) {
+    if (Object.values(formData).some((value) => !value)) {
       setError("All fields are required");
       return;
     }
@@ -69,12 +66,8 @@ const Register = () => {
 
     setIsLoading(true);
     try {
-      await register({
-        userName: formData.userName,
-        fullName: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-      });
+      const { confirmPassword, ...registerData } = formData;
+      await register(registerData);
 
       // Registration successful
       navigate("/login", {
@@ -104,7 +97,12 @@ const Register = () => {
         />
       </article>
       <div className="relative w-full mx-auto">
-        <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
+        <MemoizedThreads
+          amplitude={1}
+          distance={0}
+          enableMouseInteraction={true}
+        />
+        ;
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Register</h2>
 
