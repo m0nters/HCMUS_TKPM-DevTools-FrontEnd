@@ -51,9 +51,6 @@ function LeftSidebar({
             >
               {profile.role}
             </div>
-            {profile.isPremium && (
-              <PremiumBadge variant="subtle" className="mt-2" />
-            )}
           </div>
         )}
 

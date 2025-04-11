@@ -25,7 +25,9 @@ function ProfileInfoSection({ profile }: { profile: UserProfile }) {
         <div>
           <p className="text-sm text-gray-500">Premium Status</p>
           <p className="font-medium">
-            {profile.isPremium ? "Active" : "Inactive"}
+            {profile.role === "Admin" || profile.role === "Premium"
+              ? "Active"
+              : "Inactive"}
           </p>
         </div>
       </div>

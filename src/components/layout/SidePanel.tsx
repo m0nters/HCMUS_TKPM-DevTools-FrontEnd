@@ -155,7 +155,9 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
 
                           <div className="flex items-center gap-2">
                             {/* Premium Tag */}
-                            {plugin.isPremium && PremiumBadge()}
+                            {plugin.isPremium && (
+                              <PremiumBadge variant="outlined" />
+                            )}
                             <ChevronRightIcon className="w-4 h-4 text-gray-400" />
                           </div>
                         </Link>

@@ -15,11 +15,7 @@ function FavoritesSection({ userId }: { userId: string }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   // Get access to the favorites context
-  const {
-    isFavorite,
-    favorites: favoriteIds,
-    refreshFavorites,
-  } = useFavorites();
+  const { isFavorite, favorites: favoriteIds } = useFavorites();
 
   // Fetch favorite plugins
   const fetchFavorites = async () => {
@@ -54,12 +50,6 @@ function FavoritesSection({ userId }: { userId: string }) {
       }
     }
   }, [favoriteIds, isFavorite]); // React to changes in the favorites context
-
-  // Manual refresh function for when users explicitly want to reload
-  const handleRefresh = () => {
-    refreshFavorites(); // Refresh the global favorites context
-    fetchFavorites(); // Reload our local list
-  };
 
   if (isLoading) {
     return (

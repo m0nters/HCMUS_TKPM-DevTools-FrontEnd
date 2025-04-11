@@ -49,23 +49,18 @@ function Home() {
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setShow1stText(true);
-      console.log("1");
     }, 1000);
     const timer2 = setTimeout(() => {
       setShow2ndTextBg(true);
-      console.log("2");
     }, 2300);
     const timer3 = setTimeout(() => {
       setshow2ndText(true);
-      console.log("3");
     }, 2300);
     const timer4 = setTimeout(() => {
       setShow3rdText(true);
-      console.log("4");
     }, 3600);
     const timer5 = setTimeout(() => {
       setShow4ndText(true);
-      console.log("5");
     }, 4800);
 
     // Clean up timers when component unmounts
