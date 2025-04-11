@@ -15,30 +15,3 @@ export const getProfile = async (): Promise<UserProfile> => {
     throw error;
   }
 };
-
-/**
- * Fetches all available favorite plugins from the API
- * @returns Promise resolving to an array of Plugin objects
- */
-export const getFavoritePlugins = async (): Promise<Plugin[]> => {
-  try {
-    const plugins = await withAuth<any[]>("/me/favorite", {
-      method: "GET",
-    });
-
-    // Transform the API response to match our Plugin type
-    return plugins.map((plugin) => ({
-      id: plugin.id,
-      name: plugin.name,
-      categoryId: plugin.categoryId,
-      categoryName: plugin.categoryName || "",
-      description: plugin.description || "",
-      isPremium: plugin.isPremium || false,
-      icon: plugin.icon || "",
-      path: `/tools/${slugify(plugin.name)}`,
-    }));
-  } catch (error) {
-    console.error("Failed to fetch plugins:", error);
-    return [];
-  }
-};

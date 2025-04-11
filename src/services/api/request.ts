@@ -4,17 +4,6 @@ export async function apiRequest<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const url = `/api/v1${endpoint}`;
-  // Ensure Content-Type is set when there's a body
-  if (options.body && !options.headers) {
-    options.headers = {
-      "Content-Type": "application/json",
-    };
-  } else if (options.body) {
-    options.headers = {
-      ...options.headers,
-      "Content-Type": "application/json",
-    };
-  }
   // Make sure we're setting the content-type as JSON
   const headers = {
     "Content-Type": "application/json",

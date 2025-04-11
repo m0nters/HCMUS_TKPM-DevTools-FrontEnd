@@ -5,20 +5,27 @@ import {
   PluginCard,
   AlertMessage,
 } from "../../components/common";
-import { StarIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { getFavoritePlugins } from "../../services/user/user-service";
+import { StarIcon } from "@heroicons/react/24/outline";
+import { getFavorites } from "../../services/user/";
 import { Plugin } from "../../types/plugins";
+import { useFavorites } from "../../hooks/useFavorites";
 
 function FavoritesSection({ userId }: { userId: string }) {
   const [favorites, setFavorites] = useState<Plugin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  // Get access to the favorites context
+  const {
+    isFavorite,
+    favorites: favoriteIds,
+    refreshFavorites,
+  } = useFavorites();
 
   // Fetch favorite plugins
   const fetchFavorites = async () => {
     try {
       setIsLoading(true);
-      const plugins = await getFavoritePlugins();
+      const plugins = await getFavorites();
       setFavorites(plugins);
     } catch (err) {
       console.error("Failed to load favorites:", err);
@@ -32,6 +39,27 @@ function FavoritesSection({ userId }: { userId: string }) {
   useEffect(() => {
     fetchFavorites();
   }, [userId]);
+
+  // Listen to changes in the favorites list from context
+  useEffect(() => {
+    // If favorites context has changed, update our local list by filtering out removed items
+    if (!isLoading && favorites.length > 0) {
+      const updatedFavorites = favorites.filter((plugin) =>
+        isFavorite(plugin.id)
+      );
+
+      // Only update state if something was actually removed
+      if (updatedFavorites.length !== favorites.length) {
+        setFavorites(updatedFavorites);
+      }
+    }
+  }, [favoriteIds, isFavorite]); // React to changes in the favorites context
+
+  // Manual refresh function for when users explicitly want to reload
+  const handleRefresh = () => {
+    refreshFavorites(); // Refresh the global favorites context
+    fetchFavorites(); // Reload our local list
+  };
 
   if (isLoading) {
     return (

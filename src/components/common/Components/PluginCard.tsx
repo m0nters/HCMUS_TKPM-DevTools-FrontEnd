@@ -3,6 +3,10 @@ import { Plugin } from "../../../types/plugins";
 import { slugify } from "../../../utils/string";
 import PremiumBadge from "./PremiumBadge";
 import { useRef, useEffect, useState } from "react";
+import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
+import { useFavorites } from "../../../hooks/useFavorites";
+import { useAuth } from "../../../hooks/useAuth";
 
 interface PluginCardProps {
   plugin: Plugin;
@@ -23,6 +27,9 @@ function PluginCard({ plugin, iconSize = "md" }: PluginCardProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [isTextTruncated, setIsTextTruncated] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const { isAuth } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
+
   const sizeClasses = {
     sm: "w-12 h-12",
     md: "w-16 h-16",
@@ -52,6 +59,18 @@ function PluginCard({ plugin, iconSize = "md" }: PluginCardProps) {
     };
   }, [plugin.description]);
 
+  // Handle favorite button click
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation to the tool page
+    e.stopPropagation(); // Prevent event bubbling
+
+    if (isAuth) {
+      toggleFavorite(plugin.id);
+    }
+  };
+
+  const isFav = isAuth && isFavorite(plugin.id);
+
   return (
     <Link
       to={`/tools/${slugify(plugin.name)}`}
@@ -65,6 +84,23 @@ function PluginCard({ plugin, iconSize = "md" }: PluginCardProps) {
           <PremiumBadge />
         </span>
       )}
+
+      {/* Favorite button */}
+      {isAuth && (
+        <button
+          onClick={handleFavoriteClick}
+          className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+          aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+          title={isFav ? "Remove from favorites" : "Add to favorites"}
+        >
+          {isFav ? (
+            <HeartSolid className="w-5 h-5 text-red-500" />
+          ) : (
+            <HeartOutline className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+          )}
+        </button>
+      )}
+
       {plugin.icon && (
         <div
           className={`${sizeClasses[iconSize]} mb-4 mx-auto text-gray-800 flex items-center justify-center group-hover:scale-110 transition-transform`}
