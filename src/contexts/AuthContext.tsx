@@ -8,6 +8,7 @@ export const AuthContext = createContext<AuthContextType>({
   isAuth: false,
   isPremium: false,
   isAdmin: false,
+  isLoading: true,
   login: () => {},
   logout: () => {},
 });
@@ -19,6 +20,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isAuth, setIsAuth] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const userInfo = getUserInfo();
@@ -26,6 +28,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(userInfo);
       setIsAuth(true);
     }
+    setIsLoading(false);
   }, []);
 
   const loginUser = (userInfo: UserInfo, rememberMe: boolean) => {
@@ -58,6 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isAuth,
         isPremium,
         isAdmin,
+        isLoading,
         login: loginUser,
         logout: logoutUser,
       }}

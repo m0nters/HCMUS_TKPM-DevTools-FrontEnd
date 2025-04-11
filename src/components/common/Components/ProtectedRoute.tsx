@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -14,9 +15,12 @@ const ProtectedRoute = ({
   requireAdmin = false,
   requirePremium = false,
 }: ProtectedRouteProps) => {
-  const { isAuth, isAdmin, isPremium } = useAuth();
+  const { isAuth, isAdmin, isPremium, isLoading } = useAuth();
+  console.log(isAuth);
   const location = useLocation();
-
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   // Check if auth is required but user is not authenticated
   if (requiredAuth && !isAuth) {
     return <Navigate to="/login" state={{ from: location }} replace />;

@@ -26,8 +26,6 @@ export async function apiRequest<T>(
       }
     }
 
-    console.log(response);
-
     // Check if the response is empty (204 No Content)
     if (response.status === 204) {
       return "" as unknown as T;

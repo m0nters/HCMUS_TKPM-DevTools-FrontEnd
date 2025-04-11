@@ -7,6 +7,7 @@ export interface AuthContextType {
   isAuth: boolean;
   isPremium: boolean;
   isAdmin: boolean;
+  isLoading: boolean;
   login: (user: UserInfo, rememberMe: boolean) => void;
   logout: () => void;
 }
