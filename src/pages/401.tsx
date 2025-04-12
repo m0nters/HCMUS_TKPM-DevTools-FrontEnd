@@ -30,7 +30,7 @@ function Unauthorized() {
           </p>
           <Button to="/" variant="primary">
             <div className="inline-flex justify-center items-start gap-2 group-hover:gap-4 transition-all duration-50">
-              <HomeIcon className="w-5 h-5 relative -bottom-0.5" />
+              <HomeIcon className="w-5 h-5 relative -bottom-[3px]" />
               <span>Go Back Home</span>
             </div>
           </Button>
