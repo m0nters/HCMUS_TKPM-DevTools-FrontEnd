@@ -3,9 +3,9 @@ import { AlertMessage, Button, PasswordInput } from "../../components/common";
 import { changePassword } from "../../services/user/";
 
 function SecuritySection() {
-  const [currentPassword, setCurrentPassword] = useState("");
+  const [oldPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmNewPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +15,7 @@ function SecuritySection() {
     setError("");
     setSuccess("");
 
-    if (newPassword !== confirmPassword) {
+    if (newPassword !== confirmNewPassword) {
       setError("New passwords don't match");
       return;
     }
@@ -23,9 +23,9 @@ function SecuritySection() {
     setIsLoading(true);
     try {
       await changePassword({
-        oldPassword: currentPassword,
+        oldPassword,
         newPassword,
-        confirmNewPassword: confirmPassword,
+        confirmNewPassword,
       });
 
       // Success case
@@ -68,7 +68,7 @@ function SecuritySection() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <PasswordInput
           label="Current Password"
-          value={currentPassword}
+          value={oldPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
           required
         />
@@ -83,7 +83,7 @@ function SecuritySection() {
 
         <PasswordInput
           label="Confirm New Password"
-          value={confirmPassword}
+          value={confirmNewPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />

@@ -15,6 +15,7 @@ export async function withAuth<T>(
   }
 
   const headers = {
+    "Content-Type": "application/json",
     ...options.headers,
     Authorization: `Bearer ${token}`,
   };

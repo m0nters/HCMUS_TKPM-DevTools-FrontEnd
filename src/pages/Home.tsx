@@ -163,7 +163,7 @@ function Home() {
                   {/* Animated background div that grows from left to right */}
                   {show2ndTextBg && (
                     <div
-                      className="absolute -top-2.5 inset-0 bg-black h-20 origin-left"
+                      className="absolute -top-2 md:-top-2.5 inset-0 bg-black h-16 md:h-20 origin-left"
                       style={{
                         transform: "scaleX(0)",
                         animation: "expandWidth 0.8s ease-out forwards",
@@ -190,7 +190,7 @@ function Home() {
                         rootMargin="-50px"
                         onLetterAnimationComplete={() => {}}
                         whiteSpace={false}
-                        className="text-white px-2" // Add padding and make text white
+                        className="text-white px-0.5 md:px-2" // Add padding and make text white
                       />
                     </div>
                   )}

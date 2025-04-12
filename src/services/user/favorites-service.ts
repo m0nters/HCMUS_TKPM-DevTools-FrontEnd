@@ -34,9 +34,6 @@ export const addFavorite = async (pluginId: number): Promise<boolean> => {
   try {
     await withAuth("/me/favorite", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({ pluginId }),
     });
     return true;
@@ -54,9 +51,6 @@ export const removeFavorite = async (pluginId: number): Promise<boolean> => {
   try {
     await withAuth("/me/favorite", {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({ pluginId }),
     });
     return true;
