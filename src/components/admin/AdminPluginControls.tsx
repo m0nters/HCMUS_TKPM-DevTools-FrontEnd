@@ -10,6 +10,7 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import { LoadingSpinner } from "../common";
+import { eventBus, EVENTS } from "../../services/event-bus";
 
 interface AdminPluginControlsProps {
   plugin: AdminPlugin;
@@ -41,6 +42,8 @@ function AdminPluginControls({
       if (success) {
         onPluginUpdated(plugin.id, !plugin.isActive, plugin.isPremium);
       }
+      // Emit event to refresh sidebar
+      eventBus.emit(EVENTS.SIDEBAR_REFRESH);
     } catch (error) {
       console.error("Failed to toggle plugin active status:", error);
     } finally {
@@ -59,6 +62,8 @@ function AdminPluginControls({
       if (success) {
         onPluginUpdated(plugin.id, plugin.isActive, !plugin.isPremium);
       }
+      // Emit event to refresh sidebar
+      eventBus.emit(EVENTS.SIDEBAR_REFRESH);
     } catch (error) {
       console.error("Failed to toggle plugin premium status:", error);
     } finally {

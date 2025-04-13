@@ -69,13 +69,6 @@ function PluginExplorer() {
   const applyFilters = (plugins: Plugin[] | AdminPlugin[]) => {
     let result = [...plugins];
 
-    // Only show active plugins in normal mode
-    if (!isAdminMode) {
-      result = result.filter(
-        (plugin) => !("isActive" in plugin) || (plugin as AdminPlugin).isActive
-      );
-    }
-
     // Apply category filter
     if (categoryFilter !== null) {
       result = result.filter((plugin) => plugin.categoryId === categoryFilter);
@@ -233,8 +226,8 @@ function PluginExplorer() {
         <p className="mb-4 text-gray-600">
           Showing {filteredPlugins.length} of {allPlugins.length} tools
           {isAdminMode && (
-            <span className="ml-2 text-yellow-700 font-medium">
-              (Admin Mode)
+            <span className="ml-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-0.5 rounded-md text-xs font-medium">
+              ADMIN MODE
             </span>
           )}
         </p>

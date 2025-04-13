@@ -67,7 +67,7 @@ function Header() {
               <div className="relative" id="user-menu">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center space-x-2 hover:bg-gray-100 px-3 py-2 rounded-md transition-colors"
+                  className="flex items-center gap-2 hover:gap-4 hover:bg-gray-100 px-3 py-2 rounded-md transition-all ease-in-out duration-200 cursor-pointer"
                 >
                   <UserCircleIcon className="w-6 h-6" />
                   <span className="hidden md:block">

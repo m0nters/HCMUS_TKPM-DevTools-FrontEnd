@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AlertMessage, Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import { login as apiLogin } from "../services/authService";
+import { login as apiLogin } from "../services/auth-service";
 import { useAuth } from "../hooks/useAuth";
 import { Threads, PasswordInput } from "../components/common/";
 import { memo } from "react";
