@@ -47,12 +47,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsAuth(true);
   };
 
-  const logoutUser = () => {
-    setIsLoading(true); // otherwise you can't navigate back to home since this will be obscured by those navigations in `ProtectedRoutes`
+  const logoutUser = async () => {
+    navigate("/");
+
+    // without this, the DOM will re-render to fast, before it can navigate,
+    // this may look like shit code, but this is the shortest solution for
+    // logging out issue, increase the timeout if there's bug in future.
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     logout();
     setUser(null);
     setIsAuth(false);
-    navigate("/");
   };
 
   const isPremium = user?.role === "Premium" || user?.role === "Admin";
