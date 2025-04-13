@@ -6,16 +6,19 @@ import { login as apiLogin } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
 import { Threads, PasswordInput } from "../components/common/";
 import { memo } from "react";
+import { estimateReadingTime } from "../utils/string";
 const MemoizedThreads = memo(Threads);
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const registrationMessage = location.state?.message;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +34,11 @@ const Login = () => {
     try {
       const userInfo = await apiLogin({ userName: username, password });
       login(userInfo, rememberMe);
-      navigate("/"); // Redirect to home after successful login
+      /**
+       * We don't need to redirect here, since `Login` or `Register`
+       * has been wrapped in `UnauthenticatedRoute` and it will
+       * either navigate to the previous page or to the home page
+       */
     } catch (error: any) {
       console.error("Login failed:", error);
       setError("Invalid username or password");
@@ -39,9 +46,6 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-
-  const location = useLocation();
-  const registrationMessage = location.state?.message;
 
   return (
     <>
@@ -65,9 +69,15 @@ const Login = () => {
             <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
               <AlertMessage
                 message={registrationMessage}
-                isError={false}
-                duration={5000}
-                onDismiss={() => navigate("/login")}
+                isError={location.state?.isError || false}
+                duration={estimateReadingTime(registrationMessage)}
+                onDismiss={() => {
+                  // Update URL without triggering navigation/reload
+                  navigate(location.pathname, {
+                    replace: true,
+                    state: { from: location.state?.from },
+                  });
+                }}
               />
             </div>
           )}
@@ -126,13 +136,8 @@ const Login = () => {
                 Forgot password?
               </Link>
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              variant="primary"
-              disabled={isLoading}
-            >
-              <div className="flex justify-center items-center w-full gap-2 group-hover:gap-4 transition-all duration-50">
+            <Button type="submit" variant="primary" disabled={isLoading}>
+              <div className="flex justify-center items-center gap-2 group-hover:gap-4 transition-all duration-50">
                 <span>{isLoading ? "Logging in..." : "Login"}</span>
                 {!isLoading && <ArrowUpRightIcon className="w-4 h-4" />}
               </div>

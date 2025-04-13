@@ -7,7 +7,7 @@ export interface AuthContextType {
   isAuth: boolean;
   isPremium: boolean;
   isAdmin: boolean;
-  isLoading: boolean;
+  isLoading: boolean; // for waiting to completely load state's data for protected routes
   login: (user: UserInfo, rememberMe: boolean) => void;
   logout: () => void;
 }

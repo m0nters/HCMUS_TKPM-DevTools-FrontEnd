@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { Threads, AlertMessage, PasswordInput } from "../components/common/";
@@ -9,6 +9,7 @@ const MemoizedThreads = memo(Threads);
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     fullName: "",
     userName: "",
@@ -25,11 +26,7 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    // Validation
+  const validateFields = () => {
     if (Object.values(formData).some((value) => !value)) {
       setError("All fields are required");
       return;
@@ -63,6 +60,14 @@ const Register = () => {
       setError("Passwords do not match");
       return;
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    // Validation
+    validateFields();
 
     setIsLoading(true);
     try {
@@ -74,6 +79,7 @@ const Register = () => {
         state: {
           message:
             "Registration successful! Please log in with your credentials.",
+          from: location.state?.returnTo || "/",
         },
       });
     } catch (err: any) {

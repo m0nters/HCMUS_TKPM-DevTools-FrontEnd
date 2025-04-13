@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import { getUserInfo, storeAuthInfo, logout } from "../services/authService";
 import { UserInfo } from "../types/auth";
 import { AuthUser, AuthContextType } from "../types/authContext";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -21,6 +22,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userInfo = getUserInfo();
@@ -46,9 +48,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const logoutUser = () => {
+    setIsLoading(true); // otherwise you can't navigate back to home since this will be obscured by those navigations in `ProtectedRoutes`
     logout();
     setUser(null);
     setIsAuth(false);
+    navigate("/");
   };
 
   const isPremium = user?.role === "Premium" || user?.role === "Admin";

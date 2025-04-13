@@ -20,9 +20,20 @@ const ProtectedRoute = ({
   if (isLoading) {
     return <LoadingSpinner />;
   }
+
   // Check if auth is required but user is not authenticated
   if (requiredAuth && !isAuth) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return (
+      <Navigate
+        to="/login"
+        state={{
+          from: location,
+          message: "You need to login to use this functionality.",
+          isError: true,
+        }}
+        replace
+      />
+    );
   }
 
   // Check if admin access is required but user is not admin

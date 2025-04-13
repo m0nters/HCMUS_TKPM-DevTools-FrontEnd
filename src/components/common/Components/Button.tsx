@@ -54,7 +54,7 @@ function Button({
   };
 
   // Base classes that apply to both variants
-  const baseClasses = `font-medium rounded-md w-full relative overflow-hidden group transition-colors cursor-pointer ${sizeClasses[size]}`;
+  const baseClasses = `font-medium rounded-md w-full relative overflow-hidden group transition-colors ${sizeClasses[size]}`;
 
   // Variant specific classes
   const variantClasses = {
@@ -86,7 +86,7 @@ function Button({
   // If disabled, override classes
   const disabledClasses = disabled
     ? "opacity-50 cursor-not-allowed"
-    : "hover:shadow-md";
+    : "hover:shadow-md cursor-pointer";
 
   // Render as Link for React Router navigation
   if (to) {

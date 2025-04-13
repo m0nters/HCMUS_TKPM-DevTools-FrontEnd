@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 interface BackLinkProps {
-  to: string;
+  to?: string; // if not provided, will navigate back in history
   label: string;
   size?: "sm" | "md" | "lg";
   variant?: "default" | "minimal" | "pill";
@@ -13,6 +13,8 @@ interface BackLinkProps {
  * Reusable back link component with consistent styling and animation
  */
 function BackLink({ to, label, size = "md", className = "" }: BackLinkProps) {
+  const navigate = useNavigate();
+
   // Size classes
   const sizeClasses = {
     sm: "text-xs py-1 px-2",
@@ -27,16 +29,24 @@ function BackLink({ to, label, size = "md", className = "" }: BackLinkProps) {
     lg: "w-5 h-5 mr-2",
   };
 
+  const handleClick = () => {
+    if (to) {
+      navigate(to);
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
-    <Link
-      to={to}
-      className={`inline-flex items-center font-medium text-gray-700 hover:bg-gray-200 rounded-full transition-colors group ${sizeClasses[size]} ${className}`}
+    <button
+      onClick={handleClick}
+      className={`inline-flex items-center font-medium text-gray-700 hover:bg-gray-200 rounded-full transition-colors cursor-pointer group ${sizeClasses[size]} ${className}`}
     >
       <ArrowLeftIcon
         className={`transition-transform group-hover:-translate-x-1 ${iconSizeClasses[size]}`}
       />
       {label}
-    </Link>
+    </button>
   );
 }
 

@@ -65,7 +65,7 @@ function DropdownMenu({
         onClick={() => setIsOpen(!isOpen)}
         disabled={disabled}
         className={`w-full flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md hover:border-gray-400 transition-colors text-left focus:outline-none focus:ring-2 focus:ring-black ${
-          disabled ? "opacity-60 cursor-not-allowed" : ""
+          disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
         } ${buttonClassName}`}
       >
         <span className="truncate">{selectedLabel}</span>
@@ -92,7 +92,7 @@ function DropdownMenu({
                 onSelect(option.value);
                 setIsOpen(false);
               }}
-              className={`w-full text-left px-3 py-2 rounded hover:bg-gray-100 ${
+              className={`w-full text-left px-3 py-2 rounded hover:bg-gray-100 cursor-pointer ${
                 option.value === selectedValue ? "bg-gray-100 font-medium" : ""
               }`}
             >

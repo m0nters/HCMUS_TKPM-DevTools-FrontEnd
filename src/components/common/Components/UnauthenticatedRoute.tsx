@@ -1,24 +1,21 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 
 interface UnauthenticatedRouteProps {
   children: React.ReactNode;
-  redirectTo?: string;
 }
 
 /**
  * Redirects authenticated users away from pages they shouldn't access when logged in
  * (like login and register pages)
  */
-const UnauthenticatedRoute = ({
-  children,
-  redirectTo = "/",
-}: UnauthenticatedRouteProps) => {
+const UnauthenticatedRoute = ({ children }: UnauthenticatedRouteProps) => {
   const { isAuth } = useAuth();
+  const location = useLocation();
 
   // If user is authenticated, redirect them away
   if (isAuth) {
-    return <Navigate to={redirectTo} replace />;
+    return <Navigate to={location.state?.from || "/"} replace />;
   }
 
   // If not authenticated, show the children

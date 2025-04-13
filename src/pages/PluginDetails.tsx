@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { PluginSchema } from "../types/pluginSchema";
 import {
@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { getPluginSchema, getAllPlugins } from "../services/plugins/";
 import { Plugin } from "../types/plugins";
-import { slugify } from "../utils/string";
+import { estimateReadingTime, slugify } from "../utils/string";
 
 function PluginDetails() {
   const { pluginName } = useParams<{ pluginName: string }>();
@@ -29,6 +29,27 @@ function PluginDetails() {
   const [error, setError] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [targetPlugin, setTargetPlugin] = useState<Plugin | null>(null);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate("/login", {
+      state: {
+        from: location,
+        message: "Please log in to access this premium feature.",
+      },
+    });
+  };
+
+  // truyền cái `returnTo` này vào cái `from` của bên Register
+  // khi nó gửi sang Login, như vậy sau khi bấm vào tạo tài khoản
+  // và đăng nhập thành công, nó sẽ tự động chuyển về cái plugin này
+  const handleRegisterClick = () => {
+    navigate("/register", {
+      state: { returnTo: location.pathname },
+    });
+  };
 
   // Fetch plugin schema details based on the plugin name from the URL
   useEffect(() => {
@@ -103,17 +124,25 @@ function PluginDetails() {
           feature.
         </p>
         {!isAuth ? (
-          <>
-            <Button to="/login" variant="primary" size="md">
+          <div className="flex flex-col items-center">
+            <Button
+              onClick={handleLoginClick}
+              className="w-fit"
+              variant="primary"
+              size="md"
+            >
               Login
             </Button>
             <p className="text-sm text-gray-500 mt-6">
               Don't have an account?{" "}
-              <Link to="/register" className="text-black hover:underline">
+              <button
+                onClick={handleRegisterClick}
+                className="text-black hover:underline"
+              >
                 Register now
-              </Link>
+              </button>
             </p>
-          </>
+          </div>
         ) : (
           <Button to="/premium" variant="primary" size="md">
             Premium
@@ -135,7 +164,7 @@ function PluginDetails() {
             <AlertMessage
               message={"Operation completed successfully!"}
               isError={false}
-              duration={5000}
+              duration={estimateReadingTime("Operation completed successfully!")}
               onDismiss={() => setError(null)}
             />
           </div>
@@ -146,7 +175,7 @@ function PluginDetails() {
             <AlertMessage
               message={error}
               isError={true}
-              duration={5000}
+              duration={estimateReadingTime(error)}
               onDismiss={() => setError(null)}
             />
           </div>

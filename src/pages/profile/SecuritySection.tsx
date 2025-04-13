@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AlertMessage, Button, PasswordInput } from "../../components/common";
 import { changePassword } from "../../services/user/";
+import { estimateReadingTime } from "../../utils/string";
 
 function SecuritySection() {
   const [oldPassword, setCurrentPassword] = useState("");
@@ -51,7 +52,7 @@ function SecuritySection() {
         <AlertMessage
           message={error}
           isError={true}
-          duration={3000}
+          duration={estimateReadingTime(error)}
           onDismiss={() => setError("")}
         />
       )}
@@ -60,7 +61,7 @@ function SecuritySection() {
         <AlertMessage
           message={success}
           isError={false}
-          duration={3000}
+          duration={estimateReadingTime(success)}
           onDismiss={() => setSuccess("")}
         />
       )}
