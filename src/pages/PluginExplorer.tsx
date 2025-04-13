@@ -12,6 +12,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import { useAuth } from "../hooks/useAuth";
 import AdminModeToggle from "../components/admin/AdminModeToggle";
 import { estimateReadingTime } from "../utils/string";
+import { eventBus, EVENTS } from "../services/event-bus";
 
 function PluginExplorer() {
   // Hooks
@@ -113,7 +114,7 @@ function PluginExplorer() {
   }, [debouncedSearchQuery, categoryFilter, showPremiumOnly, allPlugins]);
 
   // Handle plugin updates from admin controls
-  const handlePluginUpdated = (
+  const onPluginUpdated = (
     pluginId: number,
     isActive: boolean,
     isPremium: boolean
@@ -132,6 +133,9 @@ function PluginExplorer() {
       }" updated successfully`,
       isError: false,
     });
+
+    // Emit event to refresh sidebar also
+    eventBus.emit(EVENTS.SIDEBAR_REFRESH);
   };
 
   return (
@@ -245,7 +249,7 @@ function PluginExplorer() {
                 plugin={plugin}
                 iconSize="md"
                 isAdminMode={isAdminMode}
-                onPluginUpdated={handlePluginUpdated}
+                onPluginUpdated={onPluginUpdated}
               />
             ))}
           </div>

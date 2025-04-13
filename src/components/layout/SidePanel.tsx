@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getAllCategories } from "../../services/plugins/";
 import { PluginCategory } from "../../types/plugins";
@@ -26,7 +26,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
   // Track which categories are expanded
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]); // Array of category names
 
-  const fetchAllCategories = useCallback(async () => {
+  const fetchAllCategories = async () => {
     setIsLoading(true);
     try {
       const result = await getAllCategories();
@@ -36,7 +36,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  };
 
   useEventBus(EVENTS.SIDEBAR_REFRESH, () => {
     fetchAllCategories();
@@ -45,7 +45,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
   // Fetch categories on component mount
   useEffect(() => {
     fetchAllCategories();
-  }, [fetchAllCategories]);
+  }, []);
 
   // Toggle category expansion
   const toggleCategory = (categoryName: string) => {

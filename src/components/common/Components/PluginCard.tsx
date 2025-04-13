@@ -80,16 +80,6 @@ function PluginCard({
 
   const isFav = isAuth && isFavorite(plugin.id);
 
-  const handlePluginUpdate = (
-    pluginId: number,
-    isActive: boolean,
-    isPremium: boolean
-  ) => {
-    if (onPluginUpdated) {
-      onPluginUpdated(pluginId, isActive, isPremium);
-    }
-  };
-
   return (
     <div
       className={`relative h-full ${isDisabled ? "opacity-50" : ""}`}
@@ -100,7 +90,7 @@ function PluginCard({
       {isAdminPlugin && isAdminMode && isHovering && (
         <AdminPluginControls
           plugin={plugin as AdminPlugin}
-          onPluginUpdated={handlePluginUpdate}
+          onPluginUpdated={onPluginUpdated!}
         />
       )}
 
