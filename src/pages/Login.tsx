@@ -75,7 +75,7 @@ const Login = () => {
                   // Update URL without triggering navigation/reload
                   navigate(location.pathname, {
                     replace: true,
-                    state: { from: location.state?.from },
+                    state: location.state || {},
                   });
                 }}
               />

@@ -1,28 +1,38 @@
 import { useState, useEffect } from "react";
-import { Plugin, PluginCategory } from "../types/plugins";
+import { Plugin, PluginCategory, AdminPlugin } from "../types/plugins";
 import {
   MagnifyingGlassIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import DropdownMenu from "../components/common/Components/DropdownMenu";
-import { LoadingSpinner, PluginCard } from "../components/common";
-import {
-  getAllPlugins,
-  getSearchedPlugins,
-  getAllCategories,
-} from "../services/plugins/";
+import { LoadingSpinner, PluginCard, AlertMessage } from "../components/common";
+import { getAllPlugins, getAllCategories } from "../services/plugins/";
+import { getAllPluginsAdmin } from "../services/admin/plugin-service";
 import { useDebounce } from "../hooks/useDebounce";
+import { useAuth } from "../hooks/useAuth";
+import AdminModeToggle from "../components/admin/AdminModeToggle";
+import { estimateReadingTime } from "../utils/string";
 
 function PluginExplorer() {
   // Hooks
   const [allCategories, setAllCategories] = useState<PluginCategory[]>([]);
-  const [allPlugins, setAllPlugins] = useState<Plugin[]>([]);
-  const [filteredPlugins, setFilteredPlugins] = useState<Plugin[]>([]);
+  const [allPlugins, setAllPlugins] = useState<Plugin[] | AdminPlugin[]>([]);
+  const [filteredPlugins, setFilteredPlugins] = useState<
+    Plugin[] | AdminPlugin[]
+  >([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<number | null>(null);
   const [showPremiumOnly, setShowPremiumOnly] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{
+    message: string;
+    isError: boolean;
+  } | null>(null);
+
+  // Auth hook to check if user is admin
+  const { isAdmin } = useAuth();
 
   // Debounce the search query to avoid too many API calls
   const debouncedSearchQuery = useDebounce(searchQuery);
@@ -30,18 +40,65 @@ function PluginExplorer() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const fetchedPlugins = await getAllPlugins();
+      // Fetch plugins based on admin mode
+      let fetchedPlugins;
+      if (isAdmin && isAdminMode) {
+        fetchedPlugins = await getAllPluginsAdmin();
+      } else {
+        fetchedPlugins = await getAllPlugins();
+      }
+
       const fetchedCategories = await getAllCategories();
       setAllPlugins(fetchedPlugins);
       setAllCategories(fetchedCategories);
-      setFilteredPlugins(fetchedPlugins); // the category is `All categories` at first, always
+
+      // Apply current filters to newly fetched data
+      applyFilters(fetchedPlugins);
     } catch (error) {
       console.error("Failed to load data:", error);
+      setStatusMessage({
+        message: "Failed to load plugins. Please try again.",
+        isError: true,
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Apply filters to plugin list
+  const applyFilters = (plugins: Plugin[] | AdminPlugin[]) => {
+    let result = [...plugins];
+
+    // Only show active plugins in normal mode
+    if (!isAdminMode) {
+      result = result.filter(
+        (plugin) => !("isActive" in plugin) || (plugin as AdminPlugin).isActive
+      );
+    }
+
+    // Apply category filter
+    if (categoryFilter !== null) {
+      result = result.filter((plugin) => plugin.categoryId === categoryFilter);
+    }
+
+    // Apply premium filter
+    if (showPremiumOnly) {
+      result = result.filter((plugin) => plugin.isPremium);
+    }
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      result = result.filter(
+        (plugin) =>
+          plugin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          plugin.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredPlugins(result);
+  };
+
+  // Category options for dropdown
   const categoryOptions = [
     { value: null, label: "All Categories" },
     ...allCategories.map((category) => ({
@@ -50,63 +107,39 @@ function PluginExplorer() {
     })),
   ];
 
-  // Fetch all plugins and categories at first for initial data
+  // Fetch data when component mounts or admin mode changes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [isAdminMode, isAdmin]);
 
-  // Search and filter
+  // Apply filters when search query, category filter, or premium filter changes
   useEffect(() => {
-    const fetchFilteredPlugins = async () => {
-      // Client side code
-      let result = allPlugins;
+    setIsSearching(true);
+    applyFilters(allPlugins);
+    setIsSearching(false);
+  }, [debouncedSearchQuery, categoryFilter, showPremiumOnly, allPlugins]);
 
-      const search = () => {
-        if (searchQuery.trim()) {
-          result = result.filter(
-            (plugin) =>
-              plugin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              plugin.description
-                ?.toLowerCase()
-                .includes(searchQuery.toLowerCase())
-          );
-        }
-      };
+  // Handle plugin updates from admin controls
+  const handlePluginUpdated = (
+    pluginId: number,
+    isActive: boolean,
+    isPremium: boolean
+  ) => {
+    // Update plugins in the state
+    const updatedPlugins = allPlugins.map((plugin) =>
+      plugin.id === pluginId ? { ...plugin, isActive, isPremium } : plugin
+    );
 
-      const filter = () => {
-        if (categoryFilter !== null) {
-          result = result.filter(
-            (plugin) => plugin.categoryId === categoryFilter
-          );
-        }
+    setAllPlugins(updatedPlugins);
 
-        if (showPremiumOnly) {
-          result = result.filter((plugin) => plugin.isPremium);
-        }
-      };
-
-      filter();
-      search();
-      setFilteredPlugins(result);
-      setIsSearching(false);
-
-      // // server side code (suck! but it mitigates the client's load)
-      // try {
-      //   const result = await getSearchedPlugins(
-      //     searchQuery,
-      //     categoryFilter,
-      //     showPremiumOnly
-      //   );
-      //   setFilteredPlugins(result);
-      // } catch (error) {
-      //   console.error("Error searching plugins:", error);
-      // } finally {
-      //   setIsSearching(false);
-      // }
-    };
-
-    fetchFilteredPlugins();
-  }, [debouncedSearchQuery, categoryFilter, showPremiumOnly]);
+    // Show a success message
+    setStatusMessage({
+      message: `Plugin "${
+        updatedPlugins.find((p) => p.id === pluginId)?.name
+      }" updated successfully`,
+      isError: false,
+    });
+  };
 
   return (
     <>
@@ -116,6 +149,27 @@ function PluginExplorer() {
       </article>
       <div className="w-full max-w-7xl mx-auto pt-24 px-6 pb-12">
         <h1 className="text-3xl font-bold mb-6">Explore All Tools</h1>
+
+        {/* Status messages */}
+        {statusMessage && (
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
+            <AlertMessage
+              message={statusMessage.message}
+              isError={statusMessage.isError}
+              duration={estimateReadingTime(statusMessage.message)}
+              onDismiss={() => setStatusMessage(null)}
+            />
+          </div>
+        )}
+
+        {/* Admin mode toggle - only visible for admins */}
+        {isAdmin && (
+          <AdminModeToggle
+            isAdminMode={isAdminMode}
+            onToggle={setIsAdminMode}
+          />
+        )}
+
         {/* Search and Filters */}
         <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6">
           <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
@@ -132,20 +186,14 @@ function PluginExplorer() {
                 className="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
 
-              {/* Dynamic icon: Show spinner when searching, otherwise show magnifying glass */}
+              {/* Dynamic icon */}
               {isSearching ? (
                 <ArrowPathIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500 animate-spin" />
               ) : (
                 <MagnifyingGlassIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500" />
               )}
-
-              {/* Optional: Add "Searching..." text below input when searching */}
-              {isSearching && (
-                <div className="absolute -bottom-5 left-0 text-xs text-gray-500">
-                  Searching...
-                </div>
-              )}
             </div>
+
             {/* Category Filter */}
             <DropdownMenu
               options={categoryOptions}
@@ -154,6 +202,7 @@ function PluginExplorer() {
               className="w-full md:w-1/3"
               disabled={isLoading}
             />
+
             {/* Premium Filter */}
             <div className="w-full md:w-1/6 flex items-center">
               <label className="inline-flex items-center cursor-pointer">
@@ -179,50 +228,48 @@ function PluginExplorer() {
             </div>
           </div>
         </div>
+
         {/* Results count */}
         <p className="mb-4 text-gray-600">
           Showing {filteredPlugins.length} of {allPlugins.length} tools
+          {isAdminMode && (
+            <span className="ml-2 text-yellow-700 font-medium">
+              (Admin Mode)
+            </span>
+          )}
         </p>
+
         {/* Tools Grid */}
         {isLoading ? (
-          LoadingSpinner({ size: "large" })
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="flex justify-center py-12">
+            <LoadingSpinner size="large" />
+          </div>
+        ) : filteredPlugins.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredPlugins.map((plugin) => (
-              <PluginCard key={plugin.id} plugin={plugin} iconSize="md" />
+              <PluginCard
+                key={plugin.id}
+                plugin={plugin}
+                iconSize="md"
+                isAdminMode={isAdminMode}
+                onPluginUpdated={handlePluginUpdated}
+              />
             ))}
           </div>
-        )}
-        {filteredPlugins.length === 0 &&
-          allPlugins.length !== 0 &&
-          !isLoading && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">
-                No tools found matching your criteria.
-              </p>
-              <button
-                onClick={() => {
-                  setSearchQuery("");
-                  setCategoryFilter(null);
-                  setShowPremiumOnly(false);
-                }}
-                className="mt-4 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
-              >
-                Clear All Filters
-              </button>
-            </div>
-          )}
-        {!allPlugins.length && !isLoading && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No tools found.</p>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
             <p className="text-gray-500">
-              The system hasn't have any tool yet. Please check back later.
+              No tools found matching your criteria.
             </p>
             <button
-              onClick={fetchData}
+              onClick={() => {
+                setSearchQuery("");
+                setCategoryFilter(null);
+                setShowPremiumOnly(false);
+              }}
               className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium transition-colors"
             >
-              Refresh
+              Clear Filters
             </button>
           </div>
         )}

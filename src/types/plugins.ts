@@ -10,6 +10,10 @@ export interface Plugin {
   isPremium: boolean;
 }
 
+export interface AdminPlugin extends Plugin {
+  isActive: boolean;
+}
+
 export interface PluginCategory {
   id: number;
   name: string;
