@@ -18,6 +18,7 @@ interface PluginCardProps {
     isActive: boolean,
     isPremium: boolean
   ) => void;
+  onPluginDeleted?: (pluginId: number) => void;
 }
 
 /**
@@ -28,6 +29,7 @@ function PluginCard({
   iconSize = "md",
   isAdminMode = false,
   onPluginUpdated,
+  onPluginDeleted,
 }: PluginCardProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [isTextTruncated, setIsTextTruncated] = useState(false);
@@ -91,6 +93,7 @@ function PluginCard({
         <AdminPluginControls
           plugin={plugin as AdminPlugin}
           onPluginUpdated={onPluginUpdated!}
+          onPluginDeleted={onPluginDeleted!}
         />
       )}
 
@@ -146,7 +149,7 @@ function PluginCard({
               {plugin.description}
             </p>
             {/* Full description tooltip on hover */}
-            {isHovering && isTextTruncated && (
+            {isHovering && isTextTruncated && !isAdminMode && (
               <div className="absolute left-0 right-0 -bottom-2 transform translate-y-full bg-black text-white p-3 rounded-md shadow-lg z-10 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 {plugin.description}
                 <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black rotate-45"></div>

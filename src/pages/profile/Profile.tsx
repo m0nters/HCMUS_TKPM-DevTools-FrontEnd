@@ -45,7 +45,7 @@ function Profile() {
     if (isLoading) {
       return (
         <div className="flex justify-center items-center h-64">
-          <LoadingSpinner size="large" />
+          <LoadingSpinner size="lg" />
         </div>
       );
     }

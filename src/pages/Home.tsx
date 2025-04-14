@@ -258,7 +258,7 @@ function Home() {
           </h2>
 
           {isLoading ? (
-            LoadingSpinner({ size: "large" })
+            LoadingSpinner({ size: "lg" })
           ) : featuredPlugins.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-4 text-center">
               <SparklesIcon className="h-16 w-16 text-gray-400 mb-4" />

@@ -19,6 +19,10 @@
   }
 }
 
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -30,10 +34,28 @@
   }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
 .animate-fade-in-down {
   animation: fadeInDown 0.5s ease-out forwards;
+}
+
+@keyframes gradientSlide {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #8b5cf6,
+    #4f46e5,
+    #3b82f6,
+    #8b5cf6
+  );
+  background-size: 400% 100%;
+  animation: gradientSlide 2s linear infinite;
 }

@@ -66,3 +66,19 @@ export const togglePluginPremium = async (
     return false;
   }
 };
+
+/**
+ * Delete a plugin
+ * @param pluginId The ID of the plugin to delete
+ */
+export const deletePlugin = async (pluginId: number): Promise<boolean> => {
+  try {
+    await withAuth(`/admin/plugin/${pluginId}`, {
+      method: "DELETE",
+    });
+    return true;
+  } catch (error) {
+    console.error(`Failed to delete plugin ${pluginId}:`, error);
+    return false;
+  }
+};

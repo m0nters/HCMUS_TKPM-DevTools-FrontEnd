@@ -138,6 +138,33 @@ function PluginExplorer() {
     eventBus.emit(EVENTS.SIDEBAR_REFRESH);
   };
 
+  // Handler for plugin deletion
+  const onPluginDeleted = (pluginId: number) => {
+    // Find the deleted plugin name for the message
+    const deletedPlugin = allPlugins.find((p) => p.id === pluginId);
+    const pluginName = deletedPlugin?.name || "Plugin";
+
+    // Remove the plugin from state
+    const updatedPlugins = allPlugins.filter(
+      (plugin) => plugin.id !== pluginId
+    );
+    setAllPlugins(updatedPlugins);
+
+    // Update filtered plugins list as well
+    setFilteredPlugins(
+      filteredPlugins.filter((plugin) => plugin.id !== pluginId)
+    );
+
+    // Show success message
+    setStatusMessage({
+      message: `${pluginName} was deleted successfully`,
+      isError: false,
+    });
+
+    // Emit event to refresh sidebar
+    eventBus.emit(EVENTS.SIDEBAR_REFRESH);
+  };
+
   return (
     <>
       <article>
@@ -230,8 +257,8 @@ function PluginExplorer() {
         <p className="mb-4 text-gray-600">
           Showing {filteredPlugins.length} of {allPlugins.length} tools
           {isAdminMode && (
-            <span className="ml-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-0.5 rounded-md text-xs font-medium">
-              ADMIN MODE
+            <span className="ml-2 animated-gradient text-white px-2 py-0.5 rounded-md text-xs font-medium">
+              Hovering over a plugin...
             </span>
           )}
         </p>
@@ -239,7 +266,7 @@ function PluginExplorer() {
         {/* Tools Grid */}
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <LoadingSpinner size="large" />
+            <LoadingSpinner size="lg" />
           </div>
         ) : filteredPlugins.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -250,6 +277,7 @@ function PluginExplorer() {
                 iconSize="md"
                 isAdminMode={isAdminMode}
                 onPluginUpdated={onPluginUpdated}
+                onPluginDeleted={onPluginDeleted}
               />
             ))}
           </div>

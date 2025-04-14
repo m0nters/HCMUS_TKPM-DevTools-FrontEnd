@@ -105,7 +105,7 @@ function PluginDetails() {
     return (
       <div className="w-full max-w-5xl mx-auto pt-24 px-6 pb-12">
         <div className="flex justify-center items-center py-12">
-          <LoadingSpinner size="large" />
+          <LoadingSpinner size="lg" />
         </div>
       </div>
     );

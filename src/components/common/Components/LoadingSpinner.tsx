@@ -1,21 +1,17 @@
 /**
  * Loading spinner component.
- * @param size - Spinner size (small, medium, large)
+ * @param size - Spinner size (sm, medium, lg)
  * @returns Loading spinner component
  * @example
  * ```tsx
  * <LoadingSpinner size="medium" />
  * ```
  */
-function LoadingSpinner({
-  size = "medium",
-}: {
-  size?: "small" | "medium" | "large";
-}) {
+function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const sizeClasses = {
-    small: "h-6 w-6",
-    medium: "h-10 w-10",
-    large: "h-12 w-12",
+    sm: "h-6 w-6",
+    md: "h-10 w-10",
+    lg: "h-12 w-12",
   };
 
   return (
