@@ -15,7 +15,7 @@ const Login = () => {
   const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false); // the token has its expriration time
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const registrationMessage = location.state?.message;
@@ -66,20 +66,19 @@ const Login = () => {
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
           {registrationMessage && (
-            <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
-              <AlertMessage
-                message={registrationMessage}
-                isError={location.state?.isError || false}
-                duration={estimateReadingTime(registrationMessage)}
-                onDismiss={() => {
-                  // Update URL without triggering navigation/reload
-                  navigate(location.pathname, {
-                    replace: true,
-                    state: location.state || {},
-                  });
-                }}
-              />
-            </div>
+            <AlertMessage
+              message={registrationMessage}
+              isError={location.state?.isError || false}
+              duration={estimateReadingTime(registrationMessage)}
+              onDismiss={() => {
+                // Update URL without triggering navigation/reload
+                navigate(location.pathname, {
+                  replace: true,
+                  state: location.state || {},
+                });
+              }}
+              position="top-center"
+            />
           )}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 mb-4">

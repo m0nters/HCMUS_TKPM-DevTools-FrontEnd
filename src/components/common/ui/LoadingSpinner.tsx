@@ -1,10 +1,10 @@
 /**
  * Loading spinner component.
- * @param size - Spinner size (sm, medium, lg)
+ * @param size - Spinner size (sm, md, lg)
  * @returns Loading spinner component
  * @example
  * ```tsx
- * <LoadingSpinner size="medium" />
+ * <LoadingSpinner size="md" />
  * ```
  */
 function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {

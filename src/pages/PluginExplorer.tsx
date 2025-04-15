@@ -4,7 +4,7 @@ import {
   MagnifyingGlassIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import DropdownMenu from "../components/common/Components/DropdownMenu";
+import DropdownMenu from "../components/common/ui/DropdownMenu";
 import { LoadingSpinner, PluginCard, AlertMessage } from "../components/common";
 import { getAllPlugins, getAllCategories } from "../services/plugins/";
 import { getAllPluginsAdmin } from "../services/admin/pluginService";
@@ -108,7 +108,6 @@ function PluginExplorer() {
 
   // Apply filters when search query, category filter, or premium filter changes
   useEffect(() => {
-    setIsSearching(true);
     applyFilters(allPlugins);
     setIsSearching(false);
   }, [debouncedSearchQuery, categoryFilter, showPremiumOnly, allPlugins]);
@@ -176,14 +175,13 @@ function PluginExplorer() {
 
         {/* Status messages */}
         {statusMessage && (
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
-            <AlertMessage
-              message={statusMessage.message}
-              isError={statusMessage.isError}
-              duration={estimateReadingTime(statusMessage.message)}
-              onDismiss={() => setStatusMessage(null)}
-            />
-          </div>
+          <AlertMessage
+            message={statusMessage.message}
+            isError={statusMessage.isError}
+            duration={estimateReadingTime(statusMessage.message)}
+            onDismiss={() => setStatusMessage(null)}
+            position="top-center"
+          />
         )}
 
         {/* Admin mode toggle - only visible for admins */}

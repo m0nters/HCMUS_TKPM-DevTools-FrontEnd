@@ -54,7 +54,7 @@ function FavoritesSection({ userId }: { userId: string }) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <LoadingSpinner size="medium" />
+        <LoadingSpinner size="md" />
       </div>
     );
   }

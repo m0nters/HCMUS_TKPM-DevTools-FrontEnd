@@ -1,5 +1,5 @@
 import { InputFieldProps } from "../InputField";
-import DropdownMenu from "../../common/Components/DropdownMenu";
+import DropdownMenu from "../../common/ui/DropdownMenu";
 import { DropdownOption } from "../../../types/dropdownMenu";
 
 function DropDownMenuInput({ field, value, onChange, error }: InputFieldProps) {

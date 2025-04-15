@@ -30,7 +30,7 @@ export function hasValue(text: any): boolean {
 // Helper function to calculate display duration based on message length
 export function estimateReadingTime(sentence: string) {
   const wordCount = sentence.trim().split(/\s+/).length;
-  const extraTime = 0;
+  const extraTime = 2 * 1000;
   const avgReadingWPM = 238;
   return Math.round((wordCount / avgReadingWPM) * 60 * 1000) + extraTime;
 }

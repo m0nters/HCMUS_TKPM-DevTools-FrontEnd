@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, use } from "react";
 import {
-  AdminUser,
   getAllUsers,
   changeUserRole,
   deleteUser,
@@ -9,31 +8,44 @@ import {
   TrashIcon,
   MagnifyingGlassIcon,
   ArrowPathIcon,
-  ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../../hooks/useAuth";
-
-type UserRole = "User" | "Premium" | "Admin";
-const ROLES: UserRole[] = ["User", "Premium", "Admin"];
+import { UserProfile, UserRole, ROLES } from "../../types/user";
+import { AlertMessage, Button } from "../../components/common";
+import { estimateReadingTime } from "../../utils/string";
+import { useDebounce } from "../../hooks/useDebounce";
+import ConfirmDialog from "../../components/common/ui/ConfirmDialog";
 
 function UserManagement() {
-  const [users, setUsers] = useState<AdminUser[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<AdminUser[]>([]);
+  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [actionStatus, setActionStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
   const [searchQuery, setSearchQuery] = useState("");
-  const [actionInProgress, setActionInProgress] = useState<string | null>(null);
-  const { currentUser } = useAuth();
+  // Add these state variables near your other state declarations
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<UserProfile | null>(null);
+
+  const { user: currentUser } = useAuth();
+
+  const debouncedSearchQuery = useDebounce(searchQuery);
 
   const fetchUsers = useCallback(async () => {
     try {
       setIsLoading(true);
-      setError(null);
+      setActionStatus({ type: null, message: "" }); // Reset status message
       const data = await getAllUsers();
       setUsers(data);
       setFilteredUsers(data);
     } catch (error) {
-      setError("Failed to fetch users. Please try again.");
+      setActionStatus({
+        type: "error",
+        message: "Failed to fetch users. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -44,12 +56,17 @@ function UserManagement() {
   }, [fetchUsers]);
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
+    applyFilters();
+    setIsSearching(false);
+  }, [debouncedSearchQuery, users]);
+
+  const applyFilters = () => {
+    if (debouncedSearchQuery.trim() === "") {
       setFilteredUsers(users);
       return;
     }
 
-    const lowercaseQuery = searchQuery.toLowerCase();
+    const lowercaseQuery = debouncedSearchQuery.toLowerCase().trim();
     const filtered = users.filter(
       (user) =>
         user.fullName.toLowerCase().includes(lowercaseQuery) ||
@@ -57,47 +74,49 @@ function UserManagement() {
         user.role.toLowerCase().includes(lowercaseQuery)
     );
     setFilteredUsers(filtered);
-  }, [searchQuery, users]);
+  };
 
-  const handleRoleChange = async (userId: string, role: UserRole) => {
+  const handleRoleChange = async (chosenUser: UserProfile, role: UserRole) => {
     try {
-      setActionInProgress(userId);
-      const response = await changeUserRole(userId, role);
+      const response = await changeUserRole(chosenUser.id, role);
       if (response.success) {
         // Update the local state to reflect the change
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
-            user.id === userId ? { ...user, role } : user
+            user.id === chosenUser.id ? { ...user, role } : user
           )
         );
+        setActionStatus({
+          type: "success",
+          message: `${chosenUser?.fullName} role changed to ${role}`,
+        });
       } else {
-        throw new Error(response.message || "Failed to change role");
+        setActionStatus({
+          type: "error",
+          message:
+            response.message ||
+            `Failed to change user role for ${chosenUser?.fullName}`,
+        });
       }
     } catch (error) {
       console.error("Error changing role:", error);
-      setError("Failed to change user role. Please try again.");
-    } finally {
-      setActionInProgress(null);
+      setActionStatus({
+        type: "error",
+        message: `Failed to change user role for ${chosenUser?.fullName}`,
+      });
     }
   };
 
-  const handleDelete = async (userId: string, userEmail: string) => {
-    // Prevent deletion of current user
-    if (currentUser?.email === userEmail) {
-      setError("You cannot delete your own account.");
-      return;
-    }
+  // Modify the handleDelete function to open the confirm dialog
+  const handleDelete = (user: UserProfile) => {
+    // Open the confirm dialog
+    setUserToDelete(user);
+    setIsConfirmDialogOpen(true);
+  };
 
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this user? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
-
+  // Create a new function to execute the actual deletion
+  const executeUserDeletion = async (userId: string) => {
     try {
-      setActionInProgress(userId);
       const response = await deleteUser(userId);
       if (response.success) {
         // Remove the user from the local state
@@ -105,16 +124,27 @@ function UserManagement() {
         setFilteredUsers((prevUsers) =>
           prevUsers.filter((user) => user.id !== userId)
         );
+
+        setActionStatus({
+          type: "success",
+          message: "User deleted successfully",
+        });
       } else {
-        throw new Error(response.message || "Failed to delete user");
+        setActionStatus({
+          type: "error",
+          message: response.message || "Failed to delete user",
+        });
       }
     } catch (error) {
       console.error("Error deleting user:", error);
-      setError("Failed to delete user. Please try again.");
-    } finally {
-      setActionInProgress(null);
+      setActionStatus({
+        type: "error",
+        message: "Failed to delete user",
+      });
     }
   };
+
+  // Add this confirm dialog component
 
   if (isLoading) {
     return (
@@ -125,147 +155,183 @@ function UserManagement() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
-        <button
-          onClick={fetchUsers}
-          className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
-        >
-          <ArrowPathIcon className="w-4 h-4 mr-2" />
-          Refresh
-        </button>
-      </div>
-
-      {/* Search and filter */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
-        </div>
-        <input
-          type="text"
-          className="block w-full p-2 pl-10 text-sm border border-gray-300 rounded-lg bg-white"
-          placeholder="Search users by name, email, or role..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+    <>
+      {isConfirmDialogOpen && (
+        <ConfirmDialog
+          isOpen={isConfirmDialogOpen} // looks like 2FA here
+          title="Confirm Deletion"
+          message={
+            <>
+              Are you sure you want to delete the user{" "}
+              <span className="font-medium text-gray-700">
+                {userToDelete!.fullName}
+              </span>
+              ? This action cannot be undone.
+            </>
+          }
+          confirmText="Delete"
+          cancelText="Cancel"
+          confirmButtonColor="red"
+          onConfirm={() => {
+            executeUserDeletion(userToDelete!.id);
+            setIsConfirmDialogOpen(false);
+          }}
+          onCancel={() => setIsConfirmDialogOpen(false)}
         />
-      </div>
-
-      {/* Error message */}
-      {error && (
-        <div className="p-4 bg-red-50 border-l-4 border-red-500 rounded-md">
-          <div className="flex">
-            <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-            <p className="ml-3 text-sm text-red-700">{error}</p>
-          </div>
-        </div>
       )}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
+          <Button onClick={fetchUsers} variant="primary" size="sm">
+            <div className="flex justify-center items-center gap-2 group-hover:gap-4 transition-all duration-50">
+              <ArrowPathIcon className="w-4 h-4" />
+              <span>Refresh</span>
+            </div>
+          </Button>
+        </div>
+        {/* Error message */}
+        {actionStatus && (
+          <AlertMessage
+            message={actionStatus.message}
+            isError={actionStatus.type !== "success"}
+            duration={estimateReadingTime(actionStatus.message)}
+            onDismiss={() => {
+              setActionStatus({ type: null, message: "" });
+            }}
+            position="top-center"
+          />
+        )}
+        {/* Search and filter */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            {/* Show spinning icon when debouncing */}
+            {isSearching ? (
+              <ArrowPathIcon className="w-5 h-5 text-gray-400 animate-spin" />
+            ) : (
+              <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
+            )}
+          </div>
+          <input
+            type="text"
+            className={`block w-full p-2 pl-10 text-sm border rounded-lg bg-white transition-colors`}
+            placeholder="Search users by any part of name, email, or role..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setIsSearching(true);
+            }}
+          />
 
-      {/* Users table */}
-      <div className="bg-white border border-gray-200 rounded-md overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {user.fullName}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">{user.email}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <select
-                        className={`block w-24 text-sm border-gray-300 rounded-md ${
-                          actionInProgress === user.id ? "opacity-50" : ""
-                        }`}
-                        value={user.role}
-                        onChange={(e) =>
-                          handleRoleChange(user.id, e.target.value as UserRole)
-                        }
-                        disabled={
-                          actionInProgress === user.id ||
-                          currentUser?.email === user.email
-                        }
-                      >
-                        {ROLES.map((role) => (
-                          <option key={role} value={role}>
-                            {role}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
-                        onClick={() => handleDelete(user.id, user.email)}
-                        disabled={
-                          actionInProgress === user.id ||
-                          currentUser?.email === user.email
-                        }
-                        className={`text-red-500 hover:text-red-700 ${
-                          actionInProgress === user.id ||
-                          currentUser?.email === user.email
-                            ? "opacity-50 cursor-not-allowed"
-                            : ""
-                        }`}
-                        title={
-                          currentUser?.email === user.email
-                            ? "You cannot delete your own account"
-                            : "Delete user"
-                        }
-                      >
-                        <TrashIcon className="w-5 h-5 inline" />
-                      </button>
+          {/* Optional: Add status text when debouncing */}
+          {isSearching && (
+            <div className="absolute left-0">
+              <span className="text-xs text-gray-400">Searching...</span>
+            </div>
+          )}
+        </div>
+        {/* Users table */}
+        <div className="bg-white border border-gray-200 rounded-md overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Role
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          {user.fullName}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-500">
+                          {user.email}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <select
+                          className={`block w-24 text-sm border-gray-300 rounded-md ${
+                            currentUser?.email === user.email
+                              ? "opacity-50 cursor-not-allowed"
+                              : "cursor-pointer"
+                          }`}
+                          value={user.role}
+                          onChange={(e) =>
+                            handleRoleChange(user, e.target.value as UserRole)
+                          }
+                          disabled={currentUser?.email === user.email}
+                        >
+                          {ROLES.map((role) => (
+                            <option key={role} value={role}>
+                              {role}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button
+                          onClick={() => handleDelete(user)}
+                          disabled={currentUser?.email === user.email}
+                          className={`text-red-500 hover:text-red-700 ${
+                            currentUser?.email === user.email
+                              ? "opacity-50 cursor-not-allowed"
+                              : "cursor-pointer"
+                          }`}
+                          title={
+                            currentUser?.email === user.email
+                              ? "You cannot delete your own account. Some other admin must do that for you."
+                              : "Delete user"
+                          }
+                        >
+                          <TrashIcon className="w-5 h-5 inline" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={4}
+                      className="px-6 py-4 text-center text-sm text-gray-500"
+                    >
+                      No users found.
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-6 py-4 text-center text-sm text-gray-500"
-                  >
-                    No users found.
-                  </td>
-                </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="px-6 py-4 border-t border-gray-200">
+            <p className="text-sm text-gray-700">
+              Total users:{" "}
+              <span className="font-medium">{filteredUsers.length}</span>
+              {users.length !== filteredUsers.length && (
+                <>
+                  {" "}
+                  (filtered from{" "}
+                  <span className="font-medium">{users.length}</span>)
+                </>
               )}
-            </tbody>
-          </table>
-        </div>
-        <div className="px-6 py-4 border-t border-gray-200">
-          <p className="text-sm text-gray-700">
-            Total users:{" "}
-            <span className="font-medium">{filteredUsers.length}</span>
-            {users.length !== filteredUsers.length && (
-              <>
-                {" "}
-                (filtered from{" "}
-                <span className="font-medium">{users.length}</span>)
-              </>
-            )}
-          </p>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

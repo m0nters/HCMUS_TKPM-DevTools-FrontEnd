@@ -92,12 +92,10 @@ function PluginDetails() {
 
   const handlePluginSuccess = (result: any) => {
     setShowSuccessMessage(true);
-    setTimeout(() => setShowSuccessMessage(false), 3000);
   };
 
   const handlePluginError = (error: Error) => {
     setError(error.message);
-    setTimeout(() => setError(null), 3000);
   };
 
   // Render loading state
@@ -166,19 +164,19 @@ function PluginDetails() {
               isError={false}
               duration={estimateReadingTime("Operation completed successfully!")}
               onDismiss={() => setError(null)}
+              position="top-center"
             />
           </div>
         )} */}
 
         {error && error !== "premium" && (
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
-            <AlertMessage
-              message={error}
-              isError={true}
-              duration={estimateReadingTime(error)}
-              onDismiss={() => setError(null)}
-            />
-          </div>
+          <AlertMessage
+            message={error}
+            isError={true}
+            duration={estimateReadingTime(error)}
+            onDismiss={() => setError(null)}
+            position="top-center"
+          />
         )}
         <div className="bg-white border border-gray-200 rounded-lg p-6">
           <DynamicPluginUI

@@ -1,20 +1,14 @@
+import { UserProfile } from "../../types/user";
 import { withAuth } from "../api/authRequest";
-
-interface AdminUser {
-  id: string;
-  fullName: string;
-  email: string;
-  role: string;
-}
 
 type UserRole = "User" | "Premium" | "Admin";
 
 /**
  * Fetches all users (admin only)
  */
-export const getAllUsers = async (): Promise<AdminUser[]> => {
+export const getAllUsers = async (): Promise<UserProfile[]> => {
   try {
-    const users = await withAuth<AdminUser[]>("/admin/users");
+    const users = await withAuth<UserProfile[]>("/admin/users");
     return users;
   } catch (error) {
     console.error("Failed to fetch users:", error);

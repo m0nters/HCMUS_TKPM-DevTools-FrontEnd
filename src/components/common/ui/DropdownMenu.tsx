@@ -66,7 +66,7 @@ function DropdownMenu({
         disabled={disabled}
         className={`w-full flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md hover:border-gray-400 transition-colors text-left focus:outline-none focus:ring-2 focus:ring-black ${
           disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
-        } ${buttonClassName}`}
+        } ${buttonClassName} z-30`}
       >
         <span className="truncate">{selectedLabel}</span>
         <ChevronDownIcon
@@ -82,9 +82,9 @@ function DropdownMenu({
           isOpen
             ? "opacity-100 transform scale-y-100 max-h-60"
             : "opacity-0 transform scale-y-0 max-h-0"
-        } overflow-y-auto z-20 ${optionsClassName}`}
+        } overflow-y-auto  ${optionsClassName}`}
       >
-        <div className="p-1" style={{ display: isOpen ? "block" : "none" }}>
+        <div className="p-1 flex flex-col z-50">
           {options.map((option) => (
             <button
               key={option.value}

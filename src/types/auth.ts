@@ -1,3 +1,5 @@
+import { UserRole } from "./user";
+
 export interface LoginCredentials {
   userName: string;
   password: string;
@@ -15,5 +17,5 @@ export interface UserInfo {
   userName: string;
   email: string;
   token: string;
-  role: "User" | "Premium" | "Admin";
+  role: UserRole;
 }
