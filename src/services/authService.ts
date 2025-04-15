@@ -95,9 +95,9 @@ export const getUserInfo = (): Omit<UserInfo, "token"> | null => {
  * Logs out the current user
  */
 export const logout = () => {
-  // Clear both storages to ensure complete logout
-  sessionStorage.removeItem("userInfo");
-  sessionStorage.removeItem("token");
-  localStorage.removeItem("userInfo");
-  localStorage.removeItem("token");
+  const storageKeys = ["userInfo", "token"];
+  storageKeys.forEach((key) => {
+    sessionStorage.removeItem(key);
+    localStorage.removeItem(key);
+  });
 };
