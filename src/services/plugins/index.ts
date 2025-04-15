@@ -1,4 +1,4 @@
-export * from "./category-service";
+export * from "./categoryService";
 export * from "./execution";
-export * from "./plugin-service";
-export * from "./schema-service";
+export * from "./pluginService";
+export * from "./schemaService";

@@ -1,4 +1,4 @@
-import { CommonPages } from "./CommonPages";
-import { Errors } from "./Errors";
+import { CommonPages } from "./commonPages";
+import { Errors } from "./errors";
 
 export const PublicRoutes = [...CommonPages, ...Errors];

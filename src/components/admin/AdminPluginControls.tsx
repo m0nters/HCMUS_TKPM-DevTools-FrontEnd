@@ -3,7 +3,7 @@ import { AdminPlugin } from "../../types/plugins";
 import {
   togglePluginActive,
   togglePluginPremium,
-} from "../../services/admin/plugin-service";
+} from "../../services/admin/pluginService";
 import {
   SparklesIcon,
   EyeIcon,

@@ -7,12 +7,12 @@ import {
 import DropdownMenu from "../components/common/Components/DropdownMenu";
 import { LoadingSpinner, PluginCard, AlertMessage } from "../components/common";
 import { getAllPlugins, getAllCategories } from "../services/plugins/";
-import { getAllPluginsAdmin } from "../services/admin/plugin-service";
+import { getAllPluginsAdmin } from "../services/admin/pluginService";
 import { useDebounce } from "../hooks/useDebounce";
 import { useAuth } from "../hooks/useAuth";
-import AdminModeToggle from "../components/admin/AdminModeToggle";
+import { AdminModeToggle } from "../components/admin/";
 import { estimateReadingTime } from "../utils/string";
-import { eventBus, EVENTS } from "../services/event-bus";
+import { eventBus, EVENTS } from "../services/eventBus";
 
 function PluginExplorer() {
   // Hooks

@@ -7,3 +7,4 @@ export { default as UnauthenticatedRoute } from "./UnauthenticatedRoute";
 export { default as BackLink } from "./BackLink";
 export { default as AlertMessage } from "./AlertMessage";
 export { default as PasswordInput } from "./PasswordInput";
+export { default as FileUploadBox } from "./FileUploadBox";

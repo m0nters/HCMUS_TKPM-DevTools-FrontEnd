@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { Threads, AlertMessage, PasswordInput } from "../components/common/";
-import { register } from "../services/auth-service";
+import { register } from "../services/authService";
 import { memo } from "react";
 const MemoizedThreads = memo(Threads);
 

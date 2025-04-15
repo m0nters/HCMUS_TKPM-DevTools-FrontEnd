@@ -14,11 +14,15 @@ export async function withAuth<T>(
     throw new Error("No authentication token found");
   }
 
-  const headers = {
-    "Content-Type": "application/json",
-    ...options.headers,
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string>),
     Authorization: `Bearer ${token}`,
   };
+
+  // Only set Content-Type if not FormData
+  if (!(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
 
   // Make request with auth headers
   return apiRequest<T>(endpoint, { ...options, headers });

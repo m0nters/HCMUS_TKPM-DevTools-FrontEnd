@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getUserInfo, storeAuthInfo, logout } from "../services/auth-service";
+import { getUserInfo, storeAuthInfo, logout } from "../services/authService";
 import { UserInfo } from "../types/auth";
 import { AuthUser, AuthContextType } from "../types/authContext";
 import { useNavigate } from "react-router-dom";

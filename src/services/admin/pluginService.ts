@@ -1,5 +1,5 @@
 import { AdminPlugin } from "../../types/plugins";
-import { withAuth } from "../api/auth-request";
+import { withAuth } from "../api/authRequest";
 import { slugify } from "../../utils/string";
 
 /**
@@ -80,5 +80,63 @@ export const deletePlugin = async (pluginId: number): Promise<boolean> => {
   } catch (error) {
     console.error(`Failed to delete plugin ${pluginId}:`, error);
     return false;
+  }
+};
+
+/**
+ * Get plugin statistics summary
+ */
+export const getPluginStats = async () => {
+  try {
+    const plugins = await getAllPluginsAdmin();
+
+    return {
+      totalTools: plugins.length,
+      activeTools: plugins.filter((plugin) => plugin.isActive).length,
+      premiumTools: plugins.filter((plugin) => plugin.isPremium).length,
+    };
+  } catch (error) {
+    console.error("Failed to get plugin stats:", error);
+    return {
+      totalTools: 0,
+      activeTools: 0,
+      premiumTools: 0,
+    };
+  }
+};
+
+/**
+ * Upload a new plugin with optional library files
+ * @param pluginFile The main plugin DLL file
+ * @param libraryFiles Optional array of library DLL files
+ */
+export const uploadPlugin = async (
+  pluginFile: File,
+  libraryFiles: File[] = []
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const formData = new FormData();
+
+    // Add the main plugin file
+    formData.append("DllFile", pluginFile, pluginFile.name);
+
+    // Add any library files
+    libraryFiles.forEach((file) => {
+      formData.append("Libaries", file, file.name);
+    });
+
+    const response = await withAuth<{ success: boolean; message: string }>(
+      "/admin/plugin",
+      {
+        method: "POST",
+        body: formData,
+        // Don't set Content-Type here - the browser will set it with the correct boundary
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Failed to upload plugin:", error);
+    throw error;
   }
 };

@@ -7,7 +7,7 @@ import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { useFavorites } from "../../../hooks/useFavorites";
 import { useAuth } from "../../../hooks/useAuth";
-import AdminPluginControls from "../../admin/AdminPluginControls";
+import { AdminPluginControls } from "../../admin/";
 
 interface PluginCardProps {
   plugin: Plugin | AdminPlugin;

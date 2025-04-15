@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { eventBus } from "../services/event-bus";
+import { eventBus } from "../services/eventBus";
 
 /**
  * Custom hook to subscribe to eventBus events

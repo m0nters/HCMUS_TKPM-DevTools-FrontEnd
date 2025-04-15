@@ -9,7 +9,9 @@ export async function apiRequest<T>(
 
   // Set default headers but allow overrides
   const headers = {
-    "Content-Type": "application/json",
+    ...(!(options.body instanceof FormData) && {
+      "Content-Type": "application/json",
+    }),
     ...(options.headers || {}),
   };
 

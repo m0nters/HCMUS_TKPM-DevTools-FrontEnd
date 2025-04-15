@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { LoadingSpinner } from "../../components/common";
-import { getProfile } from "../../services/user/user-service";
+import { getProfile } from "../../services/user/userService";
 import { UserProfile } from "../../types/user";
 import SecuritySection from "./SecuritySection";
 import ProfileInfoSection from "./ProfileInfoSection";

@@ -11,7 +11,7 @@ import {
 import { slugify, truncate } from "../../utils/string";
 import { LoadingSpinner, PremiumBadge } from "../common";
 import { useEventBus } from "../../hooks/useEventBus";
-import { EVENTS } from "../../services/event-bus";
+import { EVENTS } from "../../services/eventBus";
 
 interface SidePanelProps {
   isOpen: boolean;

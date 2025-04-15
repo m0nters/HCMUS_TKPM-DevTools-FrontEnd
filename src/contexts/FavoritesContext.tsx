@@ -9,7 +9,7 @@ import {
   getFavorites,
   addFavorite,
   removeFavorite,
-} from "../services/user/favorites-service";
+} from "../services/user/favoritesService";
 import { useAuth } from "../hooks/useAuth";
 
 interface FavoritesContextType {

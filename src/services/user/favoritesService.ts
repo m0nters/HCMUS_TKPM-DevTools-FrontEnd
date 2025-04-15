@@ -1,5 +1,5 @@
 import { Plugin } from "../../types/plugins";
-import { withAuth } from "../api/auth-request";
+import { withAuth } from "../api/authRequest";
 import { slugify } from "../../utils/string";
 
 /**

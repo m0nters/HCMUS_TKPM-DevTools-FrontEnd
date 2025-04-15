@@ -1,3 +1,3 @@
-export * from "./user-service";
-export * from "./security-service";
-export * from "./favorites-service";
+export * from "./userService";
+export * from "./securityService";
+export * from "./favoritesService";

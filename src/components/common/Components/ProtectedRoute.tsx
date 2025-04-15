@@ -6,16 +6,14 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredAuth?: boolean;
   requireAdmin?: boolean;
-  requirePremium?: boolean;
 }
 
 const ProtectedRoute = ({
   children,
   requiredAuth = true,
   requireAdmin = false,
-  requirePremium = false,
 }: ProtectedRouteProps) => {
-  const { isAuth, isAdmin, isPremium, isLoading } = useAuth();
+  const { isAuth, isAdmin, isLoading } = useAuth();
   const location = useLocation();
   if (isLoading) {
     return <LoadingSpinner />;
@@ -39,11 +37,6 @@ const ProtectedRoute = ({
   // Check if admin access is required but user is not admin
   if (requireAdmin && !isAdmin) {
     return <Navigate to="/401" replace />;
-  }
-
-  // Check if premium access is required but user doesn't have premium
-  if (requirePremium && !isPremium) {
-    return <Navigate to="/premium" replace />;
   }
 
   return children;
