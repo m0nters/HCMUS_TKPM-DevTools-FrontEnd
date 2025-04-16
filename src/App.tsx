@@ -1,7 +1,6 @@
 import { AuthProvider } from "./contexts/AuthContext";
-import Header from "./components/layout/Header";
+import { Header, Footer } from "./components/layout/";
 import AppRoutes from "./routes/index";
-import Footer from "./components/layout/Footer";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useEffect } from "react";
 import { useAuth } from "./hooks/useAuth";

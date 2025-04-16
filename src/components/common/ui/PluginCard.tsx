@@ -120,7 +120,7 @@ function PluginCard({
         {isAuth && !isAdminMode && (
           <button
             onClick={handleFavoriteClick}
-            className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+            className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full transition-colors hover:bg-gray-100 cursor-pointer"
             aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
             title={isFav ? "Remove from favorites" : "Add to favorites"}
           >

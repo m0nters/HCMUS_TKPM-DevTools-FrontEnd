@@ -1,21 +1,16 @@
 import { UserCircleIcon, KeyIcon, StarIcon } from "@heroicons/react/24/outline";
 import { UserProfile } from "../../types/user";
-import { ProfileSection } from "./Profile";
-import { PremiumBadge } from "../../components/common";
+import { NavLink } from "react-router-dom";
 
-interface LeftSidebarProps {
+interface SidePanelProps {
   profile: UserProfile | null;
-  activeSection: ProfileSection;
-  setActiveSection: (section: ProfileSection) => void;
   isLoading?: boolean;
 }
 
-function LeftSidebar({
-  profile,
-  activeSection,
-  setActiveSection,
-  isLoading = false,
-}: LeftSidebarProps) {
+/**
+ * Profile sidebar component displaying user information and navigation
+ */
+function ProfileSidePanel({ profile, isLoading = false }: SidePanelProps) {
   // Get color based on role
   const getRoleColor = (role: string) => {
     switch (role) {
@@ -27,6 +22,24 @@ function LeftSidebar({
         return "bg-blue-100 text-blue-800";
     }
   };
+
+  const navItems = [
+    {
+      icon: <UserCircleIcon className="w-5 h-5" />,
+      label: "Profile Information",
+      to: "info",
+    },
+    {
+      icon: <KeyIcon className="w-5 h-5" />,
+      label: "Security & Password",
+      to: "security",
+    },
+    {
+      icon: <StarIcon className="w-5 h-5" />,
+      label: "Favorite Tools",
+      to: "favorites",
+    },
+  ];
 
   return (
     <div className="w-full md:w-72 shrink-0">
@@ -65,45 +78,27 @@ function LeftSidebar({
 
         {/* Navigation Menu */}
         <nav className="space-y-1">
-          <button
-            onClick={() => setActiveSection("info")}
-            className={`w-full flex items-center px-4 py-3 text-left rounded-md transition-colors ${
-              activeSection === "info"
-                ? "bg-black text-white"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <UserCircleIcon className="w-5 h-5 mr-3" />
-            Profile Information
-          </button>
-
-          <button
-            onClick={() => setActiveSection("security")}
-            className={`w-full flex items-center px-4 py-3 text-left rounded-md transition-colors ${
-              activeSection === "security"
-                ? "bg-black text-white"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <KeyIcon className="w-5 h-5 mr-3" />
-            Security & Password
-          </button>
-
-          <button
-            onClick={() => setActiveSection("favorites")}
-            className={`w-full flex items-center px-4 py-3 text-left rounded-md transition-colors ${
-              activeSection === "favorites"
-                ? "bg-black text-white"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            <StarIcon className="w-5 h-5 mr-3" />
-            Favorite Tools
-          </button>
+          {navItems.map(({ icon, label, to }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) => `
+                flex items-center px-4 py-3 gap-2 hover:gap-4 rounded-md transition-all ease-in-out duration-200
+                ${
+                  isActive
+                    ? "bg-black text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }
+              `}
+            >
+              {icon}
+              {label}
+            </NavLink>
+          ))}
         </nav>
       </div>
     </div>
   );
 }
 
-export default LeftSidebar;
+export default ProfileSidePanel;

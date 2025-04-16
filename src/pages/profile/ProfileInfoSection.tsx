@@ -1,5 +1,8 @@
-import { UserProfile } from "../../types/user";
-function ProfileInfoSection({ profile }: { profile: UserProfile }) {
+import { useOutletContext } from "react-router-dom";
+
+function ProfileInfoSection() {
+  const { profile } = useOutletContext<any>();
+
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold border-b pb-4">

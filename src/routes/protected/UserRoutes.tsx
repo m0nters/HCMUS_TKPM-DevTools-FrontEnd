@@ -1,15 +1,26 @@
 import { Route } from "react-router-dom";
-import Profile from "../../pages/profile/Profile";
 import { ProtectedRoute } from "../../components/common";
+import {
+  FavoritesSection,
+  MyProfile,
+  ProfileInfoSection,
+  SecuritySection,
+} from "../../pages/profile";
 
 export const User = [
   <Route
     key="profile"
     path="/profile"
     element={
-      <ProtectedRoute>
-        <Profile />
+      <ProtectedRoute requiredAuth={true}>
+        <MyProfile />
       </ProtectedRoute>
     }
-  />,
+  >
+    {/* Nested routes that will render inside the Outlet in MyProfile */}
+    <Route index element={<ProfileInfoSection />} />
+    <Route path="info" element={<ProfileInfoSection />} />
+    <Route path="security" element={<SecuritySection />} />
+    <Route path="favorites" element={<FavoritesSection />} />
+  </Route>,
 ];

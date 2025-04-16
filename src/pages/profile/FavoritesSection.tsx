@@ -6,11 +6,14 @@ import {
   AlertMessage,
 } from "../../components/common";
 import { StarIcon } from "@heroicons/react/24/outline";
-import { getFavorites } from "../../services/user/";
+import { getFavorites } from "../../services/user";
 import { Plugin } from "../../types/plugins";
 import { useFavorites } from "../../hooks/useFavorites";
+import { useOutletContext } from "react-router-dom";
 
-function FavoritesSection({ userId }: { userId: string }) {
+function FavoritesSection() {
+  const { profile } = useOutletContext<any>();
+
   const [favorites, setFavorites] = useState<Plugin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -34,7 +37,7 @@ function FavoritesSection({ userId }: { userId: string }) {
   // Load favorites on component mount
   useEffect(() => {
     fetchFavorites();
-  }, [userId]);
+  }, [profile.id]);
 
   // Listen to changes in the favorites list from context
   useEffect(() => {
