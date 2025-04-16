@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes } from "react-router-dom";
 import { PublicRoutes } from "./public";
 import { ProtectedRoutes } from "./protected";
@@ -10,16 +11,29 @@ import { UnauthenticatedRoutes } from "./unauthenticated";
  * - Unauthenticated routes: only accessible when not logged in
  */
 const AppRoutes = () => {
+  // Add a prefix to each route's key to ensure global uniqueness
+  const prefixKeys = (routes: React.JSX.Element[], prefix: string) => {
+    return routes.map((route) => {
+      // Clone the route with a new key that includes the prefix
+      return {
+        ...route,
+        key: `${prefix}-${
+          route.key || Math.random().toString(36).substring(7)
+        }`,
+      };
+    });
+  };
+
   return (
     <Routes>
       {/* Public routes - accessible to all users */}
-      {PublicRoutes}
+      {prefixKeys(PublicRoutes, "public")}
 
       {/* Protected routes - require authentication */}
-      {ProtectedRoutes}
+      {prefixKeys(ProtectedRoutes, "protected")}
 
       {/* Routes accessible only when not logged in */}
-      {UnauthenticatedRoutes}
+      {prefixKeys(UnauthenticatedRoutes, "unauth")}
     </Routes>
   );
 };

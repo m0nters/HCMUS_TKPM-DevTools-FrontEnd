@@ -18,7 +18,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false); // the token has its expriration time
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const registrationMessage = location.state?.message;
+  const redirectMessage = location.state?.message;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,11 +65,15 @@ const Login = () => {
         ;
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
-          {registrationMessage && (
+          {redirectMessage && (
             <AlertMessage
-              message={registrationMessage}
+              message={redirectMessage}
               isError={location.state?.isError || false}
-              duration={estimateReadingTime(registrationMessage)}
+              duration={
+                location.state.isPersistent
+                  ? 0
+                  : estimateReadingTime(redirectMessage)
+              }
               onDismiss={() => {
                 // Update URL without triggering navigation/reload
                 navigate(location.pathname, {

@@ -1,5 +1,10 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
-import { getUserInfo, storeAuthInfo, logout } from "../services/authService";
+import { createContext, useState, useEffect, ReactNode, useRef } from "react";
+import {
+  getUserInfo,
+  storeAuthInfo,
+  clearUserSession,
+  getTokenExpiration,
+} from "../services/authService";
 import { UserInfo } from "../types/auth";
 import { AuthUser, AuthContextType } from "../types/authContext";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +28,67 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const expirationTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check token and set up expiration handling
+  const setupTokenExpirationMonitoring = () => {
+    // Clear any existing timer
+    if (expirationTimerRef.current) {
+      clearTimeout(expirationTimerRef.current);
+      expirationTimerRef.current = null;
+    }
+
+    // Get token expiration time
+    const expiresAt = getTokenExpiration();
+    if (!expiresAt) return;
+
+    // Calculate time until expiration (in milliseconds)
+    const currentTime = Math.floor(Date.now() / 1000);
+    const timeUntilExpiration = Math.max((expiresAt - currentTime) * 1000, 0);
+    if (timeUntilExpiration / 1000 < 60) {
+      console.log(
+        "Token expires in:",
+        Math.floor(timeUntilExpiration / 1000),
+        "seconds"
+      );
+    } else {
+      console.log(
+        "Token expires in:",
+        Math.floor(timeUntilExpiration / 1000 / 60),
+        "minutes"
+      );
+    }
+    // Set timer to logout when token expires
+    expirationTimerRef.current = setTimeout(() => {
+      handleTokenExpiration();
+    }, timeUntilExpiration);
+  };
+
+  // Handle token expiration
+  const handleTokenExpiration = () => {
+    logoutUser("/login", {
+      message: "Your session has expired. Please log in again.",
+      isError: true,
+      isPersistent: true,
+    });
+  };
 
   useEffect(() => {
     const userInfo = getUserInfo();
     if (userInfo) {
       setUser(userInfo);
       setIsAuth(true);
+      // Set up expiration monitoring when a user is loaded
+      setupTokenExpirationMonitoring();
     }
     setIsLoading(false);
+
+    // Cleanup function to clear the timer when component unmounts
+    return () => {
+      if (expirationTimerRef.current) {
+        clearTimeout(expirationTimerRef.current);
+      }
+    };
   }, []);
 
   const loginUser = (userInfo: UserInfo, rememberMe: boolean) => {
@@ -45,19 +103,43 @@ export function AuthProvider({ children }: AuthProviderProps) {
       role: userInfo.role || "User",
     });
     setIsAuth(true);
+
+    // Set up expiration monitoring when user logs in
+    setupTokenExpirationMonitoring();
   };
 
-  const logoutUser = async () => {
-    navigate("/");
+  // Default behavior: redirect to home page without message
+  const logoutUser = async (
+    redirectPath: string = "/",
+    message?: {
+      message: string;
+      isError: boolean;
+      isPersistent?: boolean;
+    }
+  ) => {
+    // Clear any expiration timer
+    if (expirationTimerRef.current) {
+      clearTimeout(expirationTimerRef.current);
+      expirationTimerRef.current = null;
+    }
+
+    // First clear the user session and update state
+    clearUserSession();
+    setUser(null);
+    setIsAuth(false);
 
     // without this, the DOM will re-render to fast, before it can navigate,
     // this may look like shit code, but this is the shortest solution for
     // logging out issue, increase the timeout if there's bug in future.
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
-    logout();
-    setUser(null);
-    setIsAuth(false);
+    // Navigate last, after all state updates
+    navigate(redirectPath, {
+      // Only include state if a message is provided
+      ...(message && { state: message }),
+      // Use replace to prevent back navigation to unauthorized pages
+      replace: true,
+    });
   };
 
   const isPremium = user?.role === "Premium" || user?.role === "Admin";

@@ -115,7 +115,7 @@ function AlertMessage({
 
       return () => clearInterval(intervalId);
     }
-  }, [message, duration, onDismiss]);
+  }, [message, duration]);
 
   if (!message || !visible) return null;
 
