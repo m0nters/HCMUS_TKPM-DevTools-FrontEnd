@@ -92,7 +92,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
         {/* Categories List */}
         <div className="flex-1 overflow-y-auto">
           {isLoading ? (
-            LoadingSpinner({ size: "medium" })
+            <LoadingSpinner />
           ) : categories.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full px-6 py-12 text-center">
               <ArchiveBoxIcon className="h-16 w-16 text-gray-400 mb-4" />
@@ -119,7 +119,7 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
                 >
                   <button
                     onClick={() => toggleCategory(category.name)}
-                    className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                    className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left cursor-pointer"
                   >
                     <span className="font-medium line-clamp-1">
                       {category.name}

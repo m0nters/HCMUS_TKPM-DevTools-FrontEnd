@@ -113,7 +113,7 @@ src/
   ├── App.tsx                # Root component for setting up routing/layout
   ├── main.tsx              # React entry point, renders <App /> to the DOM
   ├── vite-env.d.ts         # TypeScript environment declarations for Vite
-
+  │
   ├── components/           # Reusable UI components
   │   ├── admin/            # Admin-specific UI (e.g., plugin controls, stats)
   │   ├── common/           # Shared components like UI widgets, animations
@@ -121,25 +121,26 @@ src/
   │   │   ├── textAnimation/   # Animated text components (split, fuzzy)
   │   │   └── ui/              # UI primitives (button, alert, spinner, etc.)
   │   ├── layout/           # Page structure (header, footer, sidebar)
-  │   └── plugins/              # Plugin-specific UI system
-  │       ├── DynamicPluginUI.tsx   # Renders the whole plugin form based on schema
-  │       ├── InputField.tsx        # Wrapper that dynamically chooses which input to render
-  │       ├── OutputField.tsx       # Wrapper that dynamically renders the appropriate output
-  │       ├── inputFields/          # Individual input types (text, toggle, etc.)
-  │       └── outputFields/         # Output types (text, XML, etc.)
-
+  │   ├── plugins/              # Plugin-specific UI system
+  │   │   ├── DynamicPluginUI.tsx   # Renders the whole plugin form based on schema
+  │   │   ├── InputField.tsx        # Wrapper that dynamically chooses which input to render
+  │   │   ├── OutputField.tsx       # Wrapper that dynamically renders the appropriate output
+  │   │   ├── inputFields/          # Individual input types (text, toggle, etc.)
+  │   │   └── outputFields/         # Output types (text, XML, etc.)
+  │   └── profile/            # Profile-specific UI (e.g. side panel)
+  │
   ├── contexts/             # React Contexts for global state (auth, user, etc.)
   │   ├── AuthContext.tsx       # Auth session and login state
   │   ├── FavoritesContext.tsx  # User's saved plugin state
   │   └── UserContext.tsx       # Logged-in user profile
-
+  │
   ├── hooks/                # Custom React hooks
   │   ├── useAuth.ts            # Hook for auth context
   │   ├── useDebounce.ts        # Debounce value updates
   │   ├── useEventBus.ts        # Global event communication
   │   ├── useFavorites.ts       # Hook for favorite tools
   │   └── usePlugin.ts          # Hook for plugin execution logic
-
+  │
   ├── pages/                # Route-level components
   │   ├── admin/                       # Admin-only views for managing system
   │   │   ├── AdminDashboard.tsx          # Entry page for admin with stats/overview
@@ -149,26 +150,25 @@ src/
   │   │   └── index.tsx                   # Router/index for admin routes (optional)
   │   │
   │   └── profile/                    # User profile sections and layout
-  │       ├── Profile.tsx                # Main profile page
-  │       ├── FavoriteSection.tsx        # Lists user’s favorite plugins
-  │       ├── LeftSidebar.tsx            # Sidebar menu in profile layout
+  │       ├── MyProfile.tsx              # Main profile page
+  │       ├── FavoritesSection.tsx       # Lists user’s favorite plugins
   │       ├── ProfileInfoSection.tsx     # User info display (email, name, etc.)
   │       └── SecuritySection.tsx        # Password or 2FA controls
-
+  │
   ├── routes/               # Route configuration
   │   ├── protected/            # Routes requiring login
   │   ├── public/               # Publicly accessible routes
-  │   └── unauthenticated/      # Login/Register-only routes
+  │   ├── unauthenticated/      # Login/Register-only routes
   │   └── index.tsx             # Root route declaration
-
+  │
   ├── services/             # API services and communication with backend
   │   ├── api/                  # Axios config and request helpers
   │   ├── admin/                # Admin API (plugin, user management)
   │   ├── plugins/              # Plugin-related services (schema, execution)
-  │   └── user/                 # User-related services (favorites, profile)
+  │   ├── user/                 # User-related services (favorites, profile)
   │   ├── authService.ts        # Login, logout, register
   │   └── eventBus.ts           # Event bus for decoupled component messaging
-
+  │
   ├── types/                # Global TypeScript interfaces/types
   │   ├── auth.ts               # Auth-related types
   │   ├── authContext.ts        # AuthContext value types
@@ -176,7 +176,7 @@ src/
   │   ├── plugins.ts            # Plugin-related data structures
   │   ├── pluginSchema.ts       # Plugin UI schema definition
   │   └── user.ts               # User account data types
-
+  │
   └── utils/                # Utility/helper functions
       ├── files.ts              # File handling (size, format, etc.)
       └── string.ts             # String manipulation utilities
@@ -197,9 +197,6 @@ src/
 # Clone the repository
 git clone https://github.com/m0nters/DevTools-FrontEnd.git
 cd DevTools-FrontEnd
-
-# Install dependencies
-npm install --legacy-peer-deps
 
 # Start frontend website server
 npm run dev

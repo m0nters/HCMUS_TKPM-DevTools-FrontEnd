@@ -57,7 +57,7 @@ function FavoritesSection() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <LoadingSpinner size="md" />
+        <LoadingSpinner />
       </div>
     );
   }

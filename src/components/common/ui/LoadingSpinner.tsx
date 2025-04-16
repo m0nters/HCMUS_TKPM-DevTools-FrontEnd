@@ -1,13 +1,17 @@
 /**
  * Loading spinner component.
- * @param size - Spinner size (sm, md, lg)
+ * @param size - Spinner size (sm, md, lg), default is "md".
  * @returns Loading spinner component
  * @example
  * ```tsx
- * <LoadingSpinner size="md" />
+ * <LoadingSpinner />
  * ```
  */
-function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+
+interface LoadingSpinnerProps {
+  size?: "sm" | "md" | "lg";
+}
+function LoadingSpinner({ size = "md" }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: "h-6 w-6",
     md: "h-10 w-10",
