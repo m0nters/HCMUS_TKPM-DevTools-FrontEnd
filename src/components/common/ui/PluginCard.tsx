@@ -5,8 +5,7 @@ import PremiumBadge from "./PremiumBadge";
 import { useRef, useEffect, useState } from "react";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
-import { useFavorites } from "../../../hooks/useFavorites";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth, useFavorites } from "../../../hooks/";
 import { AdminPluginControls } from "../../admin";
 
 interface PluginCardProps {

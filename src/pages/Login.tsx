@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AlertMessage, Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { login as apiLogin } from "../services/authService";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/";
 import { Threads, PasswordInput } from "../components/common/";
 import { memo } from "react";
 import { estimateReadingTime } from "../utils/string";

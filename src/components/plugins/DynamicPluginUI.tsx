@@ -3,7 +3,7 @@ import { PluginSchema } from "../../types/pluginSchema";
 import InputField from "./InputField";
 import OutputField from "./OutputField";
 import { executePlugin } from "../../services/plugins/";
-import { useDebounce } from "../../hooks/useDebounce";
+import { useDebounce } from "../../hooks/";
 import { hasValue } from "../../utils/string";
 
 interface DynamicPluginUIProps {

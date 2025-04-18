@@ -17,12 +17,7 @@ function MyProfile() {
       try {
         setIsLoading(true);
         const fetchedProfileData = await getProfile();
-        setProfile({
-          ...fetchedProfileData,
-          isPremium:
-            fetchedProfileData.role === "Premium" ||
-            fetchedProfileData.role === "Admin",
-        });
+        setProfile(fetchedProfileData);
       } catch (err) {
         console.error("Error loading profile:", err);
         setError("Failed to load profile data");

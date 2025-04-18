@@ -10,7 +10,7 @@ import {
   addFavorite,
   removeFavorite,
 } from "../services/user/favoritesService";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/";
 
 interface FavoritesContextType {
   favorites: Set<number>;

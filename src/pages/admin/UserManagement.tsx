@@ -9,11 +9,10 @@ import {
   MagnifyingGlassIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth, useDebounce } from "../../hooks/";
 import { UserProfile, UserRole, ROLES } from "../../types/user";
 import { AlertMessage, Button } from "../../components/common";
 import { estimateReadingTime } from "../../utils/string";
-import { useDebounce } from "../../hooks/useDebounce";
 import ConfirmDialog from "../../components/common/ui/ConfirmDialog";
 
 function UserManagement() {

@@ -1,7 +1,9 @@
 import { useOutletContext } from "react-router-dom";
+import { useAuth } from "../../hooks/";
 
 function ProfileInfoSection() {
   const { profile } = useOutletContext<any>();
+  const { isPremium } = useAuth();
 
   return (
     <div className="space-y-6">
@@ -27,7 +29,7 @@ function ProfileInfoSection() {
 
         <div>
           <p className="text-sm text-gray-500">Premium Status</p>
-          {profile.isPremium ? (
+          {isPremium ? (
             <p className="flex items-center gap-2 font-medium">
               <span className="inline-block w-2 h-2 rounded-full bg-green-500"></span>
               <span className="text-green-600">Active</span>

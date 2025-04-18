@@ -8,12 +8,9 @@ import {
 import { StarIcon } from "@heroicons/react/24/outline";
 import { getFavorites } from "../../services/user";
 import { Plugin } from "../../types/plugins";
-import { useFavorites } from "../../hooks/useFavorites";
-import { useOutletContext } from "react-router-dom";
+import { useFavorites } from "../../hooks/";
 
 function FavoritesSection() {
-  const { profile } = useOutletContext<any>();
-
   const [favorites, setFavorites] = useState<Plugin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,8 +21,8 @@ function FavoritesSection() {
   const fetchFavorites = async () => {
     try {
       setIsLoading(true);
-      const plugins = await getFavorites();
-      setFavorites(plugins);
+      const favoritePlugins = await getFavorites();
+      setFavorites(favoritePlugins);
     } catch (err) {
       console.error("Failed to load favorites:", err);
       setError("Failed to load your favorite tools. Please try again.");
@@ -37,7 +34,7 @@ function FavoritesSection() {
   // Load favorites on component mount
   useEffect(() => {
     fetchFavorites();
-  }, [profile.id]);
+  }, []);
 
   // Listen to changes in the favorites list from context
   useEffect(() => {

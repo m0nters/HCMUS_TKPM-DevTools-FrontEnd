@@ -3,7 +3,7 @@ import { Header, Footer } from "./components/layout/";
 import AppRoutes from "./routes/index";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useEffect } from "react";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth } from "./hooks/";
 import { isTokenExpired } from "./services/authService";
 
 const App = () => {

@@ -1,0 +1,232 @@
+import { useState } from "react";
+import {
+  CheckCircleIcon,
+  XMarkIcon,
+  ArrowRightIcon,
+  ShieldCheckIcon,
+  CloudArrowUpIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
+import { SparklesIcon as SparklesSolid } from "@heroicons/react/24/solid";
+import { Button, AlertMessage } from "../components/common";
+import { useAuth } from "../hooks/";
+import { requestPremiumUpgrade } from "../services/user/premiumService";
+
+function Premium() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [requestStatus, setRequestStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({
+    type: null,
+    message: "",
+  });
+  const { isPremium, user } = useAuth();
+
+  const handleUpgradeRequest = async () => {
+    setIsSubmitting(true);
+    setRequestStatus({ type: null, message: "" });
+
+    try {
+      const response = await requestPremiumUpgrade();
+
+      if (response.success) {
+        setRequestStatus({
+          type: "success",
+          message:
+            "Your premium upgrade request has been submitted successfully! Our team will review it shortly.",
+        });
+      } else {
+        setRequestStatus({
+          type: "error",
+          message:
+            response.message || "Something went wrong. Please try again later.",
+        });
+      }
+    } catch (error: any) {
+      setRequestStatus({
+        type: "error",
+        message:
+          error.message ||
+          "Failed to submit upgrade request. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const benefits = [
+    {
+      title: "Exclusive Tools Access",
+      description:
+        "Get access to our specialized premium-only tools designed for advanced IT professionals.",
+      icon: ShieldCheckIcon,
+    },
+    {
+      title: "Enhanced Functionality",
+      description:
+        "Premium tools offer extended capabilities, larger processing limits and more customization options.",
+      icon: CloudArrowUpIcon,
+    },
+    {
+      title: "Priority Support",
+      description:
+        "Get faster responses and dedicated assistance with your premium account.",
+      icon: ClockIcon,
+    },
+  ];
+
+  // Feature comparison data
+  const featureComparison = [
+    { name: "Access to basic tools", free: true, premium: true },
+    { name: "Save favorite tools", free: true, premium: true },
+    { name: "Access to premium tools", free: false, premium: true },
+    { name: "Priority support", free: false, premium: true },
+    { name: "Ad-free experience", free: false, premium: true },
+  ];
+
+  return (
+    <>
+      <article>
+        <title>Premium | IT Tools</title>
+        <meta
+          name="description"
+          content="Upgrade to IT Tools Premium to access exclusive tools and features"
+        />
+      </article>
+
+      <div className="w-full max-w-6xl mx-auto pt-20 px-6 pb-16">
+        {/* Hero section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center p-3 bg-purple-100 rounded-full mb-4">
+            <SparklesSolid className="h-8 w-8 text-purple-600" />
+          </div>
+          <h1 className="text-4xl font-bold mb-4">
+            Upgrade to{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+              Premium
+            </span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Unlock powerful premium tools and features to enhance your
+            productivity
+          </p>
+        </div>
+
+        {/* Status messages */}
+        {requestStatus.type && (
+          <div className="mb-8">
+            <AlertMessage
+              message={requestStatus.message}
+              isError={requestStatus.type === "error"}
+              duration={5000}
+              onDismiss={() => setRequestStatus({ type: null, message: "" })}
+              position="top-center"
+            />
+          </div>
+        )}
+
+        {/* Main content with two columns layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+          {/* Benefits column */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-6">Premium Benefits</h2>
+            <div className="space-y-6">
+              {benefits.map((benefit) => {
+                return (
+                  <div className="flex gap-4">
+                    <div className="p-2 bg-purple-100 rounded-lg h-fit">
+                      <benefit.icon className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-lg mb-1">
+                        {benefit.title}
+                      </h3>
+                      <p className="text-gray-600">{benefit.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Comparison table */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-6">Feature Comparison</h2>
+            <div className="border rounded-lg overflow-hidden">
+              <div className="grid grid-cols-3 bg-gray-50 p-4 font-medium">
+                <div>Feature</div>
+                <div className="text-center">Free</div>
+                <div className="text-center">Premium</div>
+              </div>
+
+              {featureComparison.map((feature, index) => (
+                <div
+                  key={index}
+                  className={`grid grid-cols-3 p-4 ${
+                    index < featureComparison.length - 1 ? "border-b" : ""
+                  }`}
+                >
+                  <div>{feature.name}</div>
+                  <div className="flex justify-center">
+                    {feature.free ? (
+                      <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                    ) : (
+                      <XMarkIcon className="h-5 w-5 text-gray-400" />
+                    )}
+                  </div>
+                  <div className="flex justify-center">
+                    <CheckCircleIcon className="h-5 w-5 text-purple-500" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CTA section */}
+        <div className="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-2xl p-8 text-center">
+          <h2 className="text-2xl font-semibold mb-2">
+            {isPremium ? "You are already Premium!" : "Ready to upgrade?"}
+          </h2>
+          {!isPremium && (
+            <p className="text-gray-700 mb-6 max-w-lg mx-auto">
+              Submit your request for a premium account and get access to all
+              our premium tools and features.
+            </p>
+          )}
+
+          {!isPremium && (
+            <Button
+              onClick={handleUpgradeRequest}
+              disabled={isSubmitting || isPremium}
+              variant="primary"
+              size="lg"
+              className={`${isPremium ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              <div className="flex items-center gap-2">
+                {isSubmitting ? (
+                  "Submitting..."
+                ) : (
+                  <>
+                    Request Premium Upgrade
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </>
+                )}
+              </div>
+            </Button>
+          )}
+
+          {isPremium && (
+            <div className="text-sm text-gray-600">
+              Your account: <span className="font-semibold">{user?.email}</span>{" "}
+              is already Premium. Enjoy your exclusive features!
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Premium;

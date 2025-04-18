@@ -10,7 +10,7 @@ import {
   Waves,
 } from "../components/common";
 import { getAllPlugins } from "../services/plugins/";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/";
 
 function Home() {
   // Hooks

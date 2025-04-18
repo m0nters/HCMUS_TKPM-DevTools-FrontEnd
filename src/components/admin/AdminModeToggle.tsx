@@ -1,4 +1,4 @@
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/";
 import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 
 interface AdminModeToggleProps {

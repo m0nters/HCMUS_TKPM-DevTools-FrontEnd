@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { slugify, truncate } from "../../utils/string";
 import { LoadingSpinner, PremiumBadge } from "../common";
-import { useEventBus } from "../../hooks/useEventBus";
+import { useEventBus } from "../../hooks/";
 import { EVENTS } from "../../services/eventBus";
 
 interface SidePanelProps {

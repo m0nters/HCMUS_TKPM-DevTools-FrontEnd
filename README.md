@@ -88,7 +88,6 @@ Instead of using external state management libraries, the application leverages 
 
 - `AuthContext` + `useAuth()` - Authentication state and operations
 - `FavoritesContext` + `useFavorites()` - Managing user's favorite tools
-- `UserContext` - User profile information and settings
 
 ### Dynamic Plugin UI Generation
 

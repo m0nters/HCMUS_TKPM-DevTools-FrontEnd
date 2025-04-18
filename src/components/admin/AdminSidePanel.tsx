@@ -1,6 +1,7 @@
 import {
   ChartBarIcon,
   PuzzlePieceIcon,
+  SparklesIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
@@ -16,6 +17,11 @@ function AdminSidePanel() {
       icon: <UsersIcon className="w-5 h-5" />,
       label: "User Management",
       to: "users",
+    },
+    {
+      icon: <SparklesIcon className="w-5 h-5" />,
+      label: "Premium Requests",
+      to: "premium-requests",
     },
     {
       icon: <PuzzlePieceIcon className="w-5 h-5" />,

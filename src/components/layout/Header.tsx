@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
 import SidePanel from "./SidePanel";
-import { useState, useEffect } from "react";
-import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
-import { useAuth } from "../../hooks/useAuth";
+import React, { useState, useEffect } from "react";
+import {
+  ArrowLeftEndOnRectangleIcon,
+  Bars3Icon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
+import { useAuth } from "../../hooks/";
 
 function Header() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { user, isAuth, logout } = useAuth();
+  const { user, isAuth, isPremium, logout } = useAuth();
 
   // press Escape key => close panel
   useEffect(() => {
@@ -40,6 +46,55 @@ function Header() {
     document.addEventListener("click", handleOutsideClick);
     return () => document.removeEventListener("click", handleOutsideClick);
   }, [isUserMenuOpen]);
+
+  const menuItems = [
+    {
+      type: "header",
+      content: () => (
+        <div className="px-4 py-2 border-b border-gray-100">
+          <p className="text-sm font-medium">{user?.fullName}</p>
+          <p className="text-xs text-gray-500">{user?.email}</p>
+          <p className="text-xs font-bold">{user?.role}</p>
+        </div>
+      ),
+      alwaysShow: true,
+    },
+    {
+      type: "link",
+      label: "Profile",
+      to: "/profile",
+      icon: <UserCircleIcon className="w-4 h-4 mr-2" />,
+      alwaysShow: true,
+    },
+    {
+      type: "link",
+      label: "Admin Dashboard",
+      to: "/admin",
+      icon: <ShieldCheckIcon className="w-4 h-4 mr-2" />,
+      showIf: () => user?.role === "Admin",
+    },
+    {
+      type: "link",
+      label: "Upgrade to Premium",
+      to: "/premium",
+      icon: <SparklesIcon className="w-4 h-4 mr-2" />,
+      showIf: () => !isPremium,
+    },
+    {
+      type: "divider",
+      alwaysShow: true,
+    },
+    {
+      type: "button",
+      label: "Logout",
+      icon: <ArrowLeftEndOnRectangleIcon className="w-4 h-4 mr-2" />,
+      onClick: () => {
+        logout();
+        setIsUserMenuOpen(false);
+      },
+      alwaysShow: true,
+    },
+  ];
 
   return (
     <>
@@ -78,36 +133,55 @@ function Header() {
                 {/* Dropdown menu */}
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-medium">{user?.fullName}</p>
-                      <p className="text-xs text-gray-500">{user?.email}</p>
-                      <p className="text-xs font-bold">{user?.role}</p>
-                    </div>
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      Profile
-                    </Link>
-                    {user?.role === "Admin" && (
-                      <Link
-                        to="/admin"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setIsUserMenuOpen(false)}
-                      >
-                        Admin Dashboard
-                      </Link>
-                    )}
-                    <button
-                      onClick={() => {
-                        logout();
-                        setIsUserMenuOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                    >
-                      Logout
-                    </button>
+                    {menuItems.map((item, index) => {
+                      // Check if the item should be shown
+                      const shouldShow =
+                        item.alwaysShow || (item.showIf && item.showIf());
+                      if (!shouldShow) return null;
+
+                      // Render based on item type
+                      switch (item.type) {
+                        case "header":
+                          return (
+                            <React.Fragment key={index}>
+                              {item.content && item.content()}
+                            </React.Fragment>
+                          );
+
+                        case "link":
+                          return (
+                            <Link
+                              key={index}
+                              to={item.to!}
+                              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-1 hover:gap-2 transition-all ease-in-out duration-200"
+                              onClick={() => setIsUserMenuOpen(false)}
+                            >
+                              {item.icon}
+                              {item.label}
+                            </Link>
+                          );
+
+                        case "button":
+                          return (
+                            <button
+                              key={index}
+                              onClick={item.onClick}
+                              className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-1 hover:gap-2 transition-all ease-in-out duration-200 cursor-pointer"
+                            >
+                              {item.icon}
+                              {item.label}
+                            </button>
+                          );
+
+                        case "divider":
+                          return (
+                            <hr key={index} className="my-1 border-gray-200" />
+                          );
+
+                        default:
+                          return null;
+                      }
+                    })}
                   </div>
                 )}
               </div>

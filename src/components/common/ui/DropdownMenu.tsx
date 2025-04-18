@@ -82,7 +82,7 @@ function DropdownMenu({
           isOpen
             ? "opacity-100 transform scale-y-100 max-h-60"
             : "opacity-0 transform scale-y-0 max-h-0"
-        } overflow-y-auto  ${optionsClassName}`}
+        } overflow-y-auto  ${optionsClassName} z-30`}
       >
         <div className="p-1 flex flex-col z-50">
           {options.map((option) => (
