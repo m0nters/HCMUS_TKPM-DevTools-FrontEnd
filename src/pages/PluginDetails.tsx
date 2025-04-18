@@ -46,7 +46,7 @@ function PluginDetails() {
   // và đăng nhập thành công, nó sẽ tự động chuyển về cái plugin này
   const handleRegisterClick = () => {
     navigate("/register", {
-      state: { returnTo: location.pathname },
+      state: { from: location.pathname },
     });
   };
 
@@ -134,7 +134,7 @@ function PluginDetails() {
               Don't have an account?{" "}
               <button
                 onClick={handleRegisterClick}
-                className="text-black hover:underline"
+                className="text-black hover:underline cursor-pointer"
               >
                 Register now
               </button>

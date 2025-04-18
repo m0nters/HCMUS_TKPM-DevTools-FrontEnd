@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AlertMessage, Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { login as apiLogin } from "../services/authService";
@@ -10,7 +10,6 @@ import { estimateReadingTime } from "../utils/";
 const MemoizedThreads = memo(Threads);
 
 const Login = () => {
-  const navigate = useNavigate();
   const { login } = useAuth();
   const location = useLocation();
   const [username, setUsername] = useState("");
@@ -18,7 +17,9 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false); // the token has its expriration time
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const redirectMessage = location.state?.message;
+  const [redirectMessage, setRedirectMessage] = useState(
+    location.state?.message
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,11 +76,7 @@ const Login = () => {
                   : estimateReadingTime(redirectMessage)
               }
               onDismiss={() => {
-                // Update URL without triggering navigation/reload
-                navigate(location.pathname, {
-                  replace: true,
-                  state: location.state || {},
-                });
+                setRedirectMessage("");
               }}
               position="top-center"
             />

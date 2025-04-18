@@ -214,24 +214,25 @@ function Premium() {
           )}
 
           {!isPremium && (
-            <Button
-              onClick={handleUpgradeRequest}
-              disabled={isSubmitting || isPremium}
-              variant="primary"
-              size="lg"
-              className={`${isPremium ? "opacity-50 cursor-not-allowed" : ""}`}
-            >
-              <div className="flex items-center gap-2">
-                {isSubmitting ? (
-                  "Submitting..."
-                ) : (
-                  <>
-                    Request Premium Upgrade
-                    <ArrowRightIcon className="h-5 w-5" />
-                  </>
-                )}
-              </div>
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                onClick={handleUpgradeRequest}
+                disabled={isSubmitting || isPremium}
+                variant="primary"
+                size="lg"
+              >
+                <div className="flex items-center gap-2">
+                  {isSubmitting ? (
+                    "Submitting..."
+                  ) : (
+                    <div className="flex justify-center items-center gap-2 group-hover:gap-4 transition-all duration-50">
+                      <span>Request Premium Upgrade</span>
+                      <ArrowRightIcon className="h-5 w-5" />
+                    </div>
+                  )}
+                </div>
+              </Button>
+            </div>
           )}
 
           {isPremium && (

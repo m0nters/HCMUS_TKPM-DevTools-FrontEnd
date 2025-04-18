@@ -79,7 +79,7 @@ const Register = () => {
         state: {
           message:
             "Registration successful! Please log in with your credentials.",
-          from: location.state?.returnTo || "/",
+          from: location.state?.from || "/",
         },
       });
     } catch (err: any) {
