@@ -1,7 +1,7 @@
-import { OutputField as OutputFieldType } from "../../types/pluginSchema";
+import { OutputField as OutputFieldType } from "../../types/";
 import { useState, useEffect } from "react";
 import { ClipboardDocumentIcon, CheckIcon } from "@heroicons/react/24/outline";
-import { hasValue } from "../../utils/string";
+import { hasValue } from "../../utils/";
 import {
   JSONOutput,
   TextAreaOutput,

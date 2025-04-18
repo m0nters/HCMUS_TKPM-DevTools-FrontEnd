@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { DropdownOption } from "../../../types/dropdownMenu";
+import { DropdownOption } from "../../../types/";
 
 interface DropdownMenuProps {
   options: DropdownOption[];

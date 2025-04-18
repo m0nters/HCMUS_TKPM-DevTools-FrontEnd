@@ -11,6 +11,7 @@ import { SparklesIcon as SparklesSolid } from "@heroicons/react/24/solid";
 import { Button, AlertMessage } from "../components/common";
 import { useAuth } from "../hooks/";
 import { requestPremiumUpgrade } from "../services/user/premiumService";
+import { estimateReadingTime } from "../utils/";
 
 function Premium() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -119,7 +120,7 @@ function Premium() {
             <AlertMessage
               message={requestStatus.message}
               isError={requestStatus.type === "error"}
-              duration={5000}
+              duration={estimateReadingTime(requestStatus.message)}
               onDismiss={() => setRequestStatus({ type: null, message: "" })}
               position="top-center"
             />
@@ -157,8 +158,14 @@ function Premium() {
               <div className="grid grid-cols-3 bg-gray-50 p-4 font-medium">
                 <div>Feature</div>
                 <div className="text-center">Free</div>
-                <div className="text-center">Premium</div>
+                <div className="text-center">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                    Premium
+                  </span>
+                </div>
               </div>
+
+              <div className="border-b"></div>
 
               {featureComparison.map((feature, index) => (
                 <div
@@ -187,7 +194,17 @@ function Premium() {
         {/* CTA section */}
         <div className="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-semibold mb-2">
-            {isPremium ? "You are already Premium!" : "Ready to upgrade?"}
+            {isPremium ? (
+              <>
+                You are already{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                  Premium
+                </span>
+                !
+              </>
+            ) : (
+              "Ready to upgrade?"
+            )}
           </h2>
           {!isPremium && (
             <p className="text-gray-700 mb-6 max-w-lg mx-auto">
@@ -220,7 +237,11 @@ function Premium() {
           {isPremium && (
             <div className="text-sm text-gray-600">
               Your account: <span className="font-semibold">{user?.email}</span>{" "}
-              is already Premium. Enjoy your exclusive features!
+              is already{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                Premium
+              </span>
+              . Enjoy your exclusive features!
             </div>
           )}
         </div>

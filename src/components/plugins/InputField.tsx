@@ -1,4 +1,4 @@
-import { InputField as InputFieldType } from "../../types/pluginSchema";
+import { InputField as InputFieldType } from "../../types/";
 import {
   TextInput,
   TextAreaInput,

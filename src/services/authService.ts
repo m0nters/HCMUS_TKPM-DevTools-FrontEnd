@@ -1,4 +1,4 @@
-import { RegisterCredentials, LoginCredentials, UserInfo } from "../types/auth";
+import { RegisterCredentials, LoginCredentials, UserInfo } from "../types/";
 import { apiRequest } from "./api/request";
 
 /**

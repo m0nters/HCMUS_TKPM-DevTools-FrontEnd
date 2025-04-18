@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/";
-import { PluginSchema } from "../types/pluginSchema";
 import {
   LoadingSpinner,
   PremiumBadge,
@@ -15,8 +14,8 @@ import {
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import { getPluginSchema, getAllPlugins } from "../services/plugins/";
-import { Plugin } from "../types/plugins";
-import { estimateReadingTime, slugify } from "../utils/string";
+import { Plugin, PluginSchema } from "../types/";
+import { estimateReadingTime, slugify } from "../utils/";
 
 function PluginDetails() {
   const { pluginName } = useParams<{ pluginName: string }>();

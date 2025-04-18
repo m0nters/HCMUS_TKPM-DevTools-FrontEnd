@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plugin, PluginCategory, AdminPlugin } from "../types/plugins";
+import { Plugin, PluginCategory, AdminPlugin } from "../types/";
 import {
   MagnifyingGlassIcon,
   ArrowPathIcon,
@@ -10,7 +10,7 @@ import { getAllPlugins, getAllCategories } from "../services/plugins/";
 import { getAllPluginsAdmin } from "../services/admin/pluginService";
 import { useAuth, useDebounce } from "../hooks/";
 import { AdminModeToggle } from "../components/admin/";
-import { estimateReadingTime } from "../utils/string";
+import { estimateReadingTime } from "../utils/";
 import { eventBus, EVENTS } from "../services/eventBus";
 
 function PluginExplorer() {

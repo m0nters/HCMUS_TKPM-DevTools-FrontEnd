@@ -5,8 +5,7 @@ import {
   clearUserSession,
   getTokenExpiration,
 } from "../services/authService";
-import { UserInfo } from "../types/auth";
-import { AuthUser, AuthContextType } from "../types/authContext";
+import { UserInfo, AuthUser, AuthContextType } from "../types/";
 import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext<AuthContextType>({

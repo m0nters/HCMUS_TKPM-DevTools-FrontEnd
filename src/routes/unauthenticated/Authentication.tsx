@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import { UnauthenticatedRoute } from "../../components/common";
+import { UnauthenticatedRoute } from "../../components/auth";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
 

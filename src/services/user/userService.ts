@@ -1,4 +1,4 @@
-import { UserProfile } from "../../types/user";
+import { UserProfile } from "../../types/";
 import { withAuth } from "../api/authRequest";
 /**
  * Fetches the current user's profile information

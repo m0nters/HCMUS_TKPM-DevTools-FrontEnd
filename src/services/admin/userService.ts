@@ -1,4 +1,4 @@
-import { UserProfile } from "../../types/user";
+import { UserProfile } from "../../types/";
 import { withAuth } from "../api/authRequest";
 
 type UserRole = "User" | "Premium" | "Admin";

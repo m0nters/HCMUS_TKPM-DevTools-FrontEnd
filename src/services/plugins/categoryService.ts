@@ -1,5 +1,5 @@
-import { PluginCategory } from "../../types/plugins";
-import { slugify } from "../../utils/string";
+import { PluginCategory } from "../../types/";
+import { slugify } from "../../utils/";
 import { apiRequest } from "../api/request";
 
 /**

@@ -3,14 +3,14 @@ import {
   getPremiumRequests,
   processPremiumRequest,
 } from "../../services/admin/premiumService";
-import { UserProfile } from "../../types/user";
+import { UserProfile } from "../../types/";
 import {
   ArrowPathIcon,
   CheckCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { AlertMessage, Button, LoadingSpinner } from "../../components/common";
-import { estimateReadingTime } from "../../utils/string";
+import { estimateReadingTime } from "../../utils/";
 
 function PremiumRequests() {
   const [requests, setRequests] = useState<UserProfile[]>([]);

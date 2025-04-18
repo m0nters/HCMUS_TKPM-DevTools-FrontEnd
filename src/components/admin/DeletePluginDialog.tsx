@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { AdminPlugin } from "../../types/plugins";
+import { AdminPlugin } from "../../types/";
 import { deletePlugin } from "../../services/admin/pluginService";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 

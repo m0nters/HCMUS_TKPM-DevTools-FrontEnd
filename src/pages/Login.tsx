@@ -6,7 +6,7 @@ import { login as apiLogin } from "../services/authService";
 import { useAuth } from "../hooks/";
 import { Threads, PasswordInput } from "../components/common/";
 import { memo } from "react";
-import { estimateReadingTime } from "../utils/string";
+import { estimateReadingTime } from "../utils/";
 const MemoizedThreads = memo(Threads);
 
 const Login = () => {

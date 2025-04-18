@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Plugin } from "../types/plugins";
+import { Plugin } from "../types/";
 import { ArrowRightIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import {
   LoadingSpinner,

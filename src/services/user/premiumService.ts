@@ -1,4 +1,3 @@
-import { UserProfile } from "../../types/user";
 import { withAuth } from "../api/authRequest";
 
 /**

@@ -1,5 +1,5 @@
 import { UserCircleIcon, KeyIcon, StarIcon } from "@heroicons/react/24/outline";
-import { UserProfile } from "../../types/user";
+import { UserProfile } from "../../types/";
 import { NavLink } from "react-router-dom";
 
 interface SidePanelProps {

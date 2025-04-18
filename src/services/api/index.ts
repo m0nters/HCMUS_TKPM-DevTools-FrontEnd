@@ -1,2 +1,2 @@
-export { apiRequest } from "./request";
-export { withAuth } from "./authRequest";
+export * from "./request";
+export * from "./authRequest";

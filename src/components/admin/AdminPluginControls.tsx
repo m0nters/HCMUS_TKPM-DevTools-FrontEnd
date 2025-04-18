@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AdminPlugin } from "../../types/plugins";
+import { AdminPlugin } from "../../types/";
 import {
   togglePluginActive,
   togglePluginPremium,

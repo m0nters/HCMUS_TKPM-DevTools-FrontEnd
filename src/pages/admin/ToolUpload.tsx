@@ -7,7 +7,7 @@ import {
   FileUploadBox,
   InfoBox,
 } from "../../components/common";
-import { estimateReadingTime } from "../../utils/string";
+import { estimateReadingTime } from "../../utils/";
 
 function ToolUpload() {
   const [mainFile, setMainFile] = useState<File | null>(null);

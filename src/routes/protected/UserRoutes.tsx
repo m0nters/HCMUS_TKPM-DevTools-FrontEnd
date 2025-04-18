@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import { ProtectedRoute } from "../../components/common";
+import { ProtectedRoute } from "../../components/auth";
 import {
   FavoritesSection,
   MyProfile,

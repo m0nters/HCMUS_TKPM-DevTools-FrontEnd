@@ -6,7 +6,7 @@ import {
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { validateFileTypes } from "../../../utils/files";
+import { validateFileTypes } from "../../../utils/";
 
 interface FileUploadBoxProps {
   label: string;

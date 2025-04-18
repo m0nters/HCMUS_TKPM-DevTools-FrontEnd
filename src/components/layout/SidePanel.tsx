@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getAllCategories } from "../../services/plugins/";
-import { PluginCategory } from "../../types/plugins";
+import { PluginCategory } from "../../types/";
 import {
   XMarkIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
-import { slugify, truncate } from "../../utils/string";
+import { slugify, truncate } from "../../utils/";
 import { LoadingSpinner, PremiumBadge } from "../common";
 import { useEventBus } from "../../hooks/";
 import { EVENTS } from "../../services/eventBus";

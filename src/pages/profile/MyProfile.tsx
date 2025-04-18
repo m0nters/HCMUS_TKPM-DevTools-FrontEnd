@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { LoadingSpinner } from "../../components/common";
 import { getProfile } from "../../services/user/userService";
-import { UserProfile } from "../../types/user";
+import { UserProfile } from "../../types/";
 import { ProfileSidePanel } from "../../components/profile";
 
 function MyProfile() {

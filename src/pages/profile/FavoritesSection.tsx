@@ -7,7 +7,7 @@ import {
 } from "../../components/common";
 import { StarIcon } from "@heroicons/react/24/outline";
 import { getFavorites } from "../../services/user";
-import { Plugin } from "../../types/plugins";
+import { Plugin } from "../../types/";
 import { useFavorites } from "../../hooks/";
 
 function FavoritesSection() {

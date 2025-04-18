@@ -1,4 +1,4 @@
-import { PluginSchema } from "../../types/pluginSchema";
+import { PluginSchema } from "../../types/";
 import { apiRequest } from "../api/request";
 
 /**

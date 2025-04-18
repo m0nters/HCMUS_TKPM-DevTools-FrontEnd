@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AlertMessage, Button, PasswordInput } from "../../components/common";
 import { changePassword } from "../../services/user/";
-import { estimateReadingTime } from "../../utils/string";
+import { estimateReadingTime } from "../../utils/";
 
 function SecuritySection() {
   const [oldPassword, setCurrentPassword] = useState("");
