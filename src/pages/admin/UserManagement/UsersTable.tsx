@@ -28,7 +28,7 @@ function UsersTable({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-md overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-md overflow-x-auto">
       <div className="px-6 py-4 border-b border-gray-200">
         <p className="text-sm text-gray-700">
           Total users:{" "}

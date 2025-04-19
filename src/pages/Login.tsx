@@ -63,7 +63,6 @@ const Login = () => {
           distance={0}
           enableMouseInteraction={true}
         />
-        ;
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
           {redirectMessage && (
@@ -129,12 +128,12 @@ const Login = () => {
                   Remember me
                 </label>
               </div>
-              <Link
+              {/* <Link
                 to="/forgot-password"
                 className="text-sm text-gray-600 hover:text-black"
               >
                 Forgot password?
-              </Link>
+              </Link> */}
             </div>
             <Button type="submit" variant="primary" disabled={isLoading}>
               <div className="flex justify-center items-center gap-2 group-hover:gap-4 transition-all duration-50">

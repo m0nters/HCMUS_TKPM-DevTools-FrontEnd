@@ -108,7 +108,6 @@ const Register = () => {
           distance={0}
           enableMouseInteraction={true}
         />
-        ;
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Register</h2>
 

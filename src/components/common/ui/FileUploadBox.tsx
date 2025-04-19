@@ -229,7 +229,7 @@ function FileUploadBox({
       </div>
 
       <div
-        className={`flex items-center justify-center w-full h-32 border-2 border-dashed rounded-lg hover:bg-gray-100 transition-colors ${dropZoneClasses} ${
+        className={`flex items-center justify-center text-center w-full h-32 border-2 border-dashed rounded-lg hover:bg-gray-100 transition-colors ${dropZoneClasses} ${
           disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
         }`}
         onDragOver={handleDragOver}
