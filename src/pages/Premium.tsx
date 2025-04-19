@@ -16,37 +16,34 @@ import { estimateReadingTime } from "../utils/";
 function Premium() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [requestStatus, setRequestStatus] = useState<{
-    type: "success" | "error" | null;
     message: string;
-  }>({
-    type: null,
-    message: "",
-  });
+    isError: boolean;
+  } | null>(null);
   const { isPremium, user } = useAuth();
 
   const handleUpgradeRequest = async () => {
     setIsSubmitting(true);
-    setRequestStatus({ type: null, message: "" });
+    setRequestStatus(null);
 
     try {
       const response = await requestPremiumUpgrade();
 
       if (response.success) {
         setRequestStatus({
-          type: "success",
+          isError: false,
           message:
             "Your premium upgrade request has been submitted successfully! Our team will review it shortly.",
         });
       } else {
         setRequestStatus({
-          type: "error",
+          isError: true,
           message:
             response.message || "Something went wrong. Please try again later.",
         });
       }
     } catch (error: any) {
       setRequestStatus({
-        type: "error",
+        isError: true,
         message:
           error.message ||
           "Failed to submit upgrade request. Please try again.",
@@ -115,13 +112,13 @@ function Premium() {
         </div>
 
         {/* Status messages */}
-        {requestStatus.type && (
+        {requestStatus && (
           <div className="mb-8">
             <AlertMessage
               message={requestStatus.message}
-              isError={requestStatus.type === "error"}
+              isError={requestStatus.isError}
               duration={estimateReadingTime(requestStatus.message)}
-              onDismiss={() => setRequestStatus({ type: null, message: "" })}
+              onDismiss={() => setRequestStatus(null)}
               position="top-center"
             />
           </div>

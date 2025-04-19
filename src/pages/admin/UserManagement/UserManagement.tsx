@@ -30,9 +30,9 @@ function UserManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [actionStatus, setActionStatus] = useState<{
-    type: "success" | "error" | null;
     message: string;
-  }>({ type: null, message: "" });
+    isError: boolean;
+  } | null>(null);
 
   // Users state
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -61,7 +61,7 @@ function UserManagement() {
       setFilteredUsers(data);
     } catch (error) {
       setActionStatus({
-        type: "error",
+        isError: true,
         message: "Failed to fetch users. Please try again.",
       });
     } finally {
@@ -78,7 +78,7 @@ function UserManagement() {
       setFilteredPremiumRequests(data);
     } catch (error) {
       setActionStatus({
-        type: "error",
+        isError: true,
         message: "Failed to load premium requests. Please try again.",
       });
     } finally {
@@ -136,12 +136,12 @@ function UserManagement() {
         );
         fetchPremiumRequests();
         setActionStatus({
-          type: "success",
+          isError: false,
           message: `${chosenUser?.fullName} role changed to ${role}`,
         });
       } else {
         setActionStatus({
-          type: "error",
+          isError: true,
           message:
             response.message ||
             `Failed to change user role for ${chosenUser?.fullName}`,
@@ -150,7 +150,7 @@ function UserManagement() {
     } catch (error) {
       console.error("Error changing role:", error);
       setActionStatus({
-        type: "error",
+        isError: true,
         message: `Failed to change user role for ${chosenUser?.fullName}`,
       });
     }
@@ -172,19 +172,19 @@ function UserManagement() {
         );
         fetchPremiumRequests();
         setActionStatus({
-          type: "success",
+          isError: false,
           message: "User deleted successfully",
         });
       } else {
         setActionStatus({
-          type: "error",
+          isError: true,
           message: response.message || "Failed to delete user",
         });
       }
     } catch (error) {
       console.error("Error deleting user:", error);
       setActionStatus({
-        type: "error",
+        isError: true,
         message: "Failed to delete user",
       });
     }
@@ -215,14 +215,14 @@ function UserManagement() {
         );
         if (isAccepted) fetchUsers();
         setActionStatus({
-          type: "success",
+          isError: false,
           message: `${
             isAccepted ? "Approved" : "Rejected"
           } premium request for ${user.fullName}`,
         });
       } else {
         setActionStatus({
-          type: "error",
+          isError: true,
           message:
             response.message || "Failed to process request. Please try again.",
         });
@@ -230,7 +230,7 @@ function UserManagement() {
     } catch (error) {
       console.error("Error processing request:", error);
       setActionStatus({
-        type: "error",
+        isError: true,
         message:
           "An error occurred while processing the request. Please try again.",
       });
@@ -243,7 +243,7 @@ function UserManagement() {
   const refreshAllData = () => {
     fetchUsers();
     fetchPremiumRequests();
-    setActionStatus({ type: null, message: "" });
+    setActionStatus(null);
   };
 
   return (
@@ -282,13 +282,13 @@ function UserManagement() {
           </Button>
         </div>
 
-        {actionStatus.type && (
+        {actionStatus && (
           <AlertMessage
             message={actionStatus.message}
-            isError={actionStatus.type !== "success"}
+            isError={actionStatus.isError}
             duration={estimateReadingTime(actionStatus.message)}
             onDismiss={() => {
-              setActionStatus({ type: null, message: "" });
+              setActionStatus(null);
             }}
             position="top-center"
           />

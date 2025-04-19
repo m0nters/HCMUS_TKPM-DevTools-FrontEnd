@@ -14,12 +14,16 @@ interface PasswordChangeRequest {
 
 export const changePassword = async (
   request: PasswordChangeRequest
-): Promise<void> => {
+): Promise<{ success: boolean; message: string }> => {
   try {
-    return await withAuth("/account/me/password-change", {
-      method: "PUT",
-      body: JSON.stringify(request),
-    });
+    const response = await withAuth<{ success: boolean; message: string }>(
+      "/account/me/password-change",
+      {
+        method: "PUT",
+        body: JSON.stringify(request),
+      }
+    );
+    return response;
   } catch (error) {
     console.error("Password change error:", error);
     throw error;

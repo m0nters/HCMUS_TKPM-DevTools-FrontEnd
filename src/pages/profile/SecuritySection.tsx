@@ -7,36 +7,52 @@ function SecuritySection() {
   const [oldPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [updateStatus, setUpdateStatus] = useState<{
+    message: string;
+    isError: boolean;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setUpdateStatus(null);
 
     if (newPassword !== confirmNewPassword) {
-      setError("New passwords don't match");
+      setUpdateStatus({
+        isError: true,
+        message: "New passwords don't match.",
+      });
       return;
     }
 
     setIsLoading(true);
     try {
-      await changePassword({
+      const response = await changePassword({
         oldPassword,
         newPassword,
         confirmNewPassword,
       });
-
-      // Success case
-      setSuccess("Password changed successfully");
+      if (response.success) {
+        // Success case
+        setUpdateStatus({
+          isError: false,
+          message: response.message,
+        });
+      } else {
+        setUpdateStatus({
+          isError: true,
+          message: response.message,
+        });
+      }
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (err: any) {
       // Handle error from API
-      setError("Failed to change password. Please try again.");
+      setUpdateStatus({
+        isError: true,
+        message: err.message,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -48,21 +64,12 @@ function SecuritySection() {
         Security & Password
       </h2>
 
-      {error && (
+      {updateStatus && (
         <AlertMessage
-          message={error}
-          isError={true}
-          duration={estimateReadingTime(error)}
-          onDismiss={() => setError("")}
-        />
-      )}
-
-      {success && (
-        <AlertMessage
-          message={success}
-          isError={false}
-          duration={estimateReadingTime(success)}
-          onDismiss={() => setSuccess("")}
+          message={updateStatus.message}
+          isError={updateStatus.isError}
+          duration={estimateReadingTime(updateStatus.message)}
+          onDismiss={() => setUpdateStatus(null)}
         />
       )}
 

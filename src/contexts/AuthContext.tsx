@@ -5,8 +5,23 @@ import {
   clearUserSession,
   getTokenExpiration,
 } from "../services/authService";
-import { UserInfo, AuthUser, AuthContextType } from "../types/";
+import { UserInfo } from "../types/";
 import { useNavigate } from "react-router-dom";
+
+type AuthUser = Omit<UserInfo, "token">;
+
+interface AuthContextType {
+  user: AuthUser | null;
+  isAuth: boolean;
+  isPremium: boolean;
+  isAdmin: boolean;
+  isLoading: boolean; // for waiting to completely load state's data for protected routes
+  login: (user: UserInfo, rememberMe: boolean) => void;
+  logout: (
+    redirectPath?: string,
+    message?: { message: string; isError: boolean; isPersistent?: boolean }
+  ) => void;
+}
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,

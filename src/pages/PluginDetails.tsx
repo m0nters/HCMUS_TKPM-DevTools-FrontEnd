@@ -20,35 +20,18 @@ import { estimateReadingTime, slugify } from "../utils/";
 function PluginDetails() {
   const { pluginName } = useParams<{ pluginName: string }>();
   const { isAuth, isPremium } = useAuth();
-
   const [pluginSchemaData, setPluginSchemaData] = useState<PluginSchema | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{
+    type: "success" | "error" | "premium" | null;
+    message?: string;
+  } | null>(null);
   const [targetPlugin, setTargetPlugin] = useState<Plugin | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const handleLoginClick = () => {
-    navigate("/login", {
-      state: {
-        from: location,
-        message: "Please log in to access this premium feature.",
-      },
-    });
-  };
-
-  // truyền cái `returnTo` này vào cái `from` của bên Register
-  // khi nó gửi sang Login, như vậy sau khi bấm vào tạo tài khoản
-  // và đăng nhập thành công, nó sẽ tự động chuyển về cái plugin này
-  const handleRegisterClick = () => {
-    navigate("/register", {
-      state: { from: location.pathname },
-    });
-  };
 
   // Fetch plugin schema details based on the plugin name from the URL
   useEffect(() => {
@@ -63,7 +46,10 @@ function PluginDetails() {
         );
 
         if (!matchedPlugin) {
-          setError("Plugin not found");
+          setStatusMessage({
+            type: "error",
+            message: "Plugin not found",
+          });
           setIsLoading(false);
           return;
         }
@@ -75,26 +61,57 @@ function PluginDetails() {
         setPluginSchemaData(fetchedSchemaData);
 
         // Check premium access
-        if (matchedPlugin?.isPremium && !isPremium) {
-          setError("premium");
+        if (matchedPlugin.isPremium && !isPremium) {
+          setStatusMessage({
+            type: "premium",
+          });
         }
       } catch (err) {
         console.error("Error loading plugin:", err);
-        setError("Failed to load plugin details");
+        setStatusMessage({
+          type: "error",
+          message: "Failed to load plugin details.",
+        });
       } finally {
         setIsLoading(false);
       }
     }
-
     fetchPluginDetails();
   }, []);
 
+  const handleLoginClick = () => {
+    navigate("/login", {
+      state: {
+        from: location,
+        message: "Please log in to access this premium feature.",
+      },
+    });
+  };
+
+  // truyền cái `from` này vào cái `from` của bên Register
+  // khi nó gửi sang Login, như vậy sau khi bấm vào tạo tài khoản
+  // và đăng nhập thành công, nó sẽ tự động chuyển về cái plugin này
+  const handleRegisterClick = () => {
+    navigate("/register", {
+      state: { from: location },
+    });
+  };
+
   const handlePluginSuccess = (result: any) => {
-    setShowSuccessMessage(true);
+    /* Normally, this will be commented out since I've realized
+            for every change happens and the success message shows up
+            will be very annoying, uncomment to debug if you want */
+    // setStatusNotification({
+    //   type: "success",
+    //   message: "Operation completed successfully!",
+    // });
   };
 
   const handlePluginError = (error: Error) => {
-    setError(error.message);
+    setStatusMessage({
+      type: "error",
+      message: error.message,
+    });
   };
 
   // Render loading state
@@ -153,27 +170,12 @@ function PluginDetails() {
   const pluginUI = () => {
     return (
       <>
-        {/* Normally, this will be commented out since I've realized
-            for every change happens and the success message shows up
-            will be very annoying, uncomment to debug if you want */}
-        {/* {showSuccessMessage && (
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-fade-in-down">
-            <AlertMessage
-              message={"Operation completed successfully!"}
-              isError={false}
-              duration={estimateReadingTime("Operation completed successfully!")}
-              onDismiss={() => setError(null)}
-              position="top-center"
-            />
-          </div>
-        )} */}
-
-        {error && error !== "premium" && (
+        {statusMessage && statusMessage.type !== "premium" && (
           <AlertMessage
-            message={error}
-            isError={true}
-            duration={estimateReadingTime(error)}
-            onDismiss={() => setError(null)}
+            message={statusMessage.message!}
+            isError={statusMessage.type !== "success"}
+            duration={estimateReadingTime(statusMessage.message!)}
+            onDismiss={() => setStatusMessage({ type: null, message: "" })}
             position="top-center"
           />
         )}
@@ -225,7 +227,6 @@ function PluginDetails() {
     );
   };
 
-  // Fallback
   return (
     <div className="w-full mx-auto pt-24 max-w-5xl pb-12">
       <div className="mb-6">
@@ -240,7 +241,7 @@ function PluginDetails() {
         </div>
       </div>
 
-      {error === "premium" && !isPremium
+      {statusMessage && statusMessage.type === "premium" && !isPremium
         ? premiumContentLocked()
         : pluginSchemaData
         ? pluginUI()

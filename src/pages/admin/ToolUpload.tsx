@@ -14,9 +14,9 @@ function ToolUpload() {
   const [libraryFiles, setLibraryFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<{
-    type: "success" | "error" | null;
     message: string;
-  }>({ type: null, message: "" });
+    isError: boolean;
+  } | null>(null);
 
   const handleMainFileChange = useCallback((file: File) => {
     setMainFile(file); // assume file is valid, since all the validation is done in `FileUploadBox` component
@@ -36,21 +36,21 @@ function ToolUpload() {
     // 2FA, this is optional since we have checked this in the submit button already
     if (!mainFile) {
       setUploadStatus({
-        type: "error",
+        isError: true,
         message: "Please select a main plugin file to upload.",
       });
       return;
     }
 
     setUploading(true);
-    setUploadStatus({ type: null, message: "" }); // Reset status message
+    setUploadStatus(null); // Reset status message
 
     try {
       const response = await uploadPlugin(mainFile, libraryFiles);
 
       if (response.success) {
         setUploadStatus({
-          type: "success",
+          isError: false,
           message: response.message || "Plugin was uploaded successfully!",
         });
 
@@ -62,14 +62,14 @@ function ToolUpload() {
         eventBus.emit(EVENTS.SIDEBAR_REFRESH);
       } else {
         setUploadStatus({
-          type: "error",
+          isError: true,
           message:
             response.message || "Failed to upload plugin. Please try again.",
         });
       }
     } catch (error: any) {
       setUploadStatus({
-        type: "error",
+        isError: true,
         message: error.message || "Failed to upload plugin. Please try again.",
       });
     } finally {
@@ -95,13 +95,13 @@ function ToolUpload() {
       />
 
       {/* Upload status message */}
-      {uploadStatus.type && (
+      {uploadStatus && (
         <AlertMessage
           message={uploadStatus.message}
-          isError={uploadStatus.type !== "success" || false}
+          isError={uploadStatus.isError}
           duration={estimateReadingTime(uploadStatus.message)}
           onDismiss={() => {
-            setUploadStatus({ type: null, message: "" });
+            setUploadStatus(null);
           }}
           position="top-center"
         />
@@ -119,7 +119,7 @@ function ToolUpload() {
               onChange={handleMainFileChange}
               onError={(message) => {
                 setUploadStatus({
-                  type: "error",
+                  isError: true,
                   message: message,
                 });
               }}
@@ -138,7 +138,7 @@ function ToolUpload() {
               onChange={handleLibraryFilesChange}
               onError={(message) => {
                 setUploadStatus({
-                  type: "error",
+                  isError: true,
                   message: message,
                 });
               }}
