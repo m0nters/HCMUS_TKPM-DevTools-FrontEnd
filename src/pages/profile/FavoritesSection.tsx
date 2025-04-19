@@ -5,7 +5,7 @@ import {
   PluginCard,
   AlertMessage,
 } from "../../components/common";
-import { StarIcon } from "@heroicons/react/24/outline";
+import { HeartIcon } from "@heroicons/react/24/outline";
 import { getFavorites } from "../../services/user";
 import { Plugin } from "../../types/";
 import { useFavorites } from "../../hooks/";
@@ -78,13 +78,13 @@ function FavoritesSection() {
   if (favorites.length === 0) {
     return (
       <div className="text-center py-12">
-        <StarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+        <HeartIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
         <h3 className="text-lg font-medium text-gray-900">
           No Favorite Tools Yet
         </h3>
         <p className="mt-2 text-sm text-gray-500 max-w-md mx-auto">
           You haven't saved any tools as favorites. Browse tools and click the
-          star icon to save them here.
+          heart icon to save them here.
         </p>
         <Button to="/explore" variant="secondary" className="mt-6">
           Browse Tools

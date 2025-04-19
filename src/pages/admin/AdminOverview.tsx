@@ -158,7 +158,7 @@ function AdminOverview() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
             <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
               <h3 className="text-sm font-medium text-gray-700 mb-1">
                 Active/Inactive Distribution

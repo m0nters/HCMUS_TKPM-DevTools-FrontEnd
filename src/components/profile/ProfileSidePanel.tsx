@@ -1,4 +1,8 @@
-import { UserCircleIcon, KeyIcon, StarIcon } from "@heroicons/react/24/outline";
+import {
+  UserCircleIcon,
+  KeyIcon,
+  HeartIcon,
+} from "@heroicons/react/24/outline";
 import { UserProfile } from "../../types/";
 import { NavLink } from "react-router-dom";
 
@@ -35,7 +39,7 @@ function ProfileSidePanel({ profile, isLoading = false }: SidePanelProps) {
       to: "security",
     },
     {
-      icon: <StarIcon className="w-5 h-5" />,
+      icon: <HeartIcon className="w-5 h-5" />,
       label: "Favorite Tools",
       to: "favorites",
     },
