@@ -7,6 +7,7 @@ import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { useAuth, useFavorites } from "../../../hooks/";
 import { AdminPluginControls } from "../../admin";
+import { ClickSpark } from "../animations/";
 
 interface PluginCardProps {
   plugin: Plugin | AdminPlugin;
@@ -123,11 +124,20 @@ function PluginCard({
             aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
             title={isFav ? "Remove from favorites" : "Add to favorites"}
           >
-            {isFav ? (
-              <HeartSolid className="w-5 h-5 text-red-500" />
-            ) : (
-              <HeartOutline className="w-5 h-5 text-gray-400 hover:text-gray-600" />
-            )}
+            <ClickSpark
+              sparkColor="#fb2c36"
+              sparkSize={10}
+              sparkRadius={35}
+              sparkCount={8}
+              duration={400}
+              extraScale={0.5}
+            >
+              {isFav ? (
+                <HeartSolid className="w-5 h-5 text-red-500" />
+              ) : (
+                <HeartOutline className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+              )}
+            </ClickSpark>
           </button>
         )}
 
