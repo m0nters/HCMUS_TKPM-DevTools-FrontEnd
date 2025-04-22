@@ -97,7 +97,7 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
     const errors: Record<string, string> = {};
     schema.uiSchemas.forEach((section) => {
       section.inputs.forEach((input) => {
-        if (input.required && hasValue(inputs[input.id])) {
+        if (input.required && !hasValue(inputs[input.id])) {
           errors[input.id] = "This field is required";
         }
       });

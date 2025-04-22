@@ -19,11 +19,11 @@ export function truncate(text: string, maxLength: number): string {
  *
  * If write like `return !text;` it will be true for `0`, `""`, `false`
  */
-export function hasValue(text: any): boolean {
+export function hasValue(target: any): boolean {
   return (
-    text !== undefined &&
-    text !== null &&
-    (typeof text === "string" ? text.trim() !== "" : true)
+    target !== undefined &&
+    target !== null &&
+    (typeof target === "string" ? target.trim() !== "" : true)
   );
 }
 
