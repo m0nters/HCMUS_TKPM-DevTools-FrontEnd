@@ -4,7 +4,7 @@ import {
   TextAreaInput,
   ColorInput,
   CheckboxInput,
-  DateInput,
+  DateTimeInput,
   DropDownMenuInput,
   NumberInput,
   RadioInput,
@@ -78,7 +78,7 @@ function InputField({ field, value, onChange, error }: InputFieldProps) {
 
       case "date":
         return (
-          <DateInput
+          <DateTimeInput
             field={field}
             value={value}
             onChange={onChange}

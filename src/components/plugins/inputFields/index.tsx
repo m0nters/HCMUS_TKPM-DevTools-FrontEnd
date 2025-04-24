@@ -2,7 +2,7 @@ export { default as TextInput } from "./TextInput";
 export { default as TextAreaInput } from "./TextAreaInput";
 export { default as NumberInput } from "./NumberInput";
 export { default as ColorInput } from "./ColorInput";
-export { default as DateInput } from "./DateInput";
+export { default as DateTimeInput } from "./DateInput";
 export { default as DropDownMenuInput } from "./DropDownMenuInput";
 export { default as SliderInput } from "./SliderInput";
 export { default as CheckboxInput } from "./CheckboxInput";
