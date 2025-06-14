@@ -109,77 +109,155 @@ The admin interface features a novel "Admin Mode" toggle that transforms the reg
 
 ```
 src/
-  ├── App.tsx                # Root component for setting up routing/layout
+  ├── App.tsx               # Root component for setting up routing/layout
+  ├── index.ts              # Barrel file for exports
   ├── main.tsx              # React entry point, renders <App /> to the DOM
   ├── vite-env.d.ts         # TypeScript environment declarations for Vite
   │
   ├── components/           # Reusable UI components
-  │   ├── admin/            # Admin-specific UI (e.g., plugin controls, stats)
-  │   ├── common/           # Shared components like UI widgets, animations
-  │   │   ├── backgrounds/     # Animated background effects (waves, threads)
-  │   │   ├── textAnimation/   # Animated text components (split, fuzzy)
-  │   │   └── ui/              # UI primitives (button, alert, spinner, etc.)
-  │   ├── layout/           # Page structure (header, footer, sidebar)
-  │   ├── plugins/              # Plugin-specific UI system
-  │   │   ├── DynamicPluginUI.tsx   # Renders the whole plugin form based on schema
-  │   │   ├── InputField.tsx        # Wrapper that dynamically chooses which input to render
-  │   │   ├── OutputField.tsx       # Wrapper that dynamically renders the appropriate output
-  │   │   ├── inputFields/          # Individual input types (text, toggle, etc.)
-  │   │   └── outputFields/         # Output types (text, XML, etc.)
-  │   └── profile/            # Profile-specific UI (e.g. side panel)
+  │   ├── admin/            # Admin-specific UI components
+  │   │   ├── AdminModeToggle.tsx    # Toggle for admin mode
+  │   │   └── index.ts              # Barrel file
+  │   │
+  │   ├── auth/             # Authentication related components
+  │   │   ├── LoginForm.tsx         # Login form component
+  │   │   ├── RegisterForm.tsx      # Registration form component
+  │   │   └── index.ts              # Barrel file
+  │   │
+  │   ├── common/           # Shared components
+  │   │   ├── backgrounds/          # Animated background effects
+  │   │   │   ├── Threads.tsx      # Thread animation component
+  │   │   │   ├── Waves.tsx        # Wave animation component
+  │   │   │   └── index.ts         # Barrel file
+  │   │   │
+  │   │   ├── textAnimation/       # Text animation components
+  │   │   │   ├── FuzzyText.tsx    # Fuzzy text effect
+  │   │   │   ├── SplitText.tsx    # Split text animation
+  │   │   │   └── index.ts         # Barrel file
+  │   │   │
+  │   │   ├── ui/                  # UI primitives
+  │   │   │   ├── AlertMessage.tsx # Alert/notification component
+  │   │   │   ├── Button.tsx       # Button component
+  │   │   │   ├── DropdownMenu.tsx # Dropdown menu component
+  │   │   │   ├── FileUploadBox.tsx# File upload component
+  │   │   │   ├── InfoBox.tsx      # Information display box
+  │   │   │   ├── LoadingSpinner.tsx# Loading indicator
+  │   │   │   ├── PluginCard.tsx   # Plugin card component
+  │   │   │   └── index.ts         # Barrel file
+  │   │   │
+  │   │   └── index.ts             # Barrel file
+  │   │
+  │   ├── layout/           # Layout components
+  │   │   ├── Footer.tsx           # Footer component
+  │   │   ├── Header.tsx           # Header component
+  │   │   ├── SidePanel.tsx        # Side navigation panel
+  │   │   └── index.ts             # Barrel file
+  │   │
+  │   ├── plugins/          # Plugin-specific components
+  │   │   ├── DynamicPluginUI.tsx  # Dynamic plugin UI renderer
+  │   │   ├── InputField.tsx       # Dynamic input field
+  │   │   ├── OutputField.tsx      # Dynamic output field
+  │   │   ├── inputFields/         # Input field types
+  │   │   ├── outputFields/        # Output field types
+  │   │   └── index.ts             # Barrel file
+  │   │
+  │   ├── profile/          # Profile-related components
+  │   │   ├── ProfileSidePanel.tsx # Profile side panel
+  │   │   └── index.ts             # Barrel file
+  │   │
+  │   └── index.ts          # Main barrel file
   │
-  ├── contexts/             # React Contexts for global state (auth, user, etc.)
-  │   ├── AuthContext.tsx       # Auth session and login state
-  │   ├── FavoritesContext.tsx  # User's saved plugin state
-  │   └── UserContext.tsx       # Logged-in user profile
+  ├── contexts/             # React Contexts
+  │   ├── AuthContext.tsx       # Authentication context
+  │   ├── FavoritesContext.tsx  # Favorites management context
+  │   ├── UserContext.tsx       # User profile context
+  │   └── index.ts             # Barrel file
   │
   ├── hooks/                # Custom React hooks
-  │   ├── useAuth.ts            # Hook for auth context
-  │   ├── useDebounce.ts        # Debounce value updates
-  │   ├── useEventBus.ts        # Global event communication
-  │   ├── useFavorites.ts       # Hook for favorite tools
-  │   └── usePlugin.ts          # Hook for plugin execution logic
+  │   ├── useAuth.ts            # Authentication hook
+  │   ├── useDebounce.ts        # Debounce utility hook
+  │   ├── useEventBus.ts        # Event bus hook
+  │   ├── useFavorites.ts       # Favorites management hook
+  │   ├── usePlugin.ts          # Plugin management hook
+  │   └── index.ts              # Barrel file
   │
   ├── pages/                # Route-level components
-  │   ├── admin/                       # Admin-only views for managing system
-  │   │   ├── AdminDashboard.tsx          # Entry page for admin with stats/overview
-  │   │   ├── AdminOverview.tsx           # General system overview section
-  │   │   ├── ToolUpload.tsx              # Upload new plugin tool UI
-  │   │   ├── UserManagement.tsx          # Admin controls for managing users
-  │   │   └── index.tsx                   # Router for admin routes (optional)
+  │   ├── admin/            # Admin pages
+  │   │   ├── AdminDashboard.tsx    # Admin dashboard
+  │   │   ├── AdminOverview.tsx     # System overview
+  │   │   ├── ToolUpload.tsx        # Plugin upload interface
+  │   │   ├── UserManagement.tsx    # User management
+  │   │   └── index.ts              # Barrel file
   │   │
-  │   └── profile/                    # User profile sections and layout
-  │       ├── MyProfile.tsx              # Main profile page
-  │       ├── FavoritesSection.tsx       # Lists user’s favorite plugins
-  │       ├── ProfileInfoSection.tsx     # User info display (email, name, etc.)
-  │       └── SecuritySection.tsx        # Password or 2FA controls
+  │   ├── profile/          # Profile pages
+  │   │   ├── MyProfile.tsx          # Profile main page
+  │   │   ├── FavoritesSection.tsx   # Favorites management
+  │   │   ├── ProfileInfoSection.tsx # Profile information
+  │   │   ├── SecuritySection.tsx    # Security settings
+  │   │   └── index.ts               # Barrel file
+  │   │
+  │   ├── 401.tsx           # Unauthorized page
+  │   ├── 404.tsx           # Not found page
+  │   ├── Home.tsx          # Landing page
+  │   ├── Login.tsx         # Login page
+  │   ├── PluginDetails.tsx # Plugin details page
+  │   ├── PluginExplorer.tsx# Plugin explorer page
+  │   ├── Premium.tsx       # Premium features page
+  │   ├── Register.tsx      # Registration page
+  │   ├── TermsOfService.tsx# Terms of service page
+  │   └── index.ts          # Barrel file
   │
   ├── routes/               # Route configuration
-  │   ├── protected/            # Routes requiring login
-  │   ├── public/               # Publicly accessible routes
-  │   ├── unauthenticated/      # Login/Register-only routes
-  │   └── index.tsx             # Root route declaration
+  │   ├── protected/            # Protected routes
+  │   │   ├── ProtectedRoutes.tsx  # Protected route wrapper
+  │   │   └── index.ts            # Barrel file
+  │   │
+  │   ├── public/               # Public routes
+  │   │   ├── PublicRoutes.tsx    # Public route wrapper
+  │   │   └── index.ts            # Barrel file
+  │   │
+  │   ├── unauthenticated/      # Unauthenticated routes
+  │   │   ├── UnauthenticatedRoutes.tsx  # Unauthenticated route wrapper
+  │   │   └── index.ts                  # Barrel file
+  │   │
+  │   ├── AppRoutes.tsx         # Main routes configuration
+  │   └── index.ts              # Barrel file
   │
-  ├── services/             # API services and communication with backend
-  │   ├── api/                  # Axios config and request helpers
-  │   ├── admin/                # Admin API (plugin, user management)
-  │   ├── plugins/              # Plugin-related services (schema, execution)
-  │   ├── user/                 # User-related services (favorites, profile)
-  │   ├── authService.ts        # Login, logout, register
-  │   └── eventBus.ts           # Event bus for decoupled component messaging
+  ├── services/             # API services
+  │   ├── api/                  # API configuration
+  │   │   ├── axios.ts          # Axios instance setup
+  │   │   └── index.ts          # Barrel file
+  │   │
+  │   ├── admin/                # Admin services
+  │   │   ├── pluginService.ts  # Plugin management
+  │   │   ├── userService.ts    # User management
+  │   │   └── index.ts          # Barrel file
+  │   │
+  │   ├── plugins/              # Plugin services
+  │   │   ├── pluginService.ts  # Plugin operations
+  │   │   └── index.ts          # Barrel file
+  │   │
+  │   ├── user/                 # User services
+  │   │   ├── userService.ts    # User operations
+  │   │   └── index.ts          # Barrel file
+  │   │
+  │   ├── authService.ts        # Authentication service
+  │   ├── eventBus.ts           # Event bus service
+  │   └── index.ts              # Barrel file
   │
-  ├── types/                # Global TypeScript interfaces/types
-  │   ├── auth.ts               # Auth-related types
-  │   ├── authContext.ts        # AuthContext value types
-  │   ├── dropdownMenu.ts       # Dropdown item types
-  │   ├── plugins.ts            # Plugin-related data structures
-  │   ├── pluginSchema.ts       # Plugin UI schema definition
-  │   └── user.ts               # User account data types
+  ├── types/                # TypeScript types
+  │   ├── auth.ts               # Authentication types
+  │   ├── authContext.ts        # Auth context types
+  │   ├── dropdownMenu.ts       # Dropdown menu types
+  │   ├── plugins.ts            # Plugin types
+  │   ├── pluginSchema.ts       # Plugin schema types
+  │   ├── user.ts               # User types
+  │   └── index.ts              # Barrel file
   │
-  └── utils/                # Utility/helper functions
-      ├── files.ts              # File handling (size, format, etc.)
-      └── string.ts             # String manipulation utilities
-
+  └── utils/                # Utility functions
+      ├── files.ts              # File utilities
+      ├── string.ts             # String utilities
+      └── index.ts              # Barrel file
 ```
 
 ## Installation and Setup
@@ -196,6 +274,9 @@ src/
 # Clone the repository
 git clone https://github.com/m0nters/DevTools-FrontEnd.git
 cd DevTools-FrontEnd
+
+# Install dependencies
+npm install --legacy-peer-deps
 
 # Start frontend website server
 npm run dev
@@ -218,13 +299,19 @@ dotnet run
 
 ## Configuration
 
-The application can be configured by editing the environment variables:
+The application can be configured by editing the environment variables in a `.env` file:
 
-```
-# .env file
+```env
+# API Configuration
 VITE_API_URL=http://localhost:5175/api/v1
+
+# Authentication
 VITE_AUTH_TOKEN_KEY=auth_token
 VITE_REFRESH_TOKEN_KEY=refresh_token
+
+# Other Configuration
+VITE_APP_NAME=IT Tools
+VITE_APP_VERSION=1.0.0
 ```
 
 ## Development Workflow
@@ -269,4 +356,4 @@ MIT License
 
 ---
 
-Built by Trịnh Anh Tài & Phạm Nguyên Khánh
+Built by Trịnh Anh Tài (FE, BE) & Phạm Nguyên Khánh (BE)
