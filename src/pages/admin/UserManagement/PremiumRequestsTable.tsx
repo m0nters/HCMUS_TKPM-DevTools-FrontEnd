@@ -11,7 +11,7 @@ interface PremiumRequestsTableProps {
   onReject: (user: UserProfile) => void;
 }
 
-function PremiumRequestsTable({
+export function PremiumRequestsTable({
   requests,
   filteredRequests,
   isLoading,
@@ -130,5 +130,3 @@ function PremiumRequestsTable({
     </div>
   );
 }
-
-export default PremiumRequestsTable;

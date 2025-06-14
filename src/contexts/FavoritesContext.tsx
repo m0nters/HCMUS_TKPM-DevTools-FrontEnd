@@ -5,11 +5,7 @@ import {
   ReactNode,
   useCallback,
 } from "react";
-import {
-  getFavorites,
-  addFavorite,
-  removeFavorite,
-} from "../services/user/favoritesService";
+import { getFavorites, addFavorite, removeFavorite } from "../services/";
 import { useAuth } from "../hooks/";
 
 interface FavoritesContextType {

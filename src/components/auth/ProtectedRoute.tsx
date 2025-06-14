@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks/";
-import LoadingSpinner from "../common/ui/LoadingSpinner";
+import { useAuth } from "../../hooks";
+import { LoadingSpinner } from "../common";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -8,13 +8,14 @@ interface ProtectedRouteProps {
   requireAdmin?: boolean;
 }
 
-const ProtectedRoute = ({
+export function ProtectedRoute({
   children,
   requiredAuth = true,
   requireAdmin = false,
-}: ProtectedRouteProps) => {
+}: ProtectedRouteProps) {
   const { isAuth, isAdmin, isLoading } = useAuth();
   const location = useLocation();
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -40,6 +41,4 @@ const ProtectedRoute = ({
   }
 
   return children;
-};
-
-export default ProtectedRoute;
+}

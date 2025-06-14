@@ -5,7 +5,7 @@ import {
   AdminOverview,
   UserManagement,
   ToolUpload,
-} from "../../pages/admin/";
+} from "../../pages/admin";
 
 export const Admin = [
   <Route

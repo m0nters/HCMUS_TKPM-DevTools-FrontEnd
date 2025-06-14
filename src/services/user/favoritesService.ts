@@ -1,6 +1,6 @@
 import { Plugin } from "../../types/";
-import { withAuth } from "../api/authRequest";
 import { slugify } from "../../utils/";
+import { withAuth } from "../api/authRequest";
 
 /**
  * Get user's favorite plugins

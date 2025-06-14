@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import SidePanel from "./SidePanel";
+import { SidePanel } from "./SidePanel";
 import React, { useState, useEffect } from "react";
 import {
   ArrowLeftEndOnRectangleIcon,
@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../../hooks/";
 
-function Header() {
+export function Header() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user, isAuth, isPremium, logout } = useAuth();
@@ -209,5 +209,3 @@ function Header() {
     </>
   );
 }
-
-export default Header;

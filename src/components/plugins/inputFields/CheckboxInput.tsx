@@ -1,6 +1,11 @@
 import { InputFieldProps } from "../InputField";
 
-function CheckboxInput({ field, value, onChange, error }: InputFieldProps) {
+export function CheckboxInput({
+  field,
+  value,
+  onChange,
+  error,
+}: InputFieldProps) {
   return (
     <div className="space-y-4">
       {field.options?.map((option) => {
@@ -33,5 +38,3 @@ function CheckboxInput({ field, value, onChange, error }: InputFieldProps) {
     </div>
   );
 }
-
-export default CheckboxInput;

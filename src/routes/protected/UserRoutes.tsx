@@ -1,11 +1,11 @@
 import { Route } from "react-router-dom";
-import { ProtectedRoute } from "../../components/auth";
+import { ProtectedRoute } from "../../components/";
 import {
   FavoritesSection,
   MyProfile,
   ProfileInfoSection,
   SecuritySection,
-} from "../../pages/profile";
+} from "../../pages/";
 
 export const User = [
   <Route

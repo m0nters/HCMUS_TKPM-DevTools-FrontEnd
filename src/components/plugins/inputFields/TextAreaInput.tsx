@@ -3,7 +3,12 @@ import { InputFieldProps } from "../InputField";
 /**
  * TextArea input component for multiline text
  */
-function TextAreaInput({ field, value, onChange, error }: InputFieldProps) {
+export function TextAreaInput({
+  field,
+  value,
+  onChange,
+  error,
+}: InputFieldProps) {
   const resizeClass =
     field.resize === "x"
       ? "resize-x"
@@ -27,5 +32,3 @@ function TextAreaInput({ field, value, onChange, error }: InputFieldProps) {
     />
   );
 }
-
-export default TextAreaInput;

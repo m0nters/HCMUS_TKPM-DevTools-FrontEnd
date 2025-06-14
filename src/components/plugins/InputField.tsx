@@ -20,9 +20,9 @@ export interface InputFieldProps {
 }
 
 /**
- * Factory component that renders the appropriate input field based on type
+ * Input field component for plugin UI
  */
-function InputField({ field, value, onChange, error }: InputFieldProps) {
+export function InputField({ field, value, onChange, error }: InputFieldProps) {
   // Render the input element based on field type
   const renderInputElement = () => {
     switch (field.type) {
@@ -164,5 +164,3 @@ function InputField({ field, value, onChange, error }: InputFieldProps) {
     </div>
   );
 }
-
-export default InputField;

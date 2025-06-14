@@ -1,0 +1,17 @@
+{
+  "directory": ["./src"],
+  "delete": true,
+  "exclude": [
+    "\\.test\\.ts$",
+    "\\.spec\\.ts$",
+    "\\.stories\\.tsx$",
+    "vite-env\\.d\\.ts$"
+  ],
+  "include": ["\\.ts$", "\\.tsx$"],
+  "location": "all",
+  "name": "index.ts",
+  "structure": "flat",
+  "verbose": false,
+  "noHeader": true,
+  "singleQuotes": false
+}

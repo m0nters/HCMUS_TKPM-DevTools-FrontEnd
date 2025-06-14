@@ -74,7 +74,7 @@ interface FileUploadBoxProps {
  * />
  */
 
-function FileUploadBox({
+export function FileUploadBox({
   label,
   multiple = false,
   accept = "*",
@@ -320,5 +320,3 @@ function FileUploadBox({
     </>
   );
 }
-
-export default FileUploadBox;

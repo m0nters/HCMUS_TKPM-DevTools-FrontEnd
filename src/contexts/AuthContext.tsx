@@ -4,7 +4,7 @@ import {
   storeAuthInfo,
   clearUserSession,
   getTokenExpiration,
-} from "../services/authService";
+} from "../services/";
 import { UserInfo } from "../types/";
 import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,10 @@
 import { OutputFieldProps } from "../OutputField";
 
-function TextOutput({ field, value, isLoading = false }: OutputFieldProps) {
+export function TextOutput({
+  field,
+  value,
+  isLoading = false,
+}: OutputFieldProps) {
   const displayValue = (() => {
     if (isLoading) {
       return "Processing...";
@@ -27,5 +31,3 @@ function TextOutput({ field, value, isLoading = false }: OutputFieldProps) {
     </div>
   );
 }
-
-export default TextOutput;

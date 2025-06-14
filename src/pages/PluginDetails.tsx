@@ -8,7 +8,7 @@ import {
   Button,
   AlertMessage,
 } from "../components/common";
-import DynamicPluginUI from "../components/plugins/DynamicPluginUI";
+import { DynamicPluginUI } from "../components/plugins/DynamicPluginUI";
 import {
   LockClosedIcon,
   WrenchScrewdriverIcon,
@@ -17,7 +17,7 @@ import { getPluginSchema, getAllPlugins } from "../services/plugins/";
 import { Plugin, PluginSchema } from "../types/";
 import { estimateReadingTime, slugify } from "../utils/";
 
-function PluginDetails() {
+export function PluginDetails() {
   const { pluginName } = useParams<{ pluginName: string }>();
   const { isAuth, isPremium } = useAuth();
   const [pluginSchemaData, setPluginSchemaData] = useState<PluginSchema | null>(
@@ -249,5 +249,3 @@ function PluginDetails() {
     </div>
   );
 }
-
-export default PluginDetails;

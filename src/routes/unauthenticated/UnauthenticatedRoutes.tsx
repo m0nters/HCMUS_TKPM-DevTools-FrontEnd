@@ -1,3 +1,3 @@
-import { Authentication } from "./authentication";
+import { Authentication } from "./Authentication";
 
 export const UnauthenticatedRoutes = [...Authentication];

@@ -120,7 +120,7 @@ class Noise {
  * ```
  */
 
-const Waves = ({
+export const Waves = ({
   lineColor = "black",
   backgroundColor = "transparent",
   waveSpeedX = 0.0125,
@@ -392,5 +392,3 @@ const Waves = ({
     </div>
   );
 };
-
-export default Waves;

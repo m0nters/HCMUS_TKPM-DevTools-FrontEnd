@@ -3,7 +3,7 @@ import { AlertMessage, Button, PasswordInput } from "../../components/common";
 import { changePassword } from "../../services/user/";
 import { estimateReadingTime } from "../../utils/";
 
-function SecuritySection() {
+export function SecuritySection() {
   const [oldPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmPassword] = useState("");
@@ -105,5 +105,3 @@ function SecuritySection() {
     </div>
   );
 }
-
-export default SecuritySection;

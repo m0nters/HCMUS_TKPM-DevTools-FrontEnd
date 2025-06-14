@@ -1,7 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import { useAuth } from "../../hooks/";
 
-function ProfileInfoSection() {
+export function ProfileInfoSection() {
   const { profile } = useOutletContext<any>();
   const { isPremium } = useAuth();
 
@@ -45,5 +45,3 @@ function ProfileInfoSection() {
     </div>
   );
 }
-
-export default ProfileInfoSection;

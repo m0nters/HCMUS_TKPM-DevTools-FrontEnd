@@ -1,6 +1,6 @@
 import { InputFieldProps } from "../InputField";
 
-function TextInput({ field, value, onChange, error }: InputFieldProps) {
+export function TextInput({ field, value, onChange, error }: InputFieldProps) {
   return (
     <input
       type="text"
@@ -14,5 +14,3 @@ function TextInput({ field, value, onChange, error }: InputFieldProps) {
     />
   );
 }
-
-export default TextInput;

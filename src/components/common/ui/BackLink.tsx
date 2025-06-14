@@ -12,7 +12,12 @@ interface BackLinkProps {
 /**
  * Reusable back link component with consistent styling and animation
  */
-function BackLink({ to, label, size = "md", className = "" }: BackLinkProps) {
+export function BackLink({
+  to,
+  label = "Back",
+  size = "md",
+  className = "",
+}: BackLinkProps) {
   const navigate = useNavigate();
 
   // Size classes
@@ -49,5 +54,3 @@ function BackLink({ to, label, size = "md", className = "" }: BackLinkProps) {
     </button>
   );
 }
-
-export default BackLink;

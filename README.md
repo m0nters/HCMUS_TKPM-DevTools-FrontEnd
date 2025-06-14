@@ -146,7 +146,7 @@ src/
   │   │   ├── AdminOverview.tsx           # General system overview section
   │   │   ├── ToolUpload.tsx              # Upload new plugin tool UI
   │   │   ├── UserManagement.tsx          # Admin controls for managing users
-  │   │   └── index.tsx                   # Router/index for admin routes (optional)
+  │   │   └── index.tsx                   # Router for admin routes (optional)
   │   │
   │   └── profile/                    # User profile sections and layout
   │       ├── MyProfile.tsx              # Main profile page

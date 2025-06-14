@@ -30,7 +30,7 @@ import { useEffect, useRef, useState } from "react";
  * />
  * ```
  */
-const SplitText = ({
+export const SplitText = ({
   text = "",
   className = "",
   delay = 100,
@@ -122,5 +122,3 @@ const SplitText = ({
     </p>
   );
 };
-
-export default SplitText;

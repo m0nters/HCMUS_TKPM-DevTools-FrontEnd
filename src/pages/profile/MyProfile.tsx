@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { LoadingSpinner } from "../../components/common";
-import { getProfile } from "../../services/user/userService";
-import { UserProfile } from "../../types/";
+import { getProfile } from "../../services/user";
+import { UserProfile } from "../../types";
 import { ProfileSidePanel } from "../../components/profile";
 
-function MyProfile() {
+export function MyProfile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,5 +59,3 @@ function MyProfile() {
     </div>
   );
 }
-
-export default MyProfile;

@@ -1,6 +1,5 @@
 import { Route } from "react-router-dom";
-import NotFound from "../../pages/404";
-import Unauthorized from "../../pages/401";
+import { NotFound, Unauthorized } from "../../pages";
 
 export const Errors = [
   <Route key="notFound" path="*" element={<NotFound />} />,

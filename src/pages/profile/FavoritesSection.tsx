@@ -10,7 +10,7 @@ import { getFavorites } from "../../services/user";
 import { Plugin } from "../../types/";
 import { useFavorites } from "../../hooks/";
 
-function FavoritesSection() {
+export function FavoritesSection() {
   const [favorites, setFavorites] = useState<Plugin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -110,5 +110,3 @@ function FavoritesSection() {
     </div>
   );
 }
-
-export default FavoritesSection;

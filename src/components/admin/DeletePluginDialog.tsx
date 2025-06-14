@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { AdminPlugin } from "../../types/";
-import { deletePlugin } from "../../services/admin/pluginService";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useEffect, useRef, useState } from "react";
+import { deletePlugin } from "../../services/admin/pluginService";
+import { AdminPlugin } from "../../types/";
 
 interface DeletePluginDialogProps {
   plugin: AdminPlugin;
@@ -9,7 +9,7 @@ interface DeletePluginDialogProps {
   onDeleted: (pluginId: number) => void;
 }
 
-function DeletePluginDialog({
+export function DeletePluginDialog({
   plugin,
   onCancel,
   onDeleted,
@@ -156,5 +156,3 @@ function DeletePluginDialog({
     </div>
   );
 }
-
-export default DeletePluginDialog;

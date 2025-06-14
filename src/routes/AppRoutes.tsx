@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes } from "react-router-dom";
-import { PublicRoutes } from "./public";
-import { ProtectedRoutes } from "./protected";
-import { UnauthenticatedRoutes } from "./unauthenticated";
+import { ProtectedRoutes } from "./protected/ProtectedRoutes";
+import { PublicRoutes } from "./public/PublicRoutes";
+import { UnauthenticatedRoutes } from "./unauthenticated/UnauthenticatedRoutes";
 
 /**
  * Main routes component that combines all route groups
@@ -10,7 +10,7 @@ import { UnauthenticatedRoutes } from "./unauthenticated";
  * - Private routes: require authentication
  * - Unauthenticated routes: only accessible when not logged in
  */
-const AppRoutes = () => {
+export const AppRoutes = () => {
   // Add a prefix to each route's key to ensure global uniqueness
   const prefixKeys = (routes: React.JSX.Element[], prefix: string) => {
     return routes.map((route) => {
@@ -37,5 +37,3 @@ const AppRoutes = () => {
     </Routes>
   );
 };
-
-export default AppRoutes;

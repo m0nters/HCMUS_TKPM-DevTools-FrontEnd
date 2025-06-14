@@ -74,7 +74,7 @@ interface AlertMessageProps {
  *   onDismiss={() => refetchData()}
  * />
  */
-function AlertMessage({
+export function AlertMessage({
   message,
   isError = false,
   className = "",
@@ -182,5 +182,3 @@ function AlertMessage({
     </div>
   );
 }
-
-export default AlertMessage;

@@ -1,19 +1,23 @@
-import { useState, useEffect } from "react";
-import { Plugin, PluginCategory, AdminPlugin } from "../types/";
 import {
-  MagnifyingGlassIcon,
   ArrowPathIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import DropdownMenu from "../components/common/ui/DropdownMenu";
-import { LoadingSpinner, PluginCard, AlertMessage } from "../components/common";
-import { getAllPlugins, getAllCategories } from "../services/plugins/";
-import { getAllPluginsAdmin } from "../services/admin/pluginService";
-import { useAuth, useDebounce } from "../hooks/";
-import { AdminModeToggle } from "../components/admin/";
-import { estimateReadingTime } from "../utils/";
+import { useEffect, useState } from "react";
+import { AdminModeToggle } from "../components/";
+import {
+  AlertMessage,
+  DropdownMenu,
+  LoadingSpinner,
+  PluginCard,
+} from "../components/common";
+import { useAuth, useDebounce } from "../hooks";
+import { getAllPluginsAdmin } from "../services/admin";
 import { eventBus, EVENTS } from "../services/eventBus";
+import { getAllCategories, getAllPlugins } from "../services/plugins";
+import { AdminPlugin, Plugin, PluginCategory } from "../types";
+import { estimateReadingTime } from "../utils/";
 
-function PluginExplorer() {
+export function PluginExplorer() {
   // Hooks
   const [allCategories, setAllCategories] = useState<PluginCategory[]>([]);
   const [allPlugins, setAllPlugins] = useState<Plugin[] | AdminPlugin[]>([]);
@@ -299,5 +303,3 @@ function PluginExplorer() {
     </>
   );
 }
-
-export default PluginExplorer;

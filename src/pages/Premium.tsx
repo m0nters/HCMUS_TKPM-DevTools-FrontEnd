@@ -1,19 +1,19 @@
-import { useState } from "react";
 import {
-  CheckCircleIcon,
-  XMarkIcon,
   ArrowRightIcon,
-  ShieldCheckIcon,
-  CloudArrowUpIcon,
+  CheckCircleIcon,
   ClockIcon,
+  CloudArrowUpIcon,
+  ShieldCheckIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { SparklesIcon as SparklesSolid } from "@heroicons/react/24/solid";
-import { Button, AlertMessage } from "../components/common";
-import { useAuth } from "../hooks/";
-import { requestPremiumUpgrade } from "../services/user/premiumService";
-import { estimateReadingTime } from "../utils/";
+import { useState } from "react";
+import { AlertMessage, Button } from "../components/common";
+import { useAuth } from "../hooks";
+import { requestPremiumUpgrade } from "../services/user";
+import { estimateReadingTime } from "../utils";
 
-function Premium() {
+export function Premium() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [requestStatus, setRequestStatus] = useState<{
     message: string;
@@ -247,5 +247,3 @@ function Premium() {
     </>
   );
 }
-
-export default Premium;

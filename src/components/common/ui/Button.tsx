@@ -35,7 +35,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-function Button({
+export function Button({
   children,
   variant = "primary",
   size = "md",
@@ -133,5 +133,3 @@ function Button({
     </div>
   );
 }
-
-export default Button;

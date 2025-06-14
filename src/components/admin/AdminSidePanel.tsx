@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 
-function AdminSidePanel() {
+export function AdminSidePanel() {
   const navItems = [
     {
       icon: <ChartBarIcon className="w-5 h-5" />,
@@ -49,5 +49,3 @@ function AdminSidePanel() {
     </aside>
   );
 }
-
-export default AdminSidePanel;

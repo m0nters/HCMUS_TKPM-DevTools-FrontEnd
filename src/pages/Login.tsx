@@ -9,7 +9,7 @@ import { memo } from "react";
 import { estimateReadingTime } from "../utils/";
 const MemoizedThreads = memo(Threads);
 
-const Login = () => {
+export function Login() {
   const { login } = useAuth();
   const location = useLocation();
   const [username, setUsername] = useState("");
@@ -155,6 +155,4 @@ const Login = () => {
       </div>
     </>
   );
-};
-
-export default Login;
+}

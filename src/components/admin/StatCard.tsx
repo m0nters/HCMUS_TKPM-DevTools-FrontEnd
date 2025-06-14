@@ -6,7 +6,13 @@ export interface StatCardProps {
   subtext?: string;
 }
 
-function StatCard({ title, value, icon, change, subtext }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  icon,
+  change,
+  subtext,
+}: StatCardProps) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 flex items-center">
       <div className="bg-gray-50 p-3 rounded-lg mr-4">{icon}</div>
@@ -25,5 +31,3 @@ function StatCard({ title, value, icon, change, subtext }: StatCardProps) {
     </div>
   );
 }
-
-export default StatCard;

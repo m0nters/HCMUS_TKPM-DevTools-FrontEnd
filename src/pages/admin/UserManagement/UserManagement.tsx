@@ -16,15 +16,19 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAuth, useDebounce } from "../../../hooks/";
 import { UserProfile, UserRole } from "../../../types/";
-import { AlertMessage, Button } from "../../../components/common";
-import { UsersTable, PremiumRequestsTable } from "./";
+import {
+  AlertMessage,
+  Button,
+  ConfirmDialog,
+} from "../../../components/common";
+import { UsersTable } from "./UsersTable";
+import { PremiumRequestsTable } from "./PremiumRequestsTable";
 import { estimateReadingTime } from "../../../utils/";
-import ConfirmDialog from "../../../components/common/ui/ConfirmDialog";
 
 // Define view types
 type ViewType = "users" | "premium-requests";
 
-function UserManagement() {
+export function UserManagement() {
   // Shared state
   const [activeView, setActiveView] = useState<ViewType>("users");
   const [searchQuery, setSearchQuery] = useState("");
@@ -384,5 +388,3 @@ function UserManagement() {
     </>
   );
 }
-
-export default UserManagement;

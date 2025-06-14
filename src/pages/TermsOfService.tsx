@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function TermsOfService() {
+export function TermsOfService() {
   return (
     <>
       <article>
@@ -109,5 +109,3 @@ function TermsOfService() {
     </>
   );
 }
-
-export default TermsOfService;

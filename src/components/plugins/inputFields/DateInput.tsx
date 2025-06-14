@@ -1,6 +1,11 @@
 import { InputFieldProps } from "../InputField";
 
-function DateTimeInput({ field, value, onChange, error }: InputFieldProps) {
+export function DateTimeInput({
+  field,
+  value,
+  onChange,
+  error,
+}: InputFieldProps) {
   return (
     <input
       type="datetime-local"
@@ -14,5 +19,3 @@ function DateTimeInput({ field, value, onChange, error }: InputFieldProps) {
     />
   );
 }
-
-export default DateTimeInput;

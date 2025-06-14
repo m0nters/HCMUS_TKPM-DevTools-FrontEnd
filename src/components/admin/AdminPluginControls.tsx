@@ -11,7 +11,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { LoadingSpinner } from "../common";
-import DeletePluginDialog from "./DeletePluginDialog";
+import { DeletePluginDialog } from "./DeletePluginDialog";
 
 interface AdminPluginControlsProps {
   plugin: AdminPlugin;
@@ -26,7 +26,7 @@ interface AdminPluginControlsProps {
 /**
  * Admin controls that overlay on plugin cards when in admin mode
  */
-function AdminPluginControls({
+export function AdminPluginControls({
   plugin,
   onPluginUpdated,
   onPluginDeleted,
@@ -171,5 +171,3 @@ function AdminPluginControls({
     </>
   );
 }
-
-export default AdminPluginControls;

@@ -1,6 +1,6 @@
 import { InputFieldProps } from "../InputField";
 
-function RadioInput({ field, value, onChange, error }: InputFieldProps) {
+export function RadioInput({ field, value, onChange, error }: InputFieldProps) {
   return (
     <div className="flex justify-start gap-6 items-center mb-2">
       {field.options?.map((option) => (
@@ -25,5 +25,3 @@ function RadioInput({ field, value, onChange, error }: InputFieldProps) {
     </div>
   );
 }
-
-export default RadioInput;

@@ -135,7 +135,7 @@ void main() {
  * />
  * ```
  */
-const Threads = ({
+export const Threads = ({
   color = [1, 1, 1],
   amplitude = 1,
   distance = 0,
@@ -245,5 +245,3 @@ const Threads = ({
     />
   );
 };
-
-export default Threads;

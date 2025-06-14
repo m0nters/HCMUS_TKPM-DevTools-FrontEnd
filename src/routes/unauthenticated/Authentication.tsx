@@ -1,7 +1,6 @@
 import { Route } from "react-router-dom";
 import { UnauthenticatedRoute } from "../../components/auth";
-import Login from "../../pages/Login";
-import Register from "../../pages/Register";
+import { Login, Register } from "../../pages";
 
 export const Authentication = [
   <Route

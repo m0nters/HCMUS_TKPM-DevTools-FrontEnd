@@ -5,7 +5,7 @@ import { AdminSidePanel } from "../../components/admin";
  * Admin Dashboard Layout
  * Provides navigation and layout structure for all admin pages
  */
-function AdminDashboard() {
+export function AdminDashboard() {
   const location = useLocation();
 
   // Check if we're at the root admin path and redirect to overview
@@ -27,5 +27,3 @@ function AdminDashboard() {
     </div>
   );
 }
-
-export default AdminDashboard;

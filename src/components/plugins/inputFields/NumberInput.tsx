@@ -1,6 +1,11 @@
 import { InputFieldProps } from "../InputField";
 
-function NumberInput({ field, value, onChange, error }: InputFieldProps) {
+export function NumberInput({
+  field,
+  value,
+  onChange,
+  error,
+}: InputFieldProps) {
   return (
     <input
       type="number"
@@ -16,5 +21,3 @@ function NumberInput({ field, value, onChange, error }: InputFieldProps) {
     />
   );
 }
-
-export default NumberInput;

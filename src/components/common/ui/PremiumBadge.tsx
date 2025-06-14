@@ -18,9 +18,9 @@ export interface PremiumBadgeProps {
 /**
  * Premium badge component with customizable styles
  */
-function PremiumBadge({
+export function PremiumBadge({
   className = "",
-  size = "sm",
+  size = "md",
   variant = "default",
   showIcon = true,
   label = "Premium",
@@ -72,5 +72,3 @@ function PremiumBadge({
     </span>
   );
 }
-
-export default PremiumBadge;

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { PluginSchema } from "../../types/";
-import InputField from "./InputField";
-import OutputField from "./OutputField";
-import { executePlugin } from "../../services/plugins/";
-import { useDebounce } from "../../hooks/";
-import { hasValue } from "../../utils/";
+import { PluginSchema } from "../../types";
+import { InputField } from "./InputField";
+import { OutputField } from "./OutputField";
+import { executePlugin } from "../../services/";
+import { useDebounce } from "../../hooks";
+import { hasValue } from "../../utils";
 
 interface DynamicPluginUIProps {
   schema: PluginSchema;
@@ -18,7 +18,11 @@ interface DynamicPluginUIProps {
 /**
  * Main component for dynamically rendering plugin UI based on schema
  */
-function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
+export function DynamicPluginUI({
+  schema,
+  onSuccess,
+  onError,
+}: DynamicPluginUIProps) {
   // State for input values, output values, and processing state
   const [inputs, setInputs] = useState<Record<string, any>>({});
   const [outputs, setOutputs] = useState<Record<string, any>>({});
@@ -224,5 +228,3 @@ function DynamicPluginUI({ schema, onSuccess, onError }: DynamicPluginUIProps) {
     </div>
   );
 }
-
-export default DynamicPluginUI;

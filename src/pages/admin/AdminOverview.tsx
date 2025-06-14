@@ -10,7 +10,7 @@ import { getUserStats } from "../../services/admin/userService";
 import { LoadingSpinner } from "../../components/common";
 import { StatCard } from "../../components/admin/";
 
-function AdminOverview() {
+export function AdminOverview() {
   const [stats, setStats] = useState({
     totalUsers: 0,
     premiumUsers: 0,
@@ -204,5 +204,3 @@ function AdminOverview() {
     </div>
   );
 }
-
-export default AdminOverview;

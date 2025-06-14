@@ -1,7 +1,7 @@
 import { FuzzyText, Button } from "../components/common";
 import { HomeIcon } from "@heroicons/react/24/outline";
 
-function Unauthorized() {
+export function Unauthorized() {
   return (
     <>
       <article>
@@ -39,5 +39,3 @@ function Unauthorized() {
     </>
   );
 }
-
-export default Unauthorized;

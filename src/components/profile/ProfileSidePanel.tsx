@@ -14,7 +14,10 @@ interface SidePanelProps {
 /**
  * Profile sidebar component displaying user information and navigation
  */
-function ProfileSidePanel({ profile, isLoading = false }: SidePanelProps) {
+export function ProfileSidePanel({
+  profile,
+  isLoading = false,
+}: SidePanelProps) {
   // Get color based on role
   const getRoleColor = (role: string) => {
     switch (role) {
@@ -104,5 +107,3 @@ function ProfileSidePanel({ profile, isLoading = false }: SidePanelProps) {
     </div>
   );
 }
-
-export default ProfileSidePanel;

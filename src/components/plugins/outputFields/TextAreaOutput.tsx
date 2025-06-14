@@ -1,6 +1,10 @@
 import { OutputFieldProps } from "../OutputField";
 
-function TextAreaOutput({ field, value, isLoading = false }: OutputFieldProps) {
+export function TextAreaOutput({
+  field,
+  value,
+  isLoading = false,
+}: OutputFieldProps) {
   const displayValue = (() => {
     if (isLoading) {
       return "Processing...";
@@ -29,16 +33,18 @@ function TextAreaOutput({ field, value, isLoading = false }: OutputFieldProps) {
       : "resize-y"; // Default to vertical resize
 
   return (
-    <textarea
-      value={displayValue}
-      readOnly
-      placeholder={field.placeholder}
-      rows={field.rows}
-      className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 ${resizeClass} ${
+    <div
+      className={`border border-gray-300 rounded-md ${
         isLoading ? "animate-pulse" : ""
       }`}
-    />
+    >
+      <textarea
+        readOnly
+        value={displayValue}
+        placeholder={field.placeholder}
+        rows={field.rows || 5}
+        className={`w-full p-3 bg-transparent focus:outline-none ${resizeClass}`}
+      />
+    </div>
   );
 }
-
-export default TextAreaOutput;

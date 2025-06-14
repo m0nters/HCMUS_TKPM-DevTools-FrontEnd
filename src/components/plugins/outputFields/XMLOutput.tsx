@@ -1,7 +1,11 @@
 import { OutputFieldProps } from "../OutputField";
 import XMLViewer from "react-xml-viewer";
 
-function JSONOutput({ field, value, isLoading = false }: OutputFieldProps) {
+export function XMLOutput({
+  field,
+  value,
+  isLoading = false,
+}: OutputFieldProps) {
   return (
     <div
       className={`border border-gray-300 rounded-md p-4 ${
@@ -19,5 +23,3 @@ function JSONOutput({ field, value, isLoading = false }: OutputFieldProps) {
     </div>
   );
 }
-
-export default JSONOutput;

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { AdminPlugin, Plugin } from "../../../types/";
 import { slugify } from "../../../utils/";
-import PremiumBadge from "./PremiumBadge";
+import { PremiumBadge } from "./PremiumBadge";
 import { useRef, useEffect, useState } from "react";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { useAuth, useFavorites } from "../../../hooks/";
-import { AdminPluginControls } from "../../admin";
+import { AdminPluginControls } from "../../admin/";
 import { ClickSpark } from "../animations/";
 
 interface PluginCardProps {
@@ -24,7 +24,7 @@ interface PluginCardProps {
 /**
  * Plugin card component
  */
-function PluginCard({
+export function PluginCard({
   plugin,
   iconSize = "md",
   isAdminMode = false,
@@ -176,5 +176,3 @@ function PluginCard({
     </div>
   );
 }
-
-export default PluginCard;

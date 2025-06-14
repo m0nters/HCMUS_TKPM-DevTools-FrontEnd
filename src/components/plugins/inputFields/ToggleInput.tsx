@@ -1,6 +1,11 @@
 import { InputFieldProps } from "../InputField";
 
-function ToggleInput({ field, value, onChange, error }: InputFieldProps) {
+export function ToggleInput({
+  field,
+  value,
+  onChange,
+  error,
+}: InputFieldProps) {
   return (
     <div className="space-y-4">
       {field.options?.map((option) => {
@@ -42,5 +47,3 @@ function ToggleInput({ field, value, onChange, error }: InputFieldProps) {
     </div>
   );
 }
-
-export default ToggleInput;

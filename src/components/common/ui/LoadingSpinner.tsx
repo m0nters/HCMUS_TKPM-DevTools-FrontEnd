@@ -11,7 +11,7 @@
 interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg";
 }
-function LoadingSpinner({ size = "md" }: LoadingSpinnerProps) {
+export function LoadingSpinner({ size = "md" }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: "h-6 w-6",
     md: "h-10 w-10",
@@ -26,5 +26,3 @@ function LoadingSpinner({ size = "md" }: LoadingSpinnerProps) {
     </div>
   );
 }
-
-export default LoadingSpinner;

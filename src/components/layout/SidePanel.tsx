@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getAllCategories } from "../../services/plugins/";
-import { PluginCategory } from "../../types/";
+import { getAllCategories, EVENTS } from "../../services";
+import { PluginCategory } from "../../types";
 import {
   XMarkIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
-import { slugify, truncate } from "../../utils/";
-import { LoadingSpinner, PremiumBadge } from "../common";
-import { useEventBus } from "../../hooks/";
-import { EVENTS } from "../../services/eventBus";
+import { slugify, truncate } from "../../utils";
+import { LoadingSpinner, PremiumBadge } from "../common/";
+import { useEventBus } from "../../hooks";
 
 interface SidePanelProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-function SidePanel({ isOpen, onClose }: SidePanelProps) {
+export function SidePanel({ isOpen, onClose }: SidePanelProps) {
   // State for categories data
   const [categories, setCategories] = useState<PluginCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -179,5 +178,3 @@ function SidePanel({ isOpen, onClose }: SidePanelProps) {
     </>
   );
 }
-
-export default SidePanel;

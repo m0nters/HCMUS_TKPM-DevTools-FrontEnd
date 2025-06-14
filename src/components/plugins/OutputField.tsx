@@ -18,7 +18,11 @@ export interface OutputFieldProps {
 /**
  * Component that renders output field with copy to clipboard functionality
  */
-function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
+export function OutputField({
+  field,
+  value,
+  isLoading = false,
+}: OutputFieldProps) {
   const [copied, setCopied] = useState(false);
 
   // Reset copied status after 2 seconds
@@ -101,5 +105,3 @@ function OutputField({ field, value, isLoading = false }: OutputFieldProps) {
     </div>
   );
 }
-
-export default OutputField;

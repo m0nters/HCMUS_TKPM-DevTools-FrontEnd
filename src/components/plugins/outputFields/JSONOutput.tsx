@@ -1,7 +1,11 @@
 import { OutputFieldProps } from "../OutputField";
 import ReactJson from "react-json-view";
 
-function JSONOutput({ field, value, isLoading = false }: OutputFieldProps) {
+export function JSONOutput({
+  field,
+  value,
+  isLoading = false,
+}: OutputFieldProps) {
   return (
     <div
       className={`border border-gray-300 rounded-md ${
@@ -26,5 +30,3 @@ function JSONOutput({ field, value, isLoading = false }: OutputFieldProps) {
     </div>
   );
 }
-
-export default JSONOutput;

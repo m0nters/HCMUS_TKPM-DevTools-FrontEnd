@@ -37,13 +37,13 @@ interface InfoBoxProps {
 /**
  * InfoBox - A reusable component for displaying information with an icon
  */
-const InfoBox = ({
+export function InfoBox({
   title,
   content,
   type = "info",
   icon,
   className = "",
-}: InfoBoxProps) => {
+}: InfoBoxProps) {
   // Define styling based on type
   const styles = {
     info: {
@@ -125,6 +125,4 @@ const InfoBox = ({
       </div>
     </div>
   );
-};
-
-export default InfoBox;
+}

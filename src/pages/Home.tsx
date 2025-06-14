@@ -1,18 +1,18 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Plugin } from "../types/";
 import { ArrowRightIcon, SparklesIcon } from "@heroicons/react/24/outline";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
+  Button,
   LoadingSpinner,
   PluginCard,
-  Button,
   SplitText,
   Waves,
 } from "../components/common";
-import { getAllPlugins } from "../services/plugins/";
 import { useAuth } from "../hooks/";
+import { getAllPlugins } from "../services/plugins/";
+import { Plugin } from "../types/";
 
-function Home() {
+export function Home() {
   // Hooks
   const [featuredPlugins, setFeaturedPlugins] = useState<Plugin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -342,5 +342,3 @@ function Home() {
     </>
   );
 }
-
-export default Home;

@@ -1,5 +1,5 @@
-import { useAuth } from "../../hooks/";
 import { ShieldCheckIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "../../hooks/";
 
 interface AdminModeToggleProps {
   isAdminMode: boolean;
@@ -9,7 +9,10 @@ interface AdminModeToggleProps {
 /**
  * Toggle component for enabling/disabling admin mode in the explorer
  */
-function AdminModeToggle({ isAdminMode, onToggle }: AdminModeToggleProps) {
+export function AdminModeToggle({
+  isAdminMode,
+  onToggle,
+}: AdminModeToggleProps) {
   const { isAdmin } = useAuth();
 
   if (!isAdmin) return null;
@@ -71,4 +74,3 @@ function AdminModeToggle({ isAdminMode, onToggle }: AdminModeToggleProps) {
     </div>
   );
 }
-export default AdminModeToggle;

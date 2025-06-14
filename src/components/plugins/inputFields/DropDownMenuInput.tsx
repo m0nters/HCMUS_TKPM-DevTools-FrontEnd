@@ -1,8 +1,13 @@
 import { InputFieldProps } from "../InputField";
-import DropdownMenu from "../../common/ui/DropdownMenu";
+import { DropdownMenu } from "../../common/";
 import { DropdownOption } from "../../../types/";
 
-function DropDownMenuInput({ field, value, onChange, error }: InputFieldProps) {
+export function DropDownMenuInput({
+  field,
+  value,
+  onChange,
+  error,
+}: InputFieldProps) {
   return (
     <div>
       <DropdownMenu
@@ -14,5 +19,3 @@ function DropDownMenuInput({ field, value, onChange, error }: InputFieldProps) {
     </div>
   );
 }
-
-export default DropDownMenuInput;

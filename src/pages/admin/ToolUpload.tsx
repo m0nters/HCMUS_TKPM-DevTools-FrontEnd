@@ -9,7 +9,7 @@ import {
 } from "../../components/common";
 import { estimateReadingTime } from "../../utils/";
 
-function ToolUpload() {
+export function ToolUpload() {
   const [mainFile, setMainFile] = useState<File | null>(null);
   const [libraryFiles, setLibraryFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -170,5 +170,3 @@ function ToolUpload() {
     </div>
   );
 }
-
-export default ToolUpload;

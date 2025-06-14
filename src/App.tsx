@@ -1,10 +1,9 @@
-import { AuthProvider } from "./contexts/AuthContext";
-import { Header, Footer } from "./components/layout/";
-import AppRoutes from "./routes/index";
-import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { useEffect } from "react";
+import { Footer, Header } from "./components/";
+import { AuthProvider, FavoritesProvider } from "./contexts";
 import { useAuth } from "./hooks/";
-import { isTokenExpired } from "./services/authService";
+import { AppRoutes } from "./routes";
+import { isTokenExpired } from "./services";
 
 const App = () => {
   const { isAuth, logout } = useAuth();

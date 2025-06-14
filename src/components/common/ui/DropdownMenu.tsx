@@ -20,7 +20,7 @@ interface DropdownMenuProps {
 /**
  * Reusable dropdown menu component with animation and keyboard support
  */
-function DropdownMenu({
+export function DropdownMenu({
   options,
   selectedValue,
   onSelect,
@@ -172,5 +172,3 @@ function DropdownMenu({
     </div>
   );
 }
-
-export default DropdownMenu;

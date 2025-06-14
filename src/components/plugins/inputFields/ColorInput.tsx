@@ -1,7 +1,7 @@
 import { InputFieldProps } from "../InputField";
 import { useState, useEffect } from "react";
 
-function ColorInput({ field, value, onChange, error }: InputFieldProps) {
+export function ColorInput({ field, value, onChange, error }: InputFieldProps) {
   const [textColor, setTextColor] = useState<string>("white");
   const colorValue = value;
 
@@ -45,5 +45,3 @@ function ColorInput({ field, value, onChange, error }: InputFieldProps) {
     </div>
   );
 }
-
-export default ColorInput;

@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from "react";
 
-const ClickSpark = ({
+export const ClickSpark = ({
   sparkColor = "#fff",
   sparkSize = 10,
   sparkRadius = 15,
@@ -152,5 +152,3 @@ const ClickSpark = ({
     </div>
   );
 };
-
-export default ClickSpark;

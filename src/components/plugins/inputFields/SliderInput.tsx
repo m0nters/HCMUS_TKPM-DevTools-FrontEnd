@@ -1,6 +1,11 @@
 import { InputFieldProps } from "../InputField";
 
-function SliderInput({ field, value, onChange, error }: InputFieldProps) {
+export function SliderInput({
+  field,
+  value,
+  onChange,
+  error,
+}: InputFieldProps) {
   return (
     <>
       <div className="flex justify-between">
@@ -21,5 +26,3 @@ function SliderInput({ field, value, onChange, error }: InputFieldProps) {
     </>
   );
 }
-
-export default SliderInput;

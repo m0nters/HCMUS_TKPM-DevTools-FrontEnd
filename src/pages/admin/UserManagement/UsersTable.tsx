@@ -11,7 +11,7 @@ interface UsersTableProps {
   onDeleteClick: (user: UserProfile) => void;
 }
 
-function UsersTable({
+export function UsersTable({
   users,
   filteredUsers,
   isLoading,
@@ -135,5 +135,3 @@ function UsersTable({
     </div>
   );
 }
-
-export default UsersTable;

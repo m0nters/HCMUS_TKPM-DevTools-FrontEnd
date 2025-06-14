@@ -12,7 +12,7 @@ export interface PasswordInputProps
 /**
  * Password input field with visibility toggle button
  */
-function PasswordInput({
+export function PasswordInput({
   value,
   onChange,
   label,
@@ -78,5 +78,3 @@ function PasswordInput({
     </div>
   );
 }
-
-export default PasswordInput;

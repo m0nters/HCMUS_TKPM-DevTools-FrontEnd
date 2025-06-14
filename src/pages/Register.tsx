@@ -1,13 +1,12 @@
-import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import { Threads, AlertMessage, PasswordInput } from "../components/common/";
+import { memo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Button } from "../components/common";
+import { AlertMessage, PasswordInput, Threads } from "../components/common/";
 import { register } from "../services/authService";
-import { memo } from "react";
 const MemoizedThreads = memo(Threads);
 
-const Register = () => {
+export function Register() {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -233,6 +232,4 @@ const Register = () => {
       </div>
     </>
   );
-};
-
-export default Register;
+}

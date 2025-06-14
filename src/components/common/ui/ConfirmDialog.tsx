@@ -49,7 +49,7 @@ interface ConfirmDialogProps {
  *   onCancel={handleCancel}
  * />
  */
-const ConfirmDialog = ({
+export function ConfirmDialog({
   isOpen,
   title,
   message,
@@ -58,7 +58,7 @@ const ConfirmDialog = ({
   confirmButtonColor = "red",
   onConfirm,
   onCancel,
-}: ConfirmDialogProps) => {
+}: ConfirmDialogProps) {
   if (!isOpen) return null;
 
   // Dynamic button styles based on color prop
@@ -102,6 +102,4 @@ const ConfirmDialog = ({
       </div>
     </>
   );
-};
-
-export default ConfirmDialog;
+}

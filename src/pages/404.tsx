@@ -1,7 +1,7 @@
 import { FuzzyText, Button } from "../components/common";
 import { HomeIcon } from "@heroicons/react/24/outline";
 
-function NotFound() {
+export function NotFound() {
   return (
     <>
       <article>
@@ -38,5 +38,3 @@ function NotFound() {
     </>
   );
 }
-
-export default NotFound;

@@ -9,7 +9,9 @@ interface UnauthenticatedRouteProps {
  * Redirects authenticated users away from pages they shouldn't access when logged in
  * (like login and register pages)
  */
-const UnauthenticatedRoute = ({ children }: UnauthenticatedRouteProps) => {
+export const UnauthenticatedRoute = ({
+  children,
+}: UnauthenticatedRouteProps) => {
   const { isAuth } = useAuth();
   const location = useLocation();
 
@@ -19,7 +21,5 @@ const UnauthenticatedRoute = ({ children }: UnauthenticatedRouteProps) => {
   }
 
   // If not authenticated, show the children
-  return <>{children}</>;
+  return children;
 };
-
-export default UnauthenticatedRoute;
