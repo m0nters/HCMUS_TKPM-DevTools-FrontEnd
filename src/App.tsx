@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Footer, Header } from "./components/";
-import { AuthProvider, FavoritesProvider } from "./contexts";
+import { AuthProvider, FavoritesProvider } from "./contexts/";
 import { useAuth } from "./hooks/";
-import { AppRoutes } from "./routes";
-import { isTokenExpired } from "./services";
+import { AppRoutes } from "./routes/";
+import { isTokenExpired } from "./services/";
 
 const App = () => {
   const { isAuth, logout } = useAuth();

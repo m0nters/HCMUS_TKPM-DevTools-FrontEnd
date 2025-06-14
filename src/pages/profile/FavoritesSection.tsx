@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import {
-  LoadingSpinner,
-  Button,
-  PluginCard,
-  AlertMessage,
-} from "../../components/common";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { getFavorites } from "../../services/user";
-import { Plugin } from "../../types/";
+import { useEffect, useState } from "react";
+import {
+  AlertMessage,
+  Button,
+  LoadingSpinner,
+  PluginCard,
+} from "../../components/";
 import { useFavorites } from "../../hooks/";
+import { getFavorites } from "../../services/";
+import { Plugin } from "../../types/";
 
 export function FavoritesSection() {
   const [favorites, setFavorites] = useState<Plugin[]>([]);

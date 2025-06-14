@@ -8,9 +8,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { SparklesIcon as SparklesSolid } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { AlertMessage, Button } from "../components/common";
+import { AlertMessage, Button } from "../components/";
 import { useAuth } from "../hooks";
-import { requestPremiumUpgrade } from "../services/user";
+import { requestPremiumUpgrade } from "../services/";
 import { estimateReadingTime } from "../utils";
 
 export function Premium() {

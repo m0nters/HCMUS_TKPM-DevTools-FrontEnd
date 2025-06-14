@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
-import { Premium } from "../../pages/";
-import { ProtectedRoute } from "../../components/";
+import { ProtectedRoute } from "../../components";
+import { Premium } from "../../pages";
 
 export const PremiumUpgrade = [
   <Route

@@ -1,14 +1,12 @@
-import { useState, useEffect } from "react";
 import {
-  UsersIcon,
-  PuzzlePieceIcon,
-  CurrencyDollarIcon,
   ArrowTrendingUpIcon,
+  CurrencyDollarIcon,
+  PuzzlePieceIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
-import { getPluginStats } from "../../services/admin/pluginService";
-import { getUserStats } from "../../services/admin/userService";
-import { LoadingSpinner } from "../../components/common";
-import { StatCard } from "../../components/admin/";
+import { useEffect, useState } from "react";
+import { LoadingSpinner, StatCard } from "../../components/";
+import { getPluginStats, getUserStats } from "../../services/";
 
 export function AdminOverview() {
   const [stats, setStats] = useState({

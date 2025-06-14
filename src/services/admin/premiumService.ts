@@ -1,5 +1,5 @@
 import { UserProfile } from "../../types/";
-import { withAuth } from "../api";
+import { withAuth } from "../api/";
 
 /**
  * Gets all pending premium upgrade requests

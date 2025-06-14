@@ -1,5 +1,5 @@
-import { FuzzyText, Button } from "../components/common";
 import { HomeIcon } from "@heroicons/react/24/outline";
+import { Button, FuzzyText } from "../components/";
 
 export function NotFound() {
   return (

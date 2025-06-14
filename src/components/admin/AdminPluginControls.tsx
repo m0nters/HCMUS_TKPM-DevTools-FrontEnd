@@ -1,15 +1,12 @@
-import { useState } from "react";
-import { AdminPlugin } from "../../types/";
 import {
-  togglePluginActive,
-  togglePluginPremium,
-} from "../../services/admin/pluginService";
-import {
-  SparklesIcon,
   EyeIcon,
   EyeSlashIcon,
+  SparklesIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { togglePluginActive, togglePluginPremium } from "../../services/";
+import { AdminPlugin } from "../../types/";
 import { LoadingSpinner } from "../common";
 import { DeletePluginDialog } from "./DeletePluginDialog";
 

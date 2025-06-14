@@ -1,6 +1,6 @@
-import { LoadingSpinner } from "../../../components/common";
-import { UserProfile, UserRole, ROLES } from "../../../types/";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { LoadingSpinner } from "../../../components";
+import { ROLES, UserProfile, UserRole } from "../../../types/";
 
 interface UsersTableProps {
   users: UserProfile[];

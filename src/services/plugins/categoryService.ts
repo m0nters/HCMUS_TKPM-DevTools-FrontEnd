@@ -1,6 +1,6 @@
 import { PluginCategory } from "../../types/";
 import { slugify } from "../../utils/";
-import { apiRequest } from "../api/request";
+import { apiRequest } from "../api/";
 
 /**
  * Fetches all available plugin categories and children plugins from the API.

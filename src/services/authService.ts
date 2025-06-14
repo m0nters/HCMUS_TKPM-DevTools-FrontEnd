@@ -1,5 +1,5 @@
 import { LoginCredentials, RegisterCredentials, UserInfo } from "../types";
-import { apiRequest } from "./api/request";
+import { apiRequest } from "./api/";
 
 /**
  * Interface representing standard JWT claims

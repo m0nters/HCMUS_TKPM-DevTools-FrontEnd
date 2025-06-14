@@ -1,12 +1,11 @@
-import { useState, useCallback } from "react";
-import { uploadPlugin } from "../../services/admin/pluginService";
-import { eventBus, EVENTS } from "../../services/eventBus";
+import { useCallback, useState } from "react";
 import {
   AlertMessage,
   Button,
   FileUploadBox,
   InfoBox,
-} from "../../components/common";
+} from "../../components/";
+import { eventBus, EVENTS, uploadPlugin } from "../../services/";
 import { estimateReadingTime } from "../../utils/";
 
 export function ToolUpload() {

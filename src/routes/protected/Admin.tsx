@@ -1,10 +1,10 @@
 import { Route } from "react-router-dom";
-import { ProtectedRoute } from "../../components/auth";
+import { ProtectedRoute } from "../../components";
 import {
   AdminDashboard,
   AdminOverview,
-  UserManagement,
   ToolUpload,
+  UserManagement,
 } from "../../pages/admin";
 
 export const Admin = [

@@ -1,29 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
 import {
-  getAllUsers,
-  changeUserRole,
-  deleteUser,
-} from "../../../services/admin/userService";
-import {
-  getPremiumRequests,
-  processPremiumRequest,
-} from "../../../services/admin/premiumService";
-import {
-  MagnifyingGlassIcon,
   ArrowPathIcon,
   BellIcon,
+  MagnifyingGlassIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-import { useAuth, useDebounce } from "../../../hooks/";
-import { UserProfile, UserRole } from "../../../types/";
+import { useCallback, useEffect, useState } from "react";
 import {
   AlertMessage,
   Button,
   ConfirmDialog,
 } from "../../../components/common";
-import { UsersTable } from "./UsersTable";
-import { PremiumRequestsTable } from "./PremiumRequestsTable";
+import { useAuth, useDebounce } from "../../../hooks/";
+import {
+  changeUserRole,
+  deleteUser,
+  getAllUsers,
+  getPremiumRequests,
+  processPremiumRequest,
+} from "../../../services/";
+import { UserProfile, UserRole } from "../../../types/";
 import { estimateReadingTime } from "../../../utils/";
+import { PremiumRequestsTable } from "./PremiumRequestsTable";
+import { UsersTable } from "./UsersTable";
 
 // Define view types
 type ViewType = "users" | "premium-requests";

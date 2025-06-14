@@ -1,6 +1,6 @@
 import { AdminPlugin } from "../../types/";
 import { slugify } from "../../utils/";
-import { withAuth } from "../api/authRequest";
+import { withAuth } from "../api/";
 
 /**
  * Fetches all plugins for admin (including inactive ones)

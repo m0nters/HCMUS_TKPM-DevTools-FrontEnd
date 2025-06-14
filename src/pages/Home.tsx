@@ -7,9 +7,9 @@ import {
   PluginCard,
   SplitText,
   Waves,
-} from "../components/common";
+} from "../components/";
 import { useAuth } from "../hooks/";
-import { getAllPlugins } from "../services/plugins/";
+import { getAllPlugins } from "../services/";
 import { Plugin } from "../types/";
 
 export function Home() {

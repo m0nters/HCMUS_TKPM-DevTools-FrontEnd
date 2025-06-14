@@ -3,17 +3,21 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { AdminModeToggle } from "../components/";
 import {
+  AdminModeToggle,
   AlertMessage,
   DropdownMenu,
   LoadingSpinner,
   PluginCard,
-} from "../components/common";
+} from "../components/";
 import { useAuth, useDebounce } from "../hooks";
-import { getAllPluginsAdmin } from "../services/admin";
-import { eventBus, EVENTS } from "../services/eventBus";
-import { getAllCategories, getAllPlugins } from "../services/plugins";
+import {
+  eventBus,
+  EVENTS,
+  getAllCategories,
+  getAllPlugins,
+  getAllPluginsAdmin,
+} from "../services/";
 import { AdminPlugin, Plugin, PluginCategory } from "../types";
 import { estimateReadingTime } from "../utils/";
 

@@ -1,5 +1,5 @@
 import { UserProfile } from "../../types/";
-import { withAuth } from "../api/authRequest";
+import { withAuth } from "../api/";
 
 type UserRole = "User" | "Premium" | "Admin";
 

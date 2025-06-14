@@ -1,9 +1,8 @@
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { memo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button } from "../components/common";
-import { AlertMessage, PasswordInput, Threads } from "../components/common/";
-import { register } from "../services/authService";
+import { AlertMessage, Button, PasswordInput, Threads } from "../components/";
+import { register } from "../services/";
 const MemoizedThreads = memo(Threads);
 
 export function Register() {

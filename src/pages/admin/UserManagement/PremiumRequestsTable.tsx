@@ -1,6 +1,6 @@
-import { LoadingSpinner } from "../../../components/common";
-import { UserProfile } from "../../../types/";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { LoadingSpinner } from "../../../components/";
+import { UserProfile } from "../../../types/";
 
 interface PremiumRequestsTableProps {
   requests: UserProfile[];

@@ -1,5 +1,5 @@
-import { Outlet, useLocation, Navigate } from "react-router-dom";
-import { AdminSidePanel } from "../../components/admin";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { AdminSidePanel } from "../../components";
 
 /**
  * Admin Dashboard Layout

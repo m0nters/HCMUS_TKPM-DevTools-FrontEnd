@@ -1,6 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
-import { deletePlugin } from "../../services/admin/pluginService";
+import { deletePlugin } from "../../services/";
 import { AdminPlugin } from "../../types/";
 
 interface DeletePluginDialogProps {

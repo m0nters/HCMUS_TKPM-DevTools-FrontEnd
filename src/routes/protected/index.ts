@@ -1,4 +1,4 @@
-export * from "./AdminRoutes";
-export * from "./PremiumRoutes";
+export * from "./Admin";
+export * from "./PremiumUpgrade";
 export * from "./ProtectedRoutes";
-export * from "./UserRoutes";
+export * from "./User";

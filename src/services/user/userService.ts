@@ -1,5 +1,5 @@
 import { UserProfile } from "../../types/";
-import { withAuth } from "../api/authRequest";
+import { withAuth } from "../api/";
 /**
  * Fetches the current user's profile information
  * Requires authentication - will automatically use the token from storage

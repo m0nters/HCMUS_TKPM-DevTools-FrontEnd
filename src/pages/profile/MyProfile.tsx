@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
-import { LoadingSpinner } from "../../components/common";
-import { getProfile } from "../../services/user";
+import { useEffect, useState } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { LoadingSpinner, ProfileSidePanel } from "../../components/";
+import { getProfile } from "../../services/";
 import { UserProfile } from "../../types";
-import { ProfileSidePanel } from "../../components/profile";
 
 export function MyProfile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);

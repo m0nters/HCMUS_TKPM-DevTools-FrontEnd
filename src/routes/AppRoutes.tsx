@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes } from "react-router-dom";
-import { ProtectedRoutes } from "./protected/ProtectedRoutes";
-import { PublicRoutes } from "./public/PublicRoutes";
-import { UnauthenticatedRoutes } from "./unauthenticated/UnauthenticatedRoutes";
+import { ProtectedRoutes } from "./protected/";
+import { PublicRoutes } from "./public/";
+import { UnauthenticatedRoutes } from "./unauthenticated/";
 
 /**
  * Main routes component that combines all route groups

@@ -1,4 +1,4 @@
-import { withAuth } from "../api/authRequest";
+import { withAuth } from "../api/";
 
 /**
  * Changes the user's password

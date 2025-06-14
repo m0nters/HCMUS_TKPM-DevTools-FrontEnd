@@ -1,11 +1,9 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { AlertMessage, Button } from "../components/common";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
-import { login as apiLogin } from "../services/authService";
+import { memo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { AlertMessage, Button, PasswordInput, Threads } from "../components/";
 import { useAuth } from "../hooks/";
-import { Threads, PasswordInput } from "../components/common/";
-import { memo } from "react";
+import { login as apiLogin } from "../services/";
 import { estimateReadingTime } from "../utils/";
 const MemoizedThreads = memo(Threads);
 

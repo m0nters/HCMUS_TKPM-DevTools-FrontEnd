@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { AlertMessage, Button, PasswordInput } from "../../components/common";
-import { changePassword } from "../../services/user/";
+import { AlertMessage, Button, PasswordInput } from "../../components/";
+import { changePassword } from "../../services/";
 import { estimateReadingTime } from "../../utils/";
 
 export function SecuritySection() {

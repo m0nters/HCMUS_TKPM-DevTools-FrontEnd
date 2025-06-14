@@ -1,4 +1,4 @@
-import { withAuth } from "../api/authRequest";
+import { withAuth } from "../api/";
 
 /**
  * Submit a request to upgrade the current user's account to premium status
