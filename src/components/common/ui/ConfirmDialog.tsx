@@ -1,3 +1,4 @@
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { ReactNode } from "react";
 
 interface ConfirmDialogProps {
@@ -7,6 +8,7 @@ interface ConfirmDialogProps {
   confirmText?: string;
   cancelText?: string;
   confirmButtonColor?: "red" | "blue" | "green";
+  isLoading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -56,24 +58,26 @@ export function ConfirmDialog({
   confirmText = "Confirm",
   cancelText = "Cancel",
   confirmButtonColor = "red",
+  isLoading = false,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
   if (!isOpen) return null;
 
-  // Dynamic button styles based on color prop
   const confirmButtonStyles = {
-    red: "bg-red-600 hover:bg-red-700",
-    blue: "bg-blue-600 hover:bg-blue-700",
-    green: "bg-green-600 hover:bg-green-700",
+    red: "bg-red-600 hover:bg-red-700 disabled:bg-red-400",
+    blue: "bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400",
+    green: "bg-green-600 hover:bg-green-700 disabled:bg-green-400",
   };
 
   return (
     <>
-      {/* Overlay */}
-      <div className="fixed inset-0 bg-black/70 z-40" onClick={onCancel} />
+      {/* Overlay - prevent closing during loading */}
+      <div
+        className="fixed inset-0 bg-black/70 z-40"
+        onClick={isLoading ? undefined : onCancel}
+      />
 
-      {/* Dialog */}
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in">
         <div className="p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
@@ -86,16 +90,25 @@ export function ConfirmDialog({
 
           <div className="flex justify-end space-x-3">
             <button
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed"
               onClick={onCancel}
+              disabled={isLoading}
             >
               {cancelText}
             </button>
             <button
-              className={`px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md cursor-pointer ${confirmButtonStyles[confirmButtonColor]}`}
+              className={`px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md cursor-pointer disabled:cursor-not-allowed ${confirmButtonStyles[confirmButtonColor]}`}
               onClick={onConfirm}
+              disabled={isLoading}
             >
-              {confirmText}
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <ArrowPathIcon className="animate-spin h-4 w-4" />
+                  Processing...
+                </span>
+              ) : (
+                confirmText
+              )}
             </button>
           </div>
         </div>

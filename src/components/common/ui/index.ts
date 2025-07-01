@@ -6,6 +6,7 @@ export * from "./DropdownMenu";
 export * from "./FileUploadBox";
 export * from "./InfoBox";
 export * from "./LoadingSpinner";
+export * from "./PasswordConfirmDialog";
 export * from "./PasswordInput";
 export * from "./PluginCard";
 export * from "./PremiumBadge";
