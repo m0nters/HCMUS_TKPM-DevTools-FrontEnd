@@ -1,6 +1,7 @@
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "../../../hooks/";
@@ -43,8 +44,17 @@ export function DropdownMenu({
     options.find((option) => option.value === selectedValue)?.label ||
     "Select an option";
 
-  // Filter options based on search query
+  // Check if there's a selected value (not null and not the default option)
+  const hasSelectedValue =
+    selectedValue !== null && selectedValue !== undefined;
 
+  // Handle clear button click
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent dropdown from opening
+    onSelect(null);
+  };
+
+  // Filter options based on search query
   useEffect(() => {
     if (isOpen && searchQuery) {
       setFilteredOptions(
@@ -55,7 +65,7 @@ export function DropdownMenu({
     } else {
       setFilteredOptions(options);
     }
-  }, [isOpen, debouncedSearchQuery]);
+  }, [isOpen, debouncedSearchQuery, options]);
 
   // Focus the search input when dropdown opens
   useEffect(() => {
@@ -110,11 +120,23 @@ export function DropdownMenu({
         } ${buttonClassName} z-30`}
       >
         <span className="truncate">{selectedLabel}</span>
-        <ChevronDownIcon
-          className={`w-4 h-4 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
+
+        {hasSelectedValue && !disabled ? (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="p-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+            title="Clear selection"
+          >
+            <XMarkIcon className="w-4 h-4" />
+          </button>
+        ) : (
+          <ChevronDownIcon
+            className={`w-4 h-4 transition-transform ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        )}
       </button>
 
       {/* Dropdown Options */}

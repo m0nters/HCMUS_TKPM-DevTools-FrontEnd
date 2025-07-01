@@ -1,6 +1,7 @@
 import {
   ArrowPathIcon,
   MagnifyingGlassIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -219,6 +220,9 @@ export function PluginExplorer() {
     eventBus.emit(EVENTS.SIDEBAR_REFRESH);
   };
 
+  const hasActiveFilters =
+    searchQuery.trim() !== "" || categoryFilter !== null || showPremiumOnly;
+
   return (
     <>
       <article>
@@ -239,13 +243,29 @@ export function PluginExplorer() {
           />
         )}
 
-        {/* Admin mode toggle - only visible for admins */}
-        {isAdmin && (
-          <AdminModeToggle
-            isAdminMode={isAdminMode}
-            onToggle={setIsAdminMode}
-          />
-        )}
+        {/* Control Bar - Admin Mode Toggle & Reset Filters */}
+        <div className="flex items-center justify-between mb-6">
+          {/* Admin mode toggle - only visible for admins */}
+          {isAdmin ? (
+            <AdminModeToggle
+              isAdminMode={isAdminMode}
+              onToggle={setIsAdminMode}
+            />
+          ) : (
+            <div /> // Empty div to maintain flex layout
+          )}
+
+          {/* Reset Filters Button */}
+          {hasActiveFilters && (
+            <button
+              onClick={clearAllFilters}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              <XMarkIcon className="w-4 h-4" />
+              Clear Filters
+            </button>
+          )}
+        </div>
 
         {/* Search and Filters */}
         <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6">
