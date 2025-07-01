@@ -3,6 +3,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   AdminModeToggle,
   AlertMessage,
@@ -22,17 +23,28 @@ import { AdminPlugin, Plugin, PluginCategory } from "../types";
 import { estimateReadingTime } from "../utils/";
 
 export function PluginExplorer() {
+  // URL search params
+  const [searchParams, setSearchParams] = useSearchParams();
+
   // Hooks
   const [allCategories, setAllCategories] = useState<PluginCategory[]>([]);
   const [allPlugins, setAllPlugins] = useState<Plugin[] | AdminPlugin[]>([]);
   const [filteredPlugins, setFilteredPlugins] = useState<
     Plugin[] | AdminPlugin[]
   >([]);
-  const [searchQuery, setSearchQuery] = useState("");
+
+  // Initialize state from URL params
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || ""
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
-  const [categoryFilter, setCategoryFilter] = useState<number | null>(null);
-  const [showPremiumOnly, setShowPremiumOnly] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<number | null>(
+    searchParams.get("category") ? Number(searchParams.get("category")) : null
+  );
+  const [showPremiumOnly, setShowPremiumOnly] = useState(
+    searchParams.get("isPremiumOnly") === "true"
+  );
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     message: string;
@@ -44,6 +56,26 @@ export function PluginExplorer() {
 
   // Debounce the search query to avoid too many API calls
   const debouncedSearchQuery = useDebounce(searchQuery);
+
+  // Update URL when filters change
+  const updateURL = () => {
+    const params = new URLSearchParams();
+
+    if (searchQuery.trim()) {
+      params.set("search", searchQuery.trim());
+    }
+
+    if (categoryFilter !== null) {
+      params.set("category", categoryFilter.toString());
+    }
+
+    if (showPremiumOnly) {
+      params.set("isPremiumOnly", "true");
+    }
+
+    // Update URL without triggering navigation
+    setSearchParams(params, { replace: true });
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -117,7 +149,23 @@ export function PluginExplorer() {
   useEffect(() => {
     applyFilters(allPlugins);
     setIsSearching(false);
+    updateURL(); // Update URL when filters change
   }, [debouncedSearchQuery, categoryFilter, showPremiumOnly, allPlugins]);
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setIsSearching(true);
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSearchQuery("");
+    setCategoryFilter(null);
+    setShowPremiumOnly(false);
+    // Clear URL params
+    setSearchParams({}, { replace: true });
+  };
 
   // Handle plugin updates from admin controls
   const onPluginUpdated = (
@@ -208,10 +256,7 @@ export function PluginExplorer() {
                 type="text"
                 placeholder="Search tools..."
                 value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setIsSearching(true);
-                }}
+                onChange={handleSearchChange}
                 className="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               />
 
@@ -292,11 +337,7 @@ export function PluginExplorer() {
               No tools found matching your criteria.
             </p>
             <button
-              onClick={() => {
-                setSearchQuery("");
-                setCategoryFilter(null);
-                setShowPremiumOnly(false);
-              }}
+              onClick={clearAllFilters}
               className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium transition-colors"
             >
               Clear Filters
