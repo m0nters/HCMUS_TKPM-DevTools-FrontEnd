@@ -117,7 +117,7 @@ src/
   ├── components/           # Reusable UI components
   │   ├── admin/            # Admin-specific UI components
   │   │   ├── AdminModeToggle.tsx    # Toggle for admin mode
-  │   │   └── index.ts              # Barrel file
+  │   │   └── index.ts               # Barrel file
   │   │
   │   ├── auth/             # Authentication related components
   │   │   ├── LoginForm.tsx         # Login form component
@@ -126,24 +126,24 @@ src/
   │   │
   │   ├── common/           # Shared components
   │   │   ├── backgrounds/          # Animated background effects
-  │   │   │   ├── Threads.tsx      # Thread animation component
-  │   │   │   ├── Waves.tsx        # Wave animation component
-  │   │   │   └── index.ts         # Barrel file
+  │   │   │   ├── Threads.tsx               # Thread animation component
+  │   │   │   ├── Waves.tsx                 # Wave animation component
+  │   │   │   └── index.ts                  # Barrel file
   │   │   │
-  │   │   ├── textAnimation/       # Text animation components
-  │   │   │   ├── FuzzyText.tsx    # Fuzzy text effect
-  │   │   │   ├── SplitText.tsx    # Split text animation
-  │   │   │   └── index.ts         # Barrel file
+  │   │   ├── textAnimation/        # Text animation components
+  │   │   │   ├── FuzzyText.tsx             # Fuzzy text effect
+  │   │   │   ├── SplitText.tsx             # Split text animation
+  │   │   │   └── index.ts                  # Barrel file
   │   │   │
-  │   │   ├── ui/                  # UI primitives
-  │   │   │   ├── AlertMessage.tsx # Alert/notification component
-  │   │   │   ├── Button.tsx       # Button component
-  │   │   │   ├── DropdownMenu.tsx # Dropdown menu component
-  │   │   │   ├── FileUploadBox.tsx# File upload component
-  │   │   │   ├── InfoBox.tsx      # Information display box
-  │   │   │   ├── LoadingSpinner.tsx# Loading indicator
-  │   │   │   ├── PluginCard.tsx   # Plugin card component
-  │   │   │   └── index.ts         # Barrel file
+  │   │   ├── ui/                   # UI primitives
+  │   │   │   ├── AlertMessage.tsx          # Alert/notification component
+  │   │   │   ├── Button.tsx                # Button component
+  │   │   │   ├── DropdownMenu.tsx          # Dropdown menu component
+  │   │   │   ├── FileUploadBox.tsx         # File upload component
+  │   │   │   ├── InfoBox.tsx               # Information display box
+  │   │   │   ├── LoadingSpinner.tsx        # Loading indicator
+  │   │   │   ├── PluginCard.tsx            # Plugin card component
+  │   │   │   └── index.ts                  # Barrel file
   │   │   │
   │   │   └── index.ts             # Barrel file
   │   │
@@ -168,18 +168,18 @@ src/
   │   └── index.ts          # Main barrel file
   │
   ├── contexts/             # React Contexts
-  │   ├── AuthContext.tsx       # Authentication context
-  │   ├── FavoritesContext.tsx  # Favorites management context
-  │   ├── UserContext.tsx       # User profile context
-  │   └── index.ts             # Barrel file
+  │   ├── AuthContext.tsx          # Authentication context
+  │   ├── FavoritesContext.tsx     # Favorites management context
+  │   ├── UserContext.tsx          # User profile context
+  │   └── index.ts                 # Barrel file
   │
   ├── hooks/                # Custom React hooks
-  │   ├── useAuth.ts            # Authentication hook
-  │   ├── useDebounce.ts        # Debounce utility hook
-  │   ├── useEventBus.ts        # Event bus hook
-  │   ├── useFavorites.ts       # Favorites management hook
-  │   ├── usePlugin.ts          # Plugin management hook
-  │   └── index.ts              # Barrel file
+  │   ├── useAuth.ts               # Authentication hook
+  │   ├── useDebounce.ts           # Debounce utility hook
+  │   ├── useEventBus.ts           # Event bus hook
+  │   ├── useFavorites.ts          # Favorites management hook
+  │   ├── usePlugin.ts             # Plugin management hook
+  │   └── index.ts                 # Barrel file
   │
   ├── pages/                # Route-level components
   │   ├── admin/            # Admin pages
@@ -196,29 +196,29 @@ src/
   │   │   ├── SecuritySection.tsx    # Security settings
   │   │   └── index.ts               # Barrel file
   │   │
-  │   ├── 401.tsx           # Unauthorized page
-  │   ├── 404.tsx           # Not found page
-  │   ├── Home.tsx          # Landing page
-  │   ├── Login.tsx         # Login page
-  │   ├── PluginDetails.tsx # Plugin details page
-  │   ├── PluginExplorer.tsx# Plugin explorer page
-  │   ├── Premium.tsx       # Premium features page
-  │   ├── Register.tsx      # Registration page
-  │   ├── TermsOfService.tsx# Terms of service page
-  │   └── index.ts          # Barrel file
+  │   ├── 401.tsx                 # Unauthorized page
+  │   ├── 404.tsx                 # Not found page
+  │   ├── Home.tsx                # Landing page
+  │   ├── Login.tsx               # Login page
+  │   ├── PluginDetails.tsx       # Plugin details page
+  │   ├── PluginExplorer.tsx      # Plugin explorer page
+  │   ├── Premium.tsx             # Premium features page
+  │   ├── Register.tsx            # Registration page
+  │   ├── TermsOfService.tsx      # Terms of service page
+  │   └── index.ts                # Barrel file
   │
   ├── routes/               # Route configuration
   │   ├── protected/            # Protected routes
   │   │   ├── ProtectedRoutes.tsx  # Protected route wrapper
-  │   │   └── index.ts            # Barrel file
+  │   │   └── index.ts             # Barrel file
   │   │
   │   ├── public/               # Public routes
-  │   │   ├── PublicRoutes.tsx    # Public route wrapper
-  │   │   └── index.ts            # Barrel file
+  │   │   ├── PublicRoutes.tsx     # Public route wrapper
+  │   │   └── index.ts             # Barrel file
   │   │
   │   ├── unauthenticated/      # Unauthenticated routes
   │   │   ├── UnauthenticatedRoutes.tsx  # Unauthenticated route wrapper
-  │   │   └── index.ts                  # Barrel file
+  │   │   └── index.ts                   # Barrel file
   │   │
   │   ├── AppRoutes.tsx         # Main routes configuration
   │   └── index.ts              # Barrel file
