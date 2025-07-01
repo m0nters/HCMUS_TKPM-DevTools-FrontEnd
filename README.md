@@ -27,6 +27,14 @@ Xem đề bài gốc tại: https://hackmd.io/@nndkhoa9/HJjTiy7j1l
 - Responsive design that works on desktop and mobile devices
 - Clear visual indicators for premium content
 - Loading states and error handling throughout the application
+- Advanced search and filtering with URL state synchronization for bookmarkable results
+
+### 🔒 Security & Data Protection
+
+- Multi-factor authentication support for enhanced security
+- Secure password policies with strength validation and complexity requirements
+- Account deletion with two-step verification and permanent data removal
+- Session management with automatic logout on token expiration
 
 ### 👑 Admin Functionality
 
@@ -116,148 +124,58 @@ src/
   │
   ├── components/           # Reusable UI components
   │   ├── admin/            # Admin-specific UI components
-  │   │   ├── AdminModeToggle.tsx    # Toggle for admin mode
-  │   │   └── index.ts               # Barrel file
   │   │
   │   ├── auth/             # Authentication related components
-  │   │   ├── LoginForm.tsx         # Login form component
-  │   │   ├── RegisterForm.tsx      # Registration form component
-  │   │   └── index.ts              # Barrel file
   │   │
   │   ├── common/           # Shared components
+  │   │   ├── animations/           # Animation effects
   │   │   ├── backgrounds/          # Animated background effects
-  │   │   │   ├── Threads.tsx               # Thread animation component
-  │   │   │   ├── Waves.tsx                 # Wave animation component
-  │   │   │   └── index.ts                  # Barrel file
-  │   │   │
   │   │   ├── textAnimation/        # Text animation components
-  │   │   │   ├── FuzzyText.tsx             # Fuzzy text effect
-  │   │   │   ├── SplitText.tsx             # Split text animation
-  │   │   │   └── index.ts                  # Barrel file
-  │   │   │
-  │   │   ├── ui/                   # UI primitives
-  │   │   │   ├── AlertMessage.tsx          # Alert/notification component
-  │   │   │   ├── Button.tsx                # Button component
-  │   │   │   ├── DropdownMenu.tsx          # Dropdown menu component
-  │   │   │   ├── FileUploadBox.tsx         # File upload component
-  │   │   │   ├── InfoBox.tsx               # Information display box
-  │   │   │   ├── LoadingSpinner.tsx        # Loading indicator
-  │   │   │   ├── PluginCard.tsx            # Plugin card component
-  │   │   │   └── index.ts                  # Barrel file
-  │   │   │
-  │   │   └── index.ts             # Barrel file
+  │   │   └── ui/                   # UI primitives
   │   │
   │   ├── layout/           # Layout components
-  │   │   ├── Footer.tsx           # Footer component
-  │   │   ├── Header.tsx           # Header component
-  │   │   ├── SidePanel.tsx        # Side navigation panel
-  │   │   └── index.ts             # Barrel file
   │   │
   │   ├── plugins/          # Plugin-specific components
-  │   │   ├── DynamicPluginUI.tsx  # Dynamic plugin UI renderer
-  │   │   ├── InputField.tsx       # Dynamic input field
-  │   │   ├── OutputField.tsx      # Dynamic output field
   │   │   ├── inputFields/         # Input field types
   │   │   ├── outputFields/        # Output field types
-  │   │   └── index.ts             # Barrel file
+  │   │   └── ... other files
   │   │
-  │   ├── profile/          # Profile-related components
-  │   │   ├── ProfileSidePanel.tsx # Profile side panel
-  │   │   └── index.ts             # Barrel file
-  │   │
-  │   └── index.ts          # Main barrel file
+  │   └── profile/          # Profile-related components
   │
   ├── contexts/             # React Contexts
-  │   ├── AuthContext.tsx          # Authentication context
-  │   ├── FavoritesContext.tsx     # Favorites management context
-  │   ├── UserContext.tsx          # User profile context
-  │   └── index.ts                 # Barrel file
   │
   ├── hooks/                # Custom React hooks
-  │   ├── useAuth.ts               # Authentication hook
-  │   ├── useDebounce.ts           # Debounce utility hook
-  │   ├── useEventBus.ts           # Event bus hook
-  │   ├── useFavorites.ts          # Favorites management hook
-  │   ├── usePlugin.ts             # Plugin management hook
-  │   └── index.ts                 # Barrel file
   │
   ├── pages/                # Route-level components
   │   ├── admin/            # Admin pages
-  │   │   ├── AdminDashboard.tsx    # Admin dashboard
-  │   │   ├── AdminOverview.tsx     # System overview
-  │   │   ├── ToolUpload.tsx        # Plugin upload interface
-  │   │   ├── UserManagement.tsx    # User management
-  │   │   └── index.ts              # Barrel file
   │   │
   │   ├── profile/          # Profile pages
-  │   │   ├── MyProfile.tsx          # Profile main page
-  │   │   ├── FavoritesSection.tsx   # Favorites management
-  │   │   ├── ProfileInfoSection.tsx # Profile information
-  │   │   ├── SecuritySection.tsx    # Security settings
-  │   │   └── index.ts               # Barrel file
   │   │
-  │   ├── 401.tsx                 # Unauthorized page
-  │   ├── 404.tsx                 # Not found page
-  │   ├── Home.tsx                # Landing page
-  │   ├── Login.tsx               # Login page
-  │   ├── PluginDetails.tsx       # Plugin details page
-  │   ├── PluginExplorer.tsx      # Plugin explorer page
-  │   ├── Premium.tsx             # Premium features page
-  │   ├── Register.tsx            # Registration page
-  │   ├── TermsOfService.tsx      # Terms of service page
-  │   └── index.ts                # Barrel file
+  │   └── ... other files
   │
   ├── routes/               # Route configuration
   │   ├── protected/            # Protected routes
-  │   │   ├── ProtectedRoutes.tsx  # Protected route wrapper
-  │   │   └── index.ts             # Barrel file
   │   │
   │   ├── public/               # Public routes
-  │   │   ├── PublicRoutes.tsx     # Public route wrapper
-  │   │   └── index.ts             # Barrel file
   │   │
   │   ├── unauthenticated/      # Unauthenticated routes
-  │   │   ├── UnauthenticatedRoutes.tsx  # Unauthenticated route wrapper
-  │   │   └── index.ts                   # Barrel file
   │   │
-  │   ├── AppRoutes.tsx         # Main routes configuration
-  │   └── index.ts              # Barrel file
+  │   └── AppRoutes.tsx         # Main routes configuration
   │
   ├── services/             # API services
   │   ├── api/                  # API configuration
-  │   │   ├── axios.ts          # Axios instance setup
-  │   │   └── index.ts          # Barrel file
   │   │
   │   ├── admin/                # Admin services
-  │   │   ├── pluginService.ts  # Plugin management
-  │   │   ├── userService.ts    # User management
-  │   │   └── index.ts          # Barrel file
   │   │
   │   ├── plugins/              # Plugin services
-  │   │   ├── pluginService.ts  # Plugin operations
-  │   │   └── index.ts          # Barrel file
   │   │
   │   ├── user/                 # User services
-  │   │   ├── userService.ts    # User operations
-  │   │   └── index.ts          # Barrel file
   │   │
-  │   ├── authService.ts        # Authentication service
-  │   ├── eventBus.ts           # Event bus service
-  │   └── index.ts              # Barrel file
+  │   └── ... other files
   │
   ├── types/                # TypeScript types
-  │   ├── auth.ts               # Authentication types
-  │   ├── authContext.ts        # Auth context types
-  │   ├── dropdownMenu.ts       # Dropdown menu types
-  │   ├── plugins.ts            # Plugin types
-  │   ├── pluginSchema.ts       # Plugin schema types
-  │   ├── user.ts               # User types
-  │   └── index.ts              # Barrel file
   │
   └── utils/                # Utility functions
-      ├── files.ts              # File utilities
-      ├── string.ts             # String utilities
-      └── index.ts              # Barrel file
 ```
 
 ## Installation and Setup
