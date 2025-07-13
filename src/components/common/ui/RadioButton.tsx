@@ -19,7 +19,7 @@ export function RadioButton({
 }: RadioButtonProps) {
   return (
     <label
-      className={`flex cursor-pointer items-center transition-all duration-300 ease-in-out ${className} ${
+      className={`flex cursor-pointer items-center transition-all duration-50 ease-in-out ${className} ${
         checked ? "relative -left-9 mr-6" : "mr-12"
       }`}
     >
