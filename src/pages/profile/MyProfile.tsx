@@ -43,9 +43,7 @@ export function MyProfile() {
         {/* Main Content Area */}
         <div className="w-full bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
           {isLoading ? (
-            <div className="flex justify-center items-center h-full">
-              <LoadingSpinner size="lg" />
-            </div>
+            <LoadingSpinner size="lg" className="h-full"/>
           ) : error ? (
             <div className="bg-red-50 border border-red-200 rounded-md p-4 text-red-800">
               {error}

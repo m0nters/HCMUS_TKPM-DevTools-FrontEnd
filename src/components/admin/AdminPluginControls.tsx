@@ -103,7 +103,7 @@ export function AdminPluginControls({
             title={plugin.isActive ? "Disable plugin" : "Enable plugin"}
           >
             {isUpdatingActive ? (
-              <LoadingSpinner size="sm" />
+              <LoadingSpinner size="xs" />
             ) : plugin.isActive ? (
               <EyeIcon className="w-5 h-5 text-white" />
             ) : (
@@ -122,7 +122,7 @@ export function AdminPluginControls({
             title={plugin.isPremium ? "Make free" : "Make premium"}
           >
             {isUpdatingPremium ? (
-              <LoadingSpinner size="sm" />
+              <LoadingSpinner size="xs" />
             ) : (
               <SparklesIcon className="w-5 h-5 text-white" />
             )}

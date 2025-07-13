@@ -328,16 +328,14 @@ export function PluginExplorer() {
           Showing {filteredPlugins.length} of {allPlugins.length} tools
           {isAdminMode && (
             <span className="ml-2 animated-gradient text-white px-2 py-0.5 rounded-md text-xs font-medium">
-              Hovering over a plugin...
+              Hover over a plugin...
             </span>
           )}
         </p>
 
         {/* Tools Grid */}
         {isLoading ? (
-          <div className="flex justify-center py-12">
-            <LoadingSpinner size="lg" />
-          </div>
+          <LoadingSpinner size="lg" className="py-12"/>
         ) : filteredPlugins.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredPlugins.map((plugin) => (

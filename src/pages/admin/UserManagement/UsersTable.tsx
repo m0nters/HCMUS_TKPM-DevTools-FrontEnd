@@ -20,11 +20,7 @@ export function UsersTable({
   onDeleteClick,
 }: UsersTableProps) {
   if (isLoading) {
-    return (
-      <div className="flex justify-center py-8">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <LoadingSpinner size="lg" className="py-24" />
   }
 
   return (

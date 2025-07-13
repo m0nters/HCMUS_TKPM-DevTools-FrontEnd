@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/";
-import {
-  LoadingSpinner,
-  PremiumBadge,
-  BackLink,
-  Button,
-  AlertMessage,
-} from "../components/common";
-import { DynamicPluginUI } from "../components/plugins/DynamicPluginUI";
 import {
   LockClosedIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
-import { getPluginSchema, getAllPlugins } from "../services/plugins/";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  AlertMessage,
+  BackLink,
+  Button,
+  LoadingSpinner,
+  PremiumBadge,
+} from "../components/common";
+import { DynamicPluginUI } from "../components/plugins/DynamicPluginUI";
+import { useAuth } from "../hooks/";
+import { getAllPlugins, getPluginSchema } from "../services/plugins/";
 import { Plugin, PluginSchema } from "../types/";
 import { estimateReadingTime, slugify } from "../utils/";
 
@@ -116,13 +116,7 @@ export function PluginDetails() {
 
   // Render loading state
   if (isLoading) {
-    return (
-      <div className="w-full max-w-5xl mx-auto pt-24 px-6 pb-12">
-        <div className="flex justify-center items-center py-12">
-          <LoadingSpinner size="lg" />
-        </div>
-      </div>
-    );
+    return <LoadingSpinner size="lg" />
   }
 
   // Premium content locked

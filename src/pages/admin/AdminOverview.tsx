@@ -49,11 +49,7 @@ export function AdminOverview() {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <LoadingSpinner size="lg" className="h-full" />
   }
 
   if (error) {

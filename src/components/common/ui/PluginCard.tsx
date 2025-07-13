@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
-import { AdminPlugin, Plugin } from "../../../types/";
-import { slugify } from "../../../utils/";
-import { PremiumBadge } from "./PremiumBadge";
-import { useRef, useEffect, useState } from "react";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth, useFavorites } from "../../../hooks/";
+import { AdminPlugin, Plugin } from "../../../types/";
+import { slugify } from "../../../utils/";
 import { AdminPluginControls } from "../../admin/";
 import { ClickSpark } from "../animations/";
+import { PremiumBadge } from "./PremiumBadge";
 
 interface PluginCardProps {
   plugin: Plugin | AdminPlugin;

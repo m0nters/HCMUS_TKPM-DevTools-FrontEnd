@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { getAllCategories, EVENTS } from "../../services";
-import { PluginCategory } from "../../types";
 import {
-  XMarkIcon,
+  ArchiveBoxIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  ArchiveBoxIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useEventBus } from "../../hooks";
+import { EVENTS, getAllCategories } from "../../services";
+import { PluginCategory } from "../../types";
 import { slugify, truncate } from "../../utils";
 import { LoadingSpinner, PremiumBadge } from "../common/";
-import { useEventBus } from "../../hooks";
 
 interface SidePanelProps {
   isOpen: boolean;
@@ -91,7 +91,7 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
         {/* Categories List */}
         <div className="flex-1 overflow-y-auto">
           {isLoading ? (
-            <LoadingSpinner />
+            <LoadingSpinner className="h-full"/>
           ) : categories.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full px-6 py-12 text-center">
               <ArchiveBoxIcon className="h-16 w-16 text-gray-400 mb-4" />

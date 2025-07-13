@@ -52,11 +52,7 @@ export function FavoritesSection() {
   }, [favoriteIds, isFavorite]); // React to changes in the favorites context
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner size="lg" className="h-full"/>
   }
 
   if (error) {
