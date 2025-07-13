@@ -47,11 +47,11 @@ export function PasswordInput({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`w-full p-3 border ${
-            error ? "border-red-300" : "border-gray-300"
-          } 
-                     rounded-md focus:outline-none focus:ring-2 focus:ring-black
-                     focus:border-transparent pr-10 ${className}`}
+          className={`w-full p-3 border focus:outline-none focus:ring-2 focus:border-transparent ${
+            error
+              ? "border-red-300 focus:ring-red-600"
+              : "border-gray-300 focus:ring-black"
+          } rounded-md pr-10 ${className}`}
           {...props}
         />
 
@@ -71,10 +71,10 @@ export function PasswordInput({
       </div>
 
       {helpText && !error && (
-        <p className="mt-1 text-xs text-gray-500">{helpText}</p>
+        <p className="mt-1 text-sm text-gray-500">{helpText}</p>
       )}
 
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   );
 }

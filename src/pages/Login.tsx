@@ -1,38 +1,51 @@
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { memo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useLocation } from "react-router-dom";
 import { AlertMessage, Button, PasswordInput, Threads } from "../components/";
 import { useAuth } from "../hooks/";
 import { login as apiLogin } from "../services/";
 import { estimateReadingTime } from "../utils/";
+
 const MemoizedThreads = memo(Threads);
+
+interface LoginFormData {
+  username: string;
+  password: string;
+  rememberMe: boolean;
+}
 
 export function Login() {
   const { login } = useAuth();
   const location = useLocation();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false); // the token has its expriration time
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [redirectMessage, setRedirectMessage] = useState(
     location.state?.message
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    defaultValues: {
+      username: "",
+      password: "",
+      rememberMe: false,
+    },
+  });
 
-    if (!username || !password) {
-      setError("Username and password are required");
-      return;
-    }
-
+  const onSubmit = async (data: LoginFormData) => {
     setError("");
     setIsLoading(true);
 
     try {
-      const userInfo = await apiLogin({ userName: username, password });
-      login(userInfo, rememberMe);
+      const userInfo = await apiLogin({
+        userName: data.username,
+        password: data.password,
+      });
+      login(userInfo, data.rememberMe);
       /**
        * We don't need to redirect here, since `Login` or `Register`
        * has been wrapped in `UnauthenticatedRoute` and it will
@@ -63,6 +76,7 @@ export function Login() {
         />
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
+
           {location.state && redirectMessage && (
             <AlertMessage
               message={redirectMessage}
@@ -78,12 +92,14 @@ export function Login() {
               position="top-center"
             />
           )}
+
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 mb-4">
               {error}
             </div>
           )}
-          <form className="space-y-5" onSubmit={handleSubmit}>
+
+          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <label
                 htmlFor="username"
@@ -95,18 +111,36 @@ export function Login() {
                 id="username"
                 type="text"
                 placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                {...register("username", {
+                  required: "Username is required",
+                  minLength: {
+                    value: 3,
+                    message: "Username must be at least 3 characters",
+                  },
+                })}
+                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent ${
+                  errors.username
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-black"
+                }`}
                 disabled={isLoading}
               />
+              {errors.username && (
+                <p className="text-red-500 text-sm">
+                  {errors.username.message}
+                </p>
+              )}
             </div>
 
             <PasswordInput
+              id="password"
               label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              placeholder="Password"
+              {...register("password", {
+                required: "Password is required",
+              })}
+              error={errors.password?.message}
+              disabled={isLoading}
             />
 
             <div className="flex items-center justify-between">
@@ -114,8 +148,7 @@ export function Login() {
                 <input
                   id="remember"
                   type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
+                  {...register("rememberMe")}
                   className="h-4 w-4 focus:ring-black border-gray-300 rounded accent-black"
                   disabled={isLoading}
                 />
@@ -133,13 +166,20 @@ export function Login() {
                 Forgot password?
               </Link> */}
             </div>
-            <Button type="submit" variant="primary" disabled={isLoading}>
+
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={isLoading}
+              className="w-full"
+            >
               <div className="flex justify-center items-center gap-2 group-hover:gap-4 transition-all duration-50">
                 <span>{isLoading ? "Logging in..." : "Login"}</span>
                 {!isLoading && <ArrowUpRightIcon className="w-4 h-4" />}
               </div>
             </Button>
           </form>
+
           <p className="text-center text-gray-600 mt-6">
             Don't have an account?{" "}
             <Link

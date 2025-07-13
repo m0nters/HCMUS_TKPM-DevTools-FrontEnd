@@ -1,76 +1,52 @@
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 import { memo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AlertMessage, Button, PasswordInput, Threads } from "../components/";
-import { register } from "../services/";
+import { register as registerService } from "../services/";
+
 const MemoizedThreads = memo(Threads);
+
+interface RegisterFormData {
+  fullName: string;
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  agreeToTerms: boolean;
+}
 
 export function Register() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [formData, setFormData] = useState({
-    fullName: "",
-    userName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [error, setError] = useState("");
+  const [submitError, setSubmitError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    defaultValues: {
+      fullName: "",
+      userName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      agreeToTerms: false,
+    },
+  });
 
-  const validateFields = () => {
-    if (Object.values(formData).some((value) => !value)) {
-      setError("All fields are required");
-      return;
-    }
+  const password = watch("password");
 
-    if (!agreeToTerms) {
-      setError("You must agree to the terms of service");
-      return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
-    // Password validation (min 8 chars, uppercase, lowercase, number, special char)
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-
-    if (!passwordRegex.test(formData.password)) {
-      setError(
-        "Password must be at least 8 characters and include uppercase, lowercase, number and special character"
-      );
-      return;
-    }
-
-    // Confirm password validation
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    // Validation
-    validateFields();
-
+  const onSubmit = async (data: RegisterFormData) => {
+    setSubmitError("");
     setIsLoading(true);
+
     try {
-      const { confirmPassword, ...registerData } = formData;
-      await register(registerData);
+      const { confirmPassword, agreeToTerms, ...registerData } = data;
+      await registerService(registerData);
 
       // Registration successful
       navigate("/login", {
@@ -81,9 +57,8 @@ export function Register() {
         },
       });
     } catch (err: any) {
-      // Handle specific error responses if your API provides them
       console.error("Registration error:", err);
-      setError(
+      setSubmitError(
         "Registration failed. Maybe username or email already exists. Please try again."
       );
     } finally {
@@ -109,16 +84,16 @@ export function Register() {
         <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
           <h2 className="text-2xl font-bold text-center mb-8">Register</h2>
 
-          {error && (
+          {submitError && (
             <AlertMessage
-              message={error}
+              message={submitError}
               isError={true}
               duration={3000}
-              onDismiss={() => setError("")}
+              onDismiss={() => setSubmitError("")}
             />
           )}
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <label
                 htmlFor="fullName"
@@ -130,12 +105,27 @@ export function Register() {
                 id="fullName"
                 type="text"
                 placeholder="Full Name (John Doe)"
-                value={formData.fullName}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                {...register("fullName", {
+                  required: "Full name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Full name must be at least 2 characters",
+                  },
+                })}
+                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent ${
+                  errors.fullName
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-black"
+                }`}
                 disabled={isLoading}
               />
+              {errors.fullName && (
+                <p className="text-red-500 text-sm">
+                  {errors.fullName.message}
+                </p>
+              )}
             </div>
+
             <div className="space-y-2">
               <label
                 htmlFor="userName"
@@ -147,12 +137,32 @@ export function Register() {
                 id="userName"
                 type="text"
                 placeholder="Username (e.g. michael123)"
-                value={formData.userName}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                {...register("userName", {
+                  required: "Username is required",
+                  minLength: {
+                    value: 3,
+                    message: "Username must be at least 3 characters",
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9_]+$/,
+                    message:
+                      "Username can only contain letters, numbers, and underscores",
+                  },
+                })}
+                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent ${
+                  errors.userName
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-black"
+                }`}
                 disabled={isLoading}
               />
+              {errors.userName && (
+                <p className="text-red-500 text-sm">
+                  {errors.userName.message}
+                </p>
+              )}
             </div>
+
             <div className="space-y-2">
               <label
                 htmlFor="email"
@@ -164,40 +174,72 @@ export function Register() {
                 id="email"
                 type="email"
                 placeholder="email@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email address",
+                  },
+                })}
+                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent ${
+                  errors.email
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-black"
+                }`}
+                disabled={isLoading}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <PasswordInput
+                id="password"
+                label="Password"
+                placeholder="Enter new password"
+                {...register("password", {
+                  required: "Password is required",
+                  pattern: {
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/,
+                    message:
+                      "Password must be at least 8 characters and include uppercase, lowercase, number and special character",
+                  },
+                })}
+                error={errors.password?.message}
+                helpText="Required: Minimum 8 characters, with uppercase, lowercase, number and special character."
                 disabled={isLoading}
               />
             </div>
-            <PasswordInput
-              id="password"
-              label="Password"
-              placeholder="Enter new password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              helpText="Required: Minimum 8 characters, with uppercase, lowercase, number and special character."
-            />
-            <PasswordInput
-              id="confirmPassword"
-              label="Confirm password"
-              placeholder="Re-enter your password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
+
+            <div className="space-y-2">
+              <PasswordInput
+                id="confirmPassword"
+                label="Confirm password"
+                placeholder="Re-enter your password"
+                {...register("confirmPassword", {
+                  required: "Please confirm your password",
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
+                })}
+                error={errors.confirmPassword?.message}
+                disabled={isLoading}
+              />
+            </div>
+
             <div className="flex items-center">
               <input
-                id="terms"
+                id="agreeToTerms"
                 type="checkbox"
-                checked={agreeToTerms}
-                onChange={(e) => setAgreeToTerms(e.target.checked)}
+                {...register("agreeToTerms", {
+                  required: "You must agree to the terms of service",
+                })}
                 className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded accent-black"
                 disabled={isLoading}
               />
               <label
-                htmlFor="terms"
+                htmlFor="agreeToTerms"
                 className="ml-2 block text-sm text-gray-700"
               >
                 I agree to{" "}
@@ -206,6 +248,12 @@ export function Register() {
                 </Link>
               </label>
             </div>
+            {errors.agreeToTerms && (
+              <p className="text-red-500 text-sm">
+                {errors.agreeToTerms.message}
+              </p>
+            )}
+
             <Button
               type="submit"
               className="w-full"
@@ -218,6 +266,7 @@ export function Register() {
               </div>
             </Button>
           </form>
+
           <p className="text-center text-gray-600 mt-6">
             Already have an account?{" "}
             <Link
