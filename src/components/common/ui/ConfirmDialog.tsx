@@ -63,11 +63,8 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  // Lock scroll when modal is open
-  useScrollLock(isOpen);
-
   if (!isOpen) return null;
-
+  useScrollLock(true);
   const confirmButtonStyles = {
     red: "bg-red-600 hover:bg-red-700 disabled:bg-red-400",
     blue: "bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400",
@@ -76,14 +73,17 @@ export function ConfirmDialog({
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 z-40"
+      className="fixed inset-0 bg-black/70 z-30"
       onClick={isLoading ? undefined : onCancel}
     >
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in">
+      <div
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
           <p className="mb-6 text-sm text-gray-500">{message}</p>
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end space-x-3">
             <button
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed"
               onClick={onCancel}

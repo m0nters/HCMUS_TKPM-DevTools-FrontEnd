@@ -27,13 +27,10 @@ export function PasswordConfirmDialog({
   onConfirm,
   onCancel,
 }: PasswordConfirmDialogProps) {
+  if (!isOpen) return null;
+  useScrollLock(true);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  // Lock scroll when modal is open
-  useScrollLock(isOpen);
-
-  if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +39,7 @@ export function PasswordConfirmDialog({
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (e) => {
     setPassword("");
     setShowPassword(false);
     onCancel();
@@ -50,19 +47,16 @@ export function PasswordConfirmDialog({
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 z-40"
+      className="fixed inset-0 bg-black/70 z-30"
       onClick={isLoading ? undefined : handleCancel}
     >
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in">
+      <div
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
         <form onSubmit={handleSubmit} className="p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
-
-          {typeof message === "string" ? (
-            <p className="mb-6 text-sm text-gray-500">{message}</p>
-          ) : (
-            <div className="mb-6">{message}</div>
-          )}
-
+          <p className="mb-6 text-sm text-gray-500">{message}</p>
           {/* Password Input */}
           <div className="mb-6">
             <label
@@ -97,7 +91,6 @@ export function PasswordConfirmDialog({
               </button>
             </div>
           </div>
-
           <div className="flex justify-end space-x-3">
             <button
               type="button"
