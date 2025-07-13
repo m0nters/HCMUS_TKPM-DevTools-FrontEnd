@@ -10,3 +10,4 @@ export * from "./PasswordConfirmDialog";
 export * from "./PasswordInput";
 export * from "./PluginCard";
 export * from "./PremiumBadge";
+export * from "./RadioButton";

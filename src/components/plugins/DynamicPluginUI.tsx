@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { useDebounce } from "../../hooks";
+import { executePlugin } from "../../services/";
 import { PluginSchema } from "../../types";
+import { hasValue } from "../../utils";
 import { InputField } from "./InputField";
 import { OutputField } from "./OutputField";
-import { executePlugin } from "../../services/";
-import { useDebounce } from "../../hooks";
-import { hasValue } from "../../utils";
 
 interface DynamicPluginUIProps {
   schema: PluginSchema;
