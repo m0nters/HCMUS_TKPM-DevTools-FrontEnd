@@ -26,6 +26,22 @@ import { UsersTable } from "./UsersTable";
 // Define view types
 type ViewType = "users" | "premium-requests";
 
+const VIEW_TABS = [
+  {
+    id: "users" as ViewType,
+    label: "All Users",
+    icon: UsersIcon,
+    getBadgeCount: (data: any) => null, // No badge for users tab
+  },
+  {
+    id: "premium-requests" as ViewType,
+    label: "Premium Requests",
+    icon: BellIcon,
+    getBadgeCount: (data: any) =>
+      data.premiumRequests?.length > 0 ? data.premiumRequests.length : null,
+  },
+] as const;
+
 export function UserManagement() {
   // Shared state
   const [activeView, setActiveView] = useState<ViewType>("users");
@@ -299,37 +315,33 @@ export function UserManagement() {
         {/* View Tabs */}
         <div className="border-b border-gray-200">
           <nav className="flex space-x-8" aria-label="Views">
-            <button
-              onClick={() => setActiveView("users")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors cursor-pointer ${
-                activeView === "users"
-                  ? "border-black text-black"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center">
-                <UsersIcon className="w-5 h-5 mr-2" />
-                All Users
-              </div>
-            </button>
-            <button
-              onClick={() => setActiveView("premium-requests")}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors cursor-pointer ${
-                activeView === "premium-requests"
-                  ? "border-black text-black"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center">
-                <BellIcon className="w-5 h-5 mr-2" />
-                Premium Requests
-                {premiumRequests.length > 0 && (
-                  <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
-                    {premiumRequests.length}
-                  </span>
-                )}
-              </div>
-            </button>
+            {VIEW_TABS.map((tab) => {
+              const Icon = tab.icon;
+              const badgeCount = tab.getBadgeCount({ premiumRequests });
+              const isActive = activeView === tab.id;
+
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveView(tab.id)}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors cursor-pointer ${
+                    isActive
+                      ? "border-black text-black"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <Icon className="w-5 h-5 mr-2" />
+                    {tab.label}
+                    {badgeCount && (
+                      <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                        {badgeCount}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
           </nav>
         </div>
 

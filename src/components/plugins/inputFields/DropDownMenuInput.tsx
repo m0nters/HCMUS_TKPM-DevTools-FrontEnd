@@ -1,6 +1,6 @@
-import { InputFieldProps } from "../InputField";
-import { DropdownMenu } from "../../common/";
 import { DropdownOption } from "../../../types/";
+import { DropdownMenu } from "../../common/";
+import { InputFieldProps } from "../InputField";
 
 export function DropDownMenuInput({
   field,
@@ -11,6 +11,7 @@ export function DropDownMenuInput({
   return (
     <div>
       <DropdownMenu
+        searchable={false}
         options={field.options as DropdownOption[]}
         selectedValue={value}
         onSelect={(selectedValue) => onChange(selectedValue)}

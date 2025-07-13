@@ -1,5 +1,5 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { LoadingSpinner } from "../../../components";
+import { DropdownMenu, LoadingSpinner } from "../../../components";
 import { ROLES, UserProfile, UserRole } from "../../../types/";
 
 interface UsersTableProps {
@@ -81,24 +81,23 @@ export function UsersTable({
                   <div className="text-sm text-gray-500">{user.email}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <select
-                    className={`block w-24 text-sm border-gray-300 rounded-md ${
-                      currentUserEmail === user.email
-                        ? "opacity-50 cursor-not-allowed"
-                        : "cursor-pointer"
-                    }`}
-                    value={user.role}
-                    onChange={(e) =>
-                      onRoleChange(user, e.target.value as UserRole)
-                    }
-                    disabled={currentUserEmail === user.email}
-                  >
-                    {ROLES.map((role) => (
-                      <option key={role} value={role}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="w-32">
+                    <DropdownMenu
+                      options={ROLES.map((role) => ({
+                        value: role,
+                        label: role,
+                      }))}
+                      selectedValue={user.role}
+                      onSelect={(value) =>
+                        onRoleChange(user, value as UserRole)
+                      }
+                      disabled={currentUserEmail === user.email}
+                      searchable={false}
+                      buttonClassName={"text-sm"}
+                      optionsClassName={"text-sm"}
+                      allowClear={false}
+                    />
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button

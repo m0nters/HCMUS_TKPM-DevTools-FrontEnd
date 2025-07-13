@@ -81,14 +81,8 @@ export function ConfirmDialog({
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in">
         <div className="p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
-
-          {typeof message === "string" ? (
-            <p className="mb-6 text-sm text-gray-500">{message}</p>
-          ) : (
-            <div className="mb-6">{message}</div>
-          )}
-
-          <div className="flex justify-end space-x-3">
+          <p className="mb-6 text-sm text-gray-500">{message}</p>
+          <div className="flex justify-end gap-3">
             <button
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed"
               onClick={onCancel}

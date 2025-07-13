@@ -16,6 +16,7 @@ interface DropdownMenuProps {
   optionsClassName?: string;
   disabled?: boolean;
   searchable?: boolean;
+  allowClear?: boolean;
 }
 
 /**
@@ -30,6 +31,7 @@ export function DropdownMenu({
   optionsClassName = "",
   disabled = false,
   searchable = true,
+  allowClear = true,
 }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -121,7 +123,7 @@ export function DropdownMenu({
       >
         <span className="truncate">{selectedLabel}</span>
 
-        {hasSelectedValue && !disabled ? (
+        {hasSelectedValue && !disabled && allowClear ? (
           <button
             type="button"
             onClick={handleClear}
