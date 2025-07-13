@@ -1,5 +1,6 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { ReactNode } from "react";
+import { useScrollLock } from "../../../hooks/";
 
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -62,6 +63,9 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  // Lock scroll when modal is open
+  useScrollLock(isOpen);
+
   if (!isOpen) return null;
 
   const confirmButtonStyles = {
@@ -71,13 +75,10 @@ export function ConfirmDialog({
   };
 
   return (
-    <>
-      {/* Overlay - prevent closing during loading */}
-      <div
-        className="fixed inset-0 bg-black/70 z-40"
-        onClick={isLoading ? undefined : onCancel}
-      />
-
+    <div
+      className="fixed inset-0 bg-black/70 z-40"
+      onClick={isLoading ? undefined : onCancel}
+    >
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in">
         <div className="p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
@@ -107,6 +108,6 @@ export function ConfirmDialog({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import { ReactNode, useState } from "react";
+import { useScrollLock } from "../../../hooks/";
 
 interface PasswordConfirmDialogProps {
   isOpen: boolean;
@@ -29,6 +30,9 @@ export function PasswordConfirmDialog({
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  // Lock scroll when modal is open
+  useScrollLock(isOpen);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -45,13 +49,10 @@ export function PasswordConfirmDialog({
   };
 
   return (
-    <>
-      {/* Overlay */}
-      <div
-        className="fixed inset-0 bg-black/70 z-40"
-        onClick={isLoading ? undefined : handleCancel}
-      />
-
+    <div
+      className="fixed inset-0 bg-black/70 z-40"
+      onClick={isLoading ? undefined : handleCancel}
+    >
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50 w-full max-w-md animate-fade-in">
         <form onSubmit={handleSubmit} className="p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{title}</h3>
@@ -123,6 +124,6 @@ export function PasswordConfirmDialog({
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
