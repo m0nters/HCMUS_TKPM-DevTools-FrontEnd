@@ -5,7 +5,7 @@ import { apiRequest } from "./request";
  */
 export async function withAuth<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
   const token =
     sessionStorage.getItem("token") || localStorage.getItem("token");

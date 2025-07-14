@@ -21,7 +21,7 @@ export function PluginDetails() {
   const { pluginName } = useParams<{ pluginName: string }>();
   const { isAuth, isPremium } = useAuth();
   const [pluginSchemaData, setPluginSchemaData] = useState<PluginSchema | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState(true);
   const [statusMessage, setStatusMessage] = useState<{
@@ -42,7 +42,7 @@ export function PluginDetails() {
         // First, get all plugins to find the ID from the name
         const plugins = await getAllPlugins();
         const matchedPlugin = plugins.find(
-          (p) => pluginName === slugify(p.name)
+          (p) => pluginName === slugify(p.name),
         );
 
         if (!matchedPlugin) {
@@ -116,18 +116,18 @@ export function PluginDetails() {
 
   // Render loading state
   if (isLoading) {
-    return <LoadingSpinner size="lg" />
+    return <LoadingSpinner size="lg" />;
   }
 
   // Premium content locked
   const premiumContentLocked = () => {
     return (
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-12 text-center">
-        <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-          <LockClosedIcon className="w-8 h-8 text-gray-400" />
+      <div className="rounded-lg border border-gray-200 bg-gray-50 p-12 text-center">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+          <LockClosedIcon className="h-8 w-8 text-gray-400" />
         </div>
-        <h2 className="text-2xl font-semibold mb-2">Premium Feature</h2>
-        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+        <h2 className="mb-2 text-2xl font-semibold">Premium Feature</h2>
+        <p className="mx-auto mb-6 max-w-md text-gray-600">
           This tool requires a premium account. Please upgrade to access this
           feature.
         </p>
@@ -141,11 +141,11 @@ export function PluginDetails() {
             >
               Login
             </Button>
-            <p className="text-sm text-gray-500 mt-6">
+            <p className="mt-6 text-sm text-gray-500">
               Don't have an account?{" "}
               <button
                 onClick={handleRegisterClick}
-                className="text-black hover:underline cursor-pointer"
+                className="cursor-pointer text-black hover:underline"
               >
                 Register now
               </button>
@@ -173,7 +173,7 @@ export function PluginDetails() {
             position="top-center"
           />
         )}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="rounded-lg border border-gray-200 bg-white p-6">
           <DynamicPluginUI
             schema={pluginSchemaData!}
             onSuccess={handlePluginSuccess}
@@ -187,31 +187,31 @@ export function PluginDetails() {
   const notAvailableContent = () => {
     return (
       <>
-        <div className="bg-white border border-gray-200 rounded-lg p-12 flex flex-col items-center justify-center text-center">
-          <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-6">
-            <WrenchScrewdriverIcon className="w-10 h-10 text-gray-400" />
+        <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-12 text-center">
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+            <WrenchScrewdriverIcon className="h-10 w-10 text-gray-400" />
           </div>
 
-          <h2 className="text-2xl font-semibold mb-2">
+          <h2 className="mb-2 text-2xl font-semibold">
             This Tool Is Currently Unavailable
           </h2>
 
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
+          <p className="mx-auto mb-6 max-w-md text-gray-600">
             We're sorry, but this tool is not available at the moment. Our team
             is working on it and it should be back online soon.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link
               to="/explore"
-              className="px-6 py-3 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors"
+              className="rounded-md bg-gray-100 px-6 py-3 text-gray-800 transition-colors hover:bg-gray-200"
             >
               Browse Other Tools
             </Link>
 
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+              className="rounded-md bg-black px-6 py-3 text-white transition-colors hover:bg-gray-800"
             >
               Try Again
             </button>
@@ -222,24 +222,24 @@ export function PluginDetails() {
   };
 
   return (
-    <div className="w-full mx-auto pt-24 max-w-5xl pb-12">
+    <div className="mx-auto w-full max-w-5xl pt-24 pb-12">
       <div className="mb-6">
         <BackLink to="/explore" label="Back to all tools" className="mb-6" />
 
         <div>
-          <div className="flex items-center gap-3 mb-2">
+          <div className="mb-2 flex items-center gap-3">
             <h1 className="text-3xl font-bold">{targetPlugin?.name}</h1>
             {targetPlugin?.isPremium && <PremiumBadge size="md" />}
           </div>
-          <p className="text-gray-500 mb-6">{targetPlugin?.description}</p>
+          <p className="mb-6 text-gray-500">{targetPlugin?.description}</p>
         </div>
       </div>
 
       {statusMessage && statusMessage.type === "premium" && !isPremium
         ? premiumContentLocked()
         : pluginSchemaData
-        ? pluginUI()
-        : notAvailableContent()}
+          ? pluginUI()
+          : notAvailableContent()}
     </div>
   );
 }

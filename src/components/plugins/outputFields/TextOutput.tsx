@@ -23,7 +23,7 @@ export function TextOutput({
 
   return (
     <div
-      className={`w-full p-3 border border-gray-300 rounded-md bg-gray-50 min-h-11 max-h-[250px] overflow-y-auto ${
+      className={`max-h-[250px] min-h-11 w-full overflow-y-auto rounded-md border border-gray-300 bg-gray-50 p-3 ${
         isLoading ? "animate-pulse" : ""
       }`}
     >

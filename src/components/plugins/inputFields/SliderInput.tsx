@@ -21,7 +21,7 @@ export function SliderInput({
         step={field.step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black"
+        className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 accent-black"
       />
     </>
   );

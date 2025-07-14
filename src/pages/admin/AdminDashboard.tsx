@@ -14,13 +14,13 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-74px)]">
+    <div className="min-h-[calc(100vh-74px)] w-full">
       <div className="flex flex-col md:flex-row">
         {/* Sidebar */}
         <AdminSidePanel />
 
         {/* Main content */}
-        <main className="flex-1 p-6 bg-gray-50">
+        <main className="flex-1 bg-gray-50 p-6">
           <Outlet />
         </main>
       </div>

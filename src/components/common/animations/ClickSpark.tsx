@@ -60,7 +60,7 @@ export const ClickSpark = ({
           return t * (2 - t);
       }
     },
-    [easing]
+    [easing],
   );
 
   useEffect(() => {
@@ -141,12 +141,12 @@ export const ClickSpark = ({
 
   return (
     <div
-      className="relative h-full w-full flex items-center justify-center"
+      className="relative flex h-full w-full items-center justify-center"
       onClick={handleClick}
     >
       <canvas
         ref={canvasRef}
-        className="block h-full w-full absolute inset-0 select-none pointer-events-none"
+        className="pointer-events-none absolute inset-0 block h-full w-full select-none"
       />
       {children}
     </div>

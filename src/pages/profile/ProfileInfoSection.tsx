@@ -76,10 +76,10 @@ export function ProfileInfoSection() {
             position="top-center"
           />
         )}
-        <h2 className="text-xl font-semibold border-b pb-4">
+        <h2 className="border-b pb-4 text-xl font-semibold">
           Profile Information
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <p className="text-sm text-gray-500">Full Name</p>
             <p className="font-medium">{profile.fullName}</p>
@@ -96,26 +96,26 @@ export function ProfileInfoSection() {
             <p className="text-sm text-gray-500">Premium Status</p>
             {isPremium ? (
               <p className="flex items-center gap-2 font-medium">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+                <span className="inline-block h-2 w-2 rounded-full bg-green-500"></span>
                 <span className="text-green-600">Active</span>
               </p>
             ) : (
               <p className="flex items-center gap-2 font-medium">
-                <span className="inline-block w-2 h-2 rounded-full bg-gray-400"></span>
+                <span className="inline-block h-2 w-2 rounded-full bg-gray-400"></span>
                 <span className="text-gray-500">Inactive</span>
               </p>
             )}
           </div>
         </div>
         {/* Danger Zone */}
-        <div className="mt-12 border border-red-200 rounded-lg p-6 bg-red-50">
+        <div className="mt-12 rounded-lg border border-red-200 bg-red-50 p-6">
           <div className="flex items-start gap-3">
-            <ExclamationTriangleIcon className="w-6 h-6 text-red-600 mt-0.5" />
+            <ExclamationTriangleIcon className="mt-0.5 h-6 w-6 text-red-600" />
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-900 mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-red-900">
                 Danger Zone
               </h3>
-              <p className="text-red-700 mb-4">
+              <p className="mb-4 text-red-700">
                 Once you delete your account, there is no going back. This
                 action cannot be undone. All your data, including favorites and
                 preferences, will be permanently removed.
@@ -123,9 +123,9 @@ export function ProfileInfoSection() {
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={isDeleting}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-medium rounded-md transition-colors cursor-pointer"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-red-600 px-4 py-2 font-medium text-white transition-colors hover:bg-red-700 disabled:bg-red-400"
               >
-                <TrashIcon className="w-4 h-4" />
+                <TrashIcon className="h-4 w-4" />
                 {isDeleting ? "Deleting..." : "Delete Account"}
               </button>
             </div>

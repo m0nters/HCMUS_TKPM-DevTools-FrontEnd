@@ -8,7 +8,7 @@ export function JSONOutput({
 }: OutputFieldProps) {
   return (
     <div
-      className={`border border-gray-300 rounded-md ${
+      className={`rounded-md border border-gray-300 ${
         isLoading ? "animate-pulse" : ""
       }`}
     >

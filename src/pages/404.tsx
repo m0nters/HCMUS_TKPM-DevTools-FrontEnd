@@ -11,9 +11,9 @@ export function NotFound() {
           content="The page you are looking for doesn't exist or has been moved."
         />
       </article>
-      <div className="w-full max-w-5xl mx-auto text-center pt-24 px-6 pb-12">
+      <div className="mx-auto w-full max-w-5xl px-6 pt-24 pb-12 text-center">
         <div className="flex flex-col items-center justify-center py-16">
-          <div className="flex justify-center items-center mb-8">
+          <div className="mb-8 flex items-center justify-center">
             <FuzzyText
               baseIntensity={0.2}
               hoverIntensity={1}
@@ -23,13 +23,13 @@ export function NotFound() {
               404
             </FuzzyText>
           </div>
-          <h2 className="text-3xl font-semibold mb-6">Page Not Found</h2>
-          <p className="text-xl text-gray-600 mb-10 max-w-lg mx-auto">
+          <h2 className="mb-6 text-3xl font-semibold">Page Not Found</h2>
+          <p className="mx-auto mb-10 max-w-lg text-xl text-gray-600">
             The page you are looking for doesn't exist or has been moved.
           </p>
           <Button to="/" variant="primary">
-            <div className="inline-flex justify-center items-start gap-2 group-hover:gap-4 transition-all duration-50">
-              <HomeIcon className="w-5 h-5 relative -bottom-[3px]" />
+            <div className="inline-flex items-start justify-center gap-2 transition-all duration-50 group-hover:gap-4">
+              <HomeIcon className="relative -bottom-[3px] h-5 w-5" />
               <span>Go Back Home</span>
             </div>
           </Button>

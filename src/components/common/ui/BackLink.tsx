@@ -45,7 +45,7 @@ export function BackLink({
   return (
     <button
       onClick={handleClick}
-      className={`inline-flex items-center font-medium text-gray-700 hover:bg-gray-200 rounded-full transition-colors cursor-pointer group ${sizeClasses[size]} ${className}`}
+      className={`group inline-flex cursor-pointer items-center rounded-full font-medium text-gray-700 transition-colors hover:bg-gray-200 ${sizeClasses[size]} ${className}`}
     >
       <ArrowLeftIcon
         className={`transition-transform group-hover:-translate-x-1 ${iconSizeClasses[size]}`}

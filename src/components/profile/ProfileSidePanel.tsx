@@ -32,41 +32,41 @@ export function ProfileSidePanel({
 
   const navItems = [
     {
-      icon: <UserCircleIcon className="w-5 h-5" />,
+      icon: <UserCircleIcon className="h-5 w-5" />,
       label: "Profile Information",
       to: "info",
     },
     {
-      icon: <KeyIcon className="w-5 h-5" />,
+      icon: <KeyIcon className="h-5 w-5" />,
       label: "Security & Password",
       to: "security",
     },
     {
-      icon: <HeartIcon className="w-5 h-5" />,
+      icon: <HeartIcon className="h-5 w-5" />,
       label: "Favorite Tools",
       to: "favorites",
     },
   ];
 
   return (
-    <div className="w-full md:w-72 shrink-0">
-      <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm sticky top-24">
+    <div className="w-full shrink-0 md:w-72">
+      <div className="sticky top-24 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         {/* Profile Avatar and Details */}
         {!isLoading && profile && (
-          <div className="flex flex-col items-center mb-6">
+          <div className="mb-6 flex flex-col items-center">
             <img
               src={`https://ui-avatars.com/api/?background=random&name=${encodeURIComponent(
-                profile.fullName
+                profile.fullName,
               )}&size=96`}
               alt={`${profile.fullName}'s avatar`}
-              className="w-24 h-24 rounded-full mb-4 shadow-sm"
+              className="mb-4 h-24 w-24 rounded-full shadow-sm"
             />
-            <h2 className="text-xl font-semibold text-center">
+            <h2 className="text-center text-xl font-semibold">
               {profile.fullName}
             </h2>
             <div
-              className={`mt-2 px-3 py-1 rounded-full text-xs font-medium ${getRoleColor(
-                profile.role
+              className={`mt-2 rounded-full px-3 py-1 text-xs font-medium ${getRoleColor(
+                profile.role,
               )}`}
             >
               {profile.role}
@@ -76,10 +76,10 @@ export function ProfileSidePanel({
 
         {/* Skeleton loader for profile when loading */}
         {isLoading && (
-          <div className="flex flex-col items-center mb-6 animate-pulse">
-            <div className="w-24 h-24 rounded-full bg-gray-200 mb-4"></div>
-            <div className="h-5 w-32 bg-gray-200 rounded mb-2"></div>
-            <div className="h-4 w-20 bg-gray-200 rounded mt-2"></div>
+          <div className="mb-6 flex animate-pulse flex-col items-center">
+            <div className="mb-4 h-24 w-24 rounded-full bg-gray-200"></div>
+            <div className="mb-2 h-5 w-32 rounded bg-gray-200"></div>
+            <div className="mt-2 h-4 w-20 rounded bg-gray-200"></div>
           </div>
         )}
 
@@ -89,14 +89,13 @@ export function ProfileSidePanel({
             <NavLink
               key={to}
               to={to}
-              className={({ isActive }) => `
-                flex items-center px-4 py-3 gap-2 hover:gap-4 rounded-md transition-all ease-in-out duration-200
-                ${
+              className={({ isActive }) =>
+                `flex items-center gap-2 rounded-md px-4 py-3 transition-all duration-200 ease-in-out hover:gap-4 ${
                   isActive
                     ? "bg-black text-white"
                     : "text-gray-700 hover:bg-gray-100"
-                }
-              `}
+                } `
+              }
             >
               {icon}
               {label}

@@ -25,16 +25,16 @@ export function TextAreaOutput({
     field.resize === "x"
       ? "resize-x"
       : field.resize === "y"
-      ? "resize-y"
-      : field.resize === "both"
-      ? "resize"
-      : field.resize === "none"
-      ? "resize-none"
-      : "resize-y"; // Default to vertical resize
+        ? "resize-y"
+        : field.resize === "both"
+          ? "resize"
+          : field.resize === "none"
+            ? "resize-none"
+            : "resize-y"; // Default to vertical resize
 
   return (
     <div
-      className={`border border-gray-300 rounded-md ${
+      className={`rounded-md border border-gray-300 ${
         isLoading ? "animate-pulse" : ""
       }`}
     >
@@ -43,7 +43,7 @@ export function TextAreaOutput({
         value={displayValue}
         placeholder={field.placeholder}
         rows={field.rows || 5}
-        className={`w-full p-3 bg-transparent focus:outline-none ${resizeClass}`}
+        className={`w-full bg-transparent p-3 focus:outline-none ${resizeClass}`}
       />
     </div>
   );

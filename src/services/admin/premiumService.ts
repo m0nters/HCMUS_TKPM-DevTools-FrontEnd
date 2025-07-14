@@ -7,7 +7,7 @@ import { withAuth } from "../api/";
 export const getPremiumRequests = async (): Promise<UserProfile[]> => {
   try {
     const requests = await withAuth<UserProfile[]>(
-      "/admin/premium/upgrade-request"
+      "/admin/premium/upgrade-request",
     );
     return requests;
   } catch (error) {
@@ -23,7 +23,7 @@ export const getPremiumRequests = async (): Promise<UserProfile[]> => {
  */
 export const processPremiumRequest = async (
   userId: string,
-  isAccepted: boolean
+  isAccepted: boolean,
 ): Promise<{ success: boolean; message: string }> => {
   try {
     const response = await withAuth<{ success: boolean; message: string }>(
@@ -31,7 +31,7 @@ export const processPremiumRequest = async (
       {
         method: "POST",
         body: JSON.stringify({ userId, isAccepted }),
-      }
+      },
     );
     return response;
   } catch (error) {

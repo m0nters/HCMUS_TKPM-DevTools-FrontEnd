@@ -60,7 +60,7 @@ export function SecuritySection() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold border-b pb-4">
+      <h2 className="border-b pb-4 text-xl font-semibold">
         Security & Password
       </h2>
 

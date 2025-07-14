@@ -5,7 +5,7 @@ import { apiRequest } from "../api/";
  */
 export const executePlugin = async (
   pluginId: number,
-  inputData: Record<string, any>
+  inputData: Record<string, any>,
 ): Promise<Record<string, any>> => {
   try {
     const response = await apiRequest<Record<string, any>>(
@@ -13,7 +13,7 @@ export const executePlugin = async (
       {
         method: "POST",
         body: JSON.stringify(inputData),
-      }
+      },
     );
     return response;
   } catch (error) {

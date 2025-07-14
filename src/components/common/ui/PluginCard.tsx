@@ -16,7 +16,7 @@ interface PluginCardProps {
   onPluginUpdated?: (
     pluginId: number,
     isActive: boolean,
-    isPremium: boolean
+    isPremium: boolean,
   ) => void;
   onPluginDeleted?: (pluginId: number) => void;
 }
@@ -99,8 +99,8 @@ export function PluginCard({
 
       {/* Disabled watermark for inactive plugins */}
       {isDisabled && (
-        <div className="absolute top-4 -left-6 flex items-center justify-center z-5 pointer-events-none">
-          <div className="bg-red-800 text-white px-4 py-1 transform -rotate-45 text-sm font-bold opacity-90 uppercase">
+        <div className="pointer-events-none absolute top-4 -left-6 z-5 flex items-center justify-center">
+          <div className="-rotate-45 transform bg-red-800 px-4 py-1 text-sm font-bold text-white uppercase opacity-90">
             DISABLED
           </div>
         </div>
@@ -109,7 +109,7 @@ export function PluginCard({
       <Link
         to={`/tools/${slugify(plugin.name)}`}
         key={plugin.id}
-        className="flex flex-col p-6 border bg-white border-gray-200 rounded-lg hover:border-black hover:shadow-md transition-all duration-200 relative group h-full"
+        className="group relative flex h-full flex-col rounded-lg border border-gray-200 bg-white p-6 transition-all duration-200 hover:border-black hover:shadow-md"
       >
         {plugin.isPremium && (
           <span className="absolute top-2 left-2">
@@ -120,7 +120,7 @@ export function PluginCard({
         {isAuth && !isAdminMode && (
           <button
             onClick={handleFavoriteClick}
-            className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full transition-colors hover:bg-gray-100 cursor-pointer"
+            className="absolute top-2 right-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-gray-100"
             aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
             title={isFav ? "Remove from favorites" : "Add to favorites"}
           >
@@ -133,9 +133,9 @@ export function PluginCard({
               extraScale={0.5}
             >
               {isFav ? (
-                <HeartSolid className="w-5 h-5 text-red-500" />
+                <HeartSolid className="h-5 w-5 text-red-500" />
               ) : (
-                <HeartOutline className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                <HeartOutline className="h-5 w-5 text-gray-400 hover:text-gray-600" />
               )}
             </ClickSpark>
           </button>
@@ -143,32 +143,32 @@ export function PluginCard({
 
         {plugin.icon && (
           <div
-            className={`${sizeClasses[iconSize]} mb-4 mx-auto text-gray-800 flex items-center justify-center group-hover:scale-110 transition-transform`}
+            className={`${sizeClasses[iconSize]} mx-auto mb-4 flex items-center justify-center text-gray-800 transition-transform group-hover:scale-110`}
             dangerouslySetInnerHTML={{ __html: plugin.icon || "" }}
           />
         )}
 
-        <h3 className="font-medium text-center text-lg">{plugin.name}</h3>
+        <h3 className="text-center text-lg font-medium">{plugin.name}</h3>
         {plugin.description && (
           <div className="relative">
             <p
               ref={descriptionRef}
-              className="text-sm text-gray-500 mt-2 text-center line-clamp-2 max-w-full"
+              className="mt-2 line-clamp-2 max-w-full text-center text-sm text-gray-500"
             >
               {plugin.description}
             </p>
             {/* Full description tooltip on hover */}
             {isHovering && isTextTruncated && !isAdminMode && (
-              <div className="absolute left-0 right-0 -bottom-2 transform translate-y-full bg-black text-white p-3 rounded-md shadow-lg z-10 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div className="absolute right-0 -bottom-2 left-0 z-10 translate-y-full transform rounded-md bg-black p-3 text-sm text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
                 {plugin.description}
-                <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black rotate-45"></div>
+                <div className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 transform bg-black"></div>
               </div>
             )}
           </div>
         )}
 
         {plugin.categoryName && (
-          <div className="mt-auto pt-4 text-xs text-gray-400 text-center">
+          <div className="mt-auto pt-4 text-center text-xs text-gray-400">
             {plugin.categoryName}
           </div>
         )}

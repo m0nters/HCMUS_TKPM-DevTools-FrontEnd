@@ -36,15 +36,15 @@ export function PluginExplorer() {
 
   // Initialize state from URL params
   const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("search") || ""
+    searchParams.get("search") || "",
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<number | null>(
-    searchParams.get("category") ? Number(searchParams.get("category")) : null
+    searchParams.get("category") ? Number(searchParams.get("category")) : null,
   );
   const [showPremiumOnly, setShowPremiumOnly] = useState(
-    searchParams.get("isPremiumOnly") === "true"
+    searchParams.get("isPremiumOnly") === "true",
   );
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
@@ -125,7 +125,7 @@ export function PluginExplorer() {
       result = result.filter(
         (plugin) =>
           plugin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          plugin.description?.toLowerCase().includes(searchQuery.toLowerCase())
+          plugin.description?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -172,11 +172,11 @@ export function PluginExplorer() {
   const onPluginUpdated = (
     pluginId: number,
     isActive: boolean,
-    isPremium: boolean
+    isPremium: boolean,
   ) => {
     // Update plugins in the state
     const updatedPlugins = allPlugins.map((plugin) =>
-      plugin.id === pluginId ? { ...plugin, isActive, isPremium } : plugin
+      plugin.id === pluginId ? { ...plugin, isActive, isPremium } : plugin,
     );
 
     setAllPlugins(updatedPlugins);
@@ -201,13 +201,13 @@ export function PluginExplorer() {
 
     // Remove the plugin from state
     const updatedPlugins = allPlugins.filter(
-      (plugin) => plugin.id !== pluginId
+      (plugin) => plugin.id !== pluginId,
     );
     setAllPlugins(updatedPlugins);
 
     // Update filtered plugins list as well
     setFilteredPlugins(
-      filteredPlugins.filter((plugin) => plugin.id !== pluginId)
+      filteredPlugins.filter((plugin) => plugin.id !== pluginId),
     );
 
     // Show success message
@@ -229,8 +229,8 @@ export function PluginExplorer() {
         <title>Explore All Tools | IT Tools</title>
         <meta name="description" content="Explore all available plugins." />
       </article>
-      <div className="w-full max-w-7xl mx-auto pt-24 px-6 pb-12">
-        <h1 className="text-3xl font-bold mb-6">Explore All Tools</h1>
+      <div className="mx-auto w-full max-w-7xl px-6 pt-24 pb-12">
+        <h1 className="mb-6 text-3xl font-bold">Explore All Tools</h1>
 
         {/* Status messages */}
         {statusMessage && (
@@ -244,7 +244,7 @@ export function PluginExplorer() {
         )}
 
         {/* Control Bar - Admin Mode Toggle & Reset Filters */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
           {/* Admin mode toggle - only visible for admins */}
           {isAdmin ? (
             <AdminModeToggle
@@ -259,32 +259,32 @@ export function PluginExplorer() {
           {hasActiveFilters && (
             <button
               onClick={clearAllFilters}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
             >
-              <XMarkIcon className="w-4 h-4" />
+              <XMarkIcon className="h-4 w-4" />
               Clear Filters
             </button>
           )}
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6">
-          <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+        <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             {/* Search */}
-            <div className="w-full md:w-1/2 relative">
+            <div className="relative w-full md:w-1/2">
               <input
                 type="text"
                 placeholder="Search tools..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="w-full py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-black focus:outline-none"
               />
 
               {/* Dynamic icon */}
               {isSearching ? (
-                <ArrowPathIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500 animate-spin" />
+                <ArrowPathIcon className="absolute top-2.5 right-3 h-5 w-5 animate-spin text-gray-500" />
               ) : (
-                <MagnifyingGlassIcon className="w-5 h-5 absolute right-3 top-2.5 text-gray-500" />
+                <MagnifyingGlassIcon className="absolute top-2.5 right-3 h-5 w-5 text-gray-500" />
               )}
             </div>
 
@@ -298,8 +298,8 @@ export function PluginExplorer() {
             />
 
             {/* Premium Filter */}
-            <div className="w-full md:w-1/6 flex items-center">
-              <label className="inline-flex items-center cursor-pointer">
+            <div className="flex w-full items-center md:w-1/6">
+              <label className="inline-flex cursor-pointer items-center">
                 <input
                   type="checkbox"
                   checked={showPremiumOnly}
@@ -307,13 +307,13 @@ export function PluginExplorer() {
                   className="sr-only"
                 />
                 <span
-                  className={`w-10 h-6 rounded-full transition ${
+                  className={`h-6 w-10 rounded-full transition ${
                     showPremiumOnly ? "bg-black" : "bg-gray-300"
                   }`}
                 >
                   <span
-                    className={`block w-4 h-4 mt-1 ml-1 rounded-full transition transform ${
-                      showPremiumOnly ? "bg-white translate-x-4" : "bg-white"
+                    className={`mt-1 ml-1 block h-4 w-4 transform rounded-full transition ${
+                      showPremiumOnly ? "translate-x-4 bg-white" : "bg-white"
                     }`}
                   />
                 </span>
@@ -327,7 +327,7 @@ export function PluginExplorer() {
         <p className="mb-4 text-gray-600">
           Showing {filteredPlugins.length} of {allPlugins.length} tools
           {isAdminMode && (
-            <span className="ml-2 animated-gradient text-white px-2 py-0.5 rounded-md text-xs font-medium">
+            <span className="animated-gradient ml-2 rounded-md px-2 py-0.5 text-xs font-medium text-white">
               Hover over a plugin...
             </span>
           )}
@@ -335,9 +335,9 @@ export function PluginExplorer() {
 
         {/* Tools Grid */}
         {isLoading ? (
-          <LoadingSpinner size="lg" className="py-12"/>
+          <LoadingSpinner size="lg" className="py-12" />
         ) : filteredPlugins.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {filteredPlugins.map((plugin) => (
               <PluginCard
                 key={plugin.id}
@@ -356,7 +356,7 @@ export function PluginExplorer() {
             </p>
             <button
               onClick={clearAllFilters}
-              className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md text-sm font-medium transition-colors"
+              className="mt-4 rounded-md bg-gray-200 px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-300"
             >
               Clear Filters
             </button>

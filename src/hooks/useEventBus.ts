@@ -8,7 +8,7 @@ import { eventBus } from "../services/";
  */
 export function useEventBus(
   eventName: string,
-  callback: (event: CustomEvent) => void
+  callback: (event: CustomEvent) => void,
 ) {
   useEffect(() => {
     const handler = (event: Event) => {

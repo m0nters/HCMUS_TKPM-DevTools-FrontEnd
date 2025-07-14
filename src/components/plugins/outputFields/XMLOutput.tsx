@@ -8,7 +8,7 @@ export function XMLOutput({
 }: OutputFieldProps) {
   return (
     <div
-      className={`border border-gray-300 rounded-md p-4 ${
+      className={`rounded-md border border-gray-300 p-4 ${
         isLoading ? "animate-pulse" : ""
       }`}
     >

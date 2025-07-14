@@ -128,7 +128,7 @@ export function InputField({ field, value, onChange, error }: InputFieldProps) {
 
       default:
         return (
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+          <div className="rounded-md border border-yellow-200 bg-yellow-50 p-4">
             <p className="text-sm text-yellow-800">
               Unsupported input type: {field.type}, the schema data for input
               objects fetched from backend is wrong.
@@ -144,15 +144,15 @@ export function InputField({ field, value, onChange, error }: InputFieldProps) {
       {field.label && (
         <label
           htmlFor={field.id}
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="mb-1 block text-sm font-medium text-gray-700"
         >
           {field.label}
-          {field.required && <span className="text-red-500 ml-1">*</span>}
+          {field.required && <span className="ml-1 text-red-500">*</span>}
         </label>
       )}
 
       {field.description && (
-        <p className="mt-1 text-sm text-gray-500 mb-2">
+        <p className="mt-1 mb-2 text-sm text-gray-500">
           Description: {field.description}
         </p>
       )}

@@ -174,8 +174,8 @@ export function DynamicPluginUI({
             <div key={index} className={sectionContainerClasses}>
               {/* Section Header with Name (if available) */}
               {section.name && (
-                <div className="bg-gray-50 border-b border-gray-200 px-5 py-3">
-                  <h2 className="font-medium text-lg">{section.name}</h2>
+                <div className="border-b border-gray-200 bg-gray-50 px-5 py-3">
+                  <h2 className="text-lg font-medium">{section.name}</h2>
                 </div>
               )}
 
@@ -183,7 +183,7 @@ export function DynamicPluginUI({
                 {/* Input Fields for this section */}
                 {section.inputs.length > 0 && (
                   <div className="inputs-container mb-6">
-                    <h3 className="text-md font-medium text-gray-700 mb-4">
+                    <h3 className="text-md mb-4 font-medium text-gray-700">
                       {section.inputs.length > 1 ? "Inputs" : "Input"}
                     </h3>
                     <div className="space-y-4">
@@ -205,7 +205,7 @@ export function DynamicPluginUI({
                 {/* Output Fields for this section */}
                 {section.outputs.length > 0 && (
                   <div className="outputs-container">
-                    <h3 className="text-md font-medium text-gray-700 mb-4">
+                    <h3 className="text-md mb-4 font-medium text-gray-700">
                       {section.outputs.length > 1 ? "Outputs" : "Output"}
                     </h3>
                     <div className="space-y-4">

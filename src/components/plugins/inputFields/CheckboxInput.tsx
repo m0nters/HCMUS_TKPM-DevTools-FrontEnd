@@ -24,7 +24,7 @@ export function CheckboxInput({
                   [option.value]: !isChecked,
                 });
               }}
-              className="h-5 w-5 text-black focus:ring-black border-gray-300 rounded accent-black"
+              className="h-5 w-5 rounded border-gray-300 text-black accent-black focus:ring-black"
             />
             <label
               htmlFor={`${field.id}-${option.value}`}

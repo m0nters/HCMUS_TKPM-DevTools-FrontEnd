@@ -37,7 +37,7 @@ export const getAllPlugins = async (): Promise<Plugin[]> => {
 export const getSearchedPlugins = async (
   name: string | null,
   categoryId: number | null,
-  premium: boolean | null
+  premium: boolean | null,
 ): Promise<Plugin[]> => {
   try {
     // Build query parameters

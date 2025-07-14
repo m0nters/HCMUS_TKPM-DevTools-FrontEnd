@@ -21,7 +21,7 @@ export function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [redirectMessage, setRedirectMessage] = useState(
-    location.state?.message
+    location.state?.message,
   );
 
   const {
@@ -68,14 +68,14 @@ export function Login() {
           content="Login to access your account and manage your tools"
         />
       </article>
-      <div className="relative w-full mx-auto">
+      <div className="relative mx-auto w-full">
         <MemoizedThreads
           amplitude={1}
           distance={0}
           enableMouseInteraction={true}
         />
-        <div className="relative max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm my-20">
-          <h2 className="text-2xl font-bold text-center mb-8">Login</h2>
+        <div className="relative mx-auto my-20 max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+          <h2 className="mb-8 text-center text-2xl font-bold">Login</h2>
 
           {location.state && redirectMessage && (
             <AlertMessage
@@ -94,7 +94,7 @@ export function Login() {
           )}
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 mb-4">
+            <div className="mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-red-800">
               {error}
             </div>
           )}
@@ -118,7 +118,7 @@ export function Login() {
                     message: "Username must be at least 3 characters",
                   },
                 })}
-                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent ${
+                className={`w-full rounded-md border p-3 focus:border-transparent focus:ring-2 focus:outline-none ${
                   errors.username
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-black"
@@ -126,7 +126,7 @@ export function Login() {
                 disabled={isLoading}
               />
               {errors.username && (
-                <p className="text-red-500 text-sm">
+                <p className="text-sm text-red-500">
                   {errors.username.message}
                 </p>
               )}
@@ -149,7 +149,7 @@ export function Login() {
                   id="remember"
                   type="checkbox"
                   {...register("rememberMe")}
-                  className="h-4 w-4 focus:ring-black border-gray-300 rounded accent-black"
+                  className="h-4 w-4 rounded border-gray-300 accent-black focus:ring-black"
                   disabled={isLoading}
                 />
                 <label
@@ -173,18 +173,18 @@ export function Login() {
               disabled={isLoading}
               className="w-full"
             >
-              <div className="flex justify-center items-center gap-2 group-hover:gap-4 transition-all duration-50">
+              <div className="flex items-center justify-center gap-2 transition-all duration-50 group-hover:gap-4">
                 <span>{isLoading ? "Logging in..." : "Login"}</span>
-                {!isLoading && <ArrowUpRightIcon className="w-4 h-4" />}
+                {!isLoading && <ArrowUpRightIcon className="h-4 w-4" />}
               </div>
             </Button>
           </form>
 
-          <p className="text-center text-gray-600 mt-6">
+          <p className="mt-6 text-center text-gray-600">
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="text-black font-medium hover:underline"
+              className="font-medium text-black hover:underline"
             >
               Register now
             </Link>

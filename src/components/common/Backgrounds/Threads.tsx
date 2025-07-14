@@ -166,7 +166,7 @@ export const Threads = ({
           value: new Color(
             gl.canvas.width,
             gl.canvas.height,
-            gl.canvas.width / gl.canvas.height
+            gl.canvas.width / gl.canvas.height,
           ),
         },
         uColor: { value: new Color(...color) },
@@ -240,7 +240,7 @@ export const Threads = ({
   return (
     <div
       ref={containerRef}
-      className="absolute top-0 left-0 w-full h-full overflow-hidden border-none block"
+      className="absolute top-0 left-0 block h-full w-full overflow-hidden border-none"
       {...rest}
     />
   );

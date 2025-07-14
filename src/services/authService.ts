@@ -65,7 +65,7 @@ const decodeJwtToken = (token: string): JwtPayload => {
  * Registers a new user
  */
 export const register = async (
-  userData: RegisterCredentials
+  userData: RegisterCredentials,
 ): Promise<void> => {
   try {
     await apiRequest<void>("/account/register", {
@@ -82,7 +82,7 @@ export const register = async (
  * Logs in a user and returns user information with JWT token
  */
 export const login = async (
-  credentials: LoginCredentials
+  credentials: LoginCredentials,
 ): Promise<UserInfo> => {
   try {
     const userData = await apiRequest<UserInfo>("/account/login", {

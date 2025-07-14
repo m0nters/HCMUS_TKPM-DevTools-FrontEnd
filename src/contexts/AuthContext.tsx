@@ -19,7 +19,7 @@ interface AuthContextType {
   login: (user: UserInfo, rememberMe: boolean) => void;
   logout: (
     redirectPath?: string,
-    message?: { message: string; isError: boolean; isPersistent?: boolean }
+    message?: { message: string; isError: boolean; isPersistent?: boolean },
   ) => void;
 }
 
@@ -63,13 +63,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.log(
         "Token expires in:",
         Math.floor(timeUntilExpiration / 1000),
-        "seconds"
+        "seconds",
       );
     } else {
       console.log(
         "Token expires in:",
         Math.floor(timeUntilExpiration / 1000 / 60),
-        "minutes"
+        "minutes",
       );
     }
     // Set timer to logout when token expires
@@ -129,7 +129,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       message: string;
       isError: boolean;
       isPersistent?: boolean;
-    }
+    },
   ) => {
     // Clear any expiration timer
     if (expirationTimerRef.current) {

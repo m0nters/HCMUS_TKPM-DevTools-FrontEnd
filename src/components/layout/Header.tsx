@@ -51,7 +51,7 @@ export function Header() {
     {
       type: "header",
       content: () => (
-        <div className="px-4 py-2 border-b border-gray-100">
+        <div className="border-b border-gray-100 px-4 py-2">
           <p className="text-sm font-medium">{user?.fullName}</p>
           <p className="text-xs text-gray-500">{user?.email}</p>
           <p className="text-xs font-bold">{user?.role}</p>
@@ -63,21 +63,21 @@ export function Header() {
       type: "link",
       label: "Profile",
       to: "/profile",
-      icon: <UserCircleIcon className="w-4 h-4 mr-2" />,
+      icon: <UserCircleIcon className="mr-2 h-4 w-4" />,
       alwaysShow: true,
     },
     {
       type: "link",
       label: "Admin Dashboard",
       to: "/admin",
-      icon: <ShieldCheckIcon className="w-4 h-4 mr-2" />,
+      icon: <ShieldCheckIcon className="mr-2 h-4 w-4" />,
       showIf: () => user?.role === "Admin",
     },
     {
       type: "link",
       label: "Upgrade to Premium",
       to: "/premium",
-      icon: <SparklesIcon className="w-4 h-4 mr-2" />,
+      icon: <SparklesIcon className="mr-2 h-4 w-4" />,
       showIf: () => !isPremium,
     },
     {
@@ -87,7 +87,7 @@ export function Header() {
     {
       type: "button",
       label: "Logout",
-      icon: <ArrowLeftEndOnRectangleIcon className="w-4 h-4 mr-2" />,
+      icon: <ArrowLeftEndOnRectangleIcon className="mr-2 h-4 w-4" />,
       onClick: () => {
         logout();
         setIsUserMenuOpen(false);
@@ -98,21 +98,21 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 w-full z-5">
-        <div className="flex justify-between items-center px-6 py-4 bg-white shadow-sm border-b border-gray-100">
+      <header className="fixed top-0 z-5 w-full">
+        <div className="flex items-center justify-between border-b border-gray-100 bg-white px-6 py-4 shadow-sm">
           <div className="flex items-center">
             <button
               onClick={() => setIsPanelOpen(true)}
-              className="mr-4 hover:bg-gray-100 p-1 rounded-md transition-colors cursor-pointer"
+              className="mr-4 cursor-pointer rounded-md p-1 transition-colors hover:bg-gray-100"
               aria-label="Menu"
             >
-              <Bars3Icon className="w-6 h-6" />
+              <Bars3Icon className="h-6 w-6" />
             </button>
             <Link
               to="/"
-              className="text-xl font-bold text-black hover:text-gray-700 transition-colors select-none"
+              className="text-xl font-bold text-black transition-colors select-none hover:text-gray-700"
             >
-              <span className="bg-black text-white px-2 py-1 mr-1">IT</span>
+              <span className="mr-1 bg-black px-2 py-1 text-white">IT</span>
               Tools
             </Link>
           </div>
@@ -122,9 +122,9 @@ export function Header() {
               <div className="relative" id="user-menu">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 hover:gap-4 hover:bg-gray-100 px-3 py-2 rounded-md transition-all ease-in-out duration-200 cursor-pointer"
+                  className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 transition-all duration-200 ease-in-out hover:gap-4 hover:bg-gray-100"
                 >
-                  <UserCircleIcon className="w-6 h-6" />
+                  <UserCircleIcon className="h-6 w-6" />
                   <span className="hidden md:block">
                     {user?.fullName || user?.userName}
                   </span>
@@ -132,7 +132,7 @@ export function Header() {
 
                 {/* Dropdown menu */}
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
+                  <div className="absolute right-0 z-10 mt-2 w-48 rounded-md border border-gray-200 bg-white py-1 shadow-lg">
                     {menuItems.map((item, index) => {
                       // Check if the item should be shown
                       const shouldShow =
@@ -153,7 +153,7 @@ export function Header() {
                             <Link
                               key={index}
                               to={item.to!}
-                              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-1 hover:gap-2 transition-all ease-in-out duration-200"
+                              className="flex items-center gap-1 px-4 py-2 text-sm text-gray-700 transition-all duration-200 ease-in-out hover:gap-2 hover:bg-gray-100"
                               onClick={() => setIsUserMenuOpen(false)}
                             >
                               {item.icon}
@@ -166,7 +166,7 @@ export function Header() {
                             <button
                               key={index}
                               onClick={item.onClick}
-                              className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-1 hover:gap-2 transition-all ease-in-out duration-200 cursor-pointer"
+                              className="flex w-full cursor-pointer items-center gap-1 px-4 py-2 text-left text-sm text-gray-700 transition-all duration-200 ease-in-out hover:gap-2 hover:bg-gray-100"
                             >
                               {item.icon}
                               {item.label}
@@ -189,13 +189,13 @@ export function Header() {
               <>
                 <Link
                   to="/login"
-                  className="px-4 py-2 border border-black text-black hover:bg-black hover:text-white transition-all duration-200 rounded-md"
+                  className="rounded-md border border-black px-4 py-2 text-black transition-all duration-200 hover:bg-black hover:text-white"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded-md"
+                  className="rounded-md bg-black px-4 py-2 text-white transition-colors hover:bg-gray-800"
                 >
                   Register
                 </Link>

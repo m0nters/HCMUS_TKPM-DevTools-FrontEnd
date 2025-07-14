@@ -15,7 +15,7 @@ interface AdminPluginControlsProps {
   onPluginUpdated: (
     pluginId: number,
     isActive: boolean,
-    isPremium: boolean
+    isPremium: boolean,
   ) => void;
   onPluginDeleted: (pluginId: number) => void;
 }
@@ -85,8 +85,8 @@ export function AdminPluginControls({
 
   return (
     <>
-      <div className="absolute inset-0 bg-black/80 rounded-lg flex flex-col items-center justify-center gap-4 z-10">
-        <div className="text-center text-white mb-2">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black/80">
+        <div className="mb-2 text-center text-white">
           <h3 className="font-semibold">{plugin.name}</h3>
           <p className="text-xs opacity-80">Admin Controls</p>
         </div>
@@ -95,7 +95,7 @@ export function AdminPluginControls({
           <button
             onClick={handleToggleActive}
             disabled={isUpdatingActive}
-            className={`p-2 rounded-md transition-colors cursor-pointer ${
+            className={`cursor-pointer rounded-md p-2 transition-colors ${
               plugin.isActive
                 ? "bg-green-600 hover:bg-green-700"
                 : "bg-red-600 hover:bg-red-700"
@@ -105,16 +105,16 @@ export function AdminPluginControls({
             {isUpdatingActive ? (
               <LoadingSpinner size="xs" />
             ) : plugin.isActive ? (
-              <EyeIcon className="w-5 h-5 text-white" />
+              <EyeIcon className="h-5 w-5 text-white" />
             ) : (
-              <EyeSlashIcon className="w-5 h-5 text-white" />
+              <EyeSlashIcon className="h-5 w-5 text-white" />
             )}
           </button>
 
           <button
             onClick={handleTogglePremium}
             disabled={isUpdatingPremium}
-            className={`p-2 rounded-md transition-colors cursor-pointer ${
+            className={`cursor-pointer rounded-md p-2 transition-colors ${
               plugin.isPremium
                 ? "bg-purple-600 hover:bg-purple-700"
                 : "bg-gray-600 hover:bg-gray-700"
@@ -124,16 +124,16 @@ export function AdminPluginControls({
             {isUpdatingPremium ? (
               <LoadingSpinner size="xs" />
             ) : (
-              <SparklesIcon className="w-5 h-5 text-white" />
+              <SparklesIcon className="h-5 w-5 text-white" />
             )}
           </button>
 
           <button
             onClick={handleDeleteClick}
-            className="p-2 rounded-md transition-colors cursor-pointer bg-red-600 hover:bg-red-700"
+            className="cursor-pointer rounded-md bg-red-600 p-2 transition-colors hover:bg-red-700"
             title="Delete plugin"
           >
-            <TrashIcon className="w-5 h-5 text-white" />
+            <TrashIcon className="h-5 w-5 text-white" />
           </button>
         </div>
 

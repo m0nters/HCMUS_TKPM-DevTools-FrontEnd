@@ -21,17 +21,17 @@ export function ColorInput({ field, value, onChange, error }: InputFieldProps) {
   }, [colorValue]);
 
   return (
-    <div className="relative border-2 border-gray-300 rounded-md p-1">
+    <div className="relative rounded-md border-2 border-gray-300 p-1">
       <input
         type="color"
         id={field.id}
         value={colorValue}
         onChange={(e) => onChange(e.target.value)}
         required={field.required}
-        className="h-10 w-full opacity-0 absolute inset-0 cursor-pointer z-10"
+        className="absolute inset-0 z-10 h-10 w-full cursor-pointer opacity-0"
       />
       <div
-        className={`h-10 w-full rounded-md flex items-center justify-center`}
+        className={`flex h-10 w-full items-center justify-center rounded-md`}
         style={{
           backgroundColor: colorValue,
           color: textColor,

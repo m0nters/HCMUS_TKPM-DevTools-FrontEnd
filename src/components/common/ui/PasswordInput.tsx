@@ -34,7 +34,7 @@ export function PasswordInput({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="mb-1 block text-sm font-medium text-gray-700"
         >
           {label}
         </label>
@@ -47,7 +47,7 @@ export function PasswordInput({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`w-full p-3 border focus:outline-none focus:ring-2 focus:border-transparent ${
+          className={`w-full border p-3 focus:border-transparent focus:ring-2 focus:outline-none ${
             error
               ? "border-red-300 focus:ring-red-600"
               : "border-gray-300 focus:ring-black"
@@ -57,7 +57,7 @@ export function PasswordInput({
 
         <button
           type="button"
-          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
           onClick={() => setShowPassword(!showPassword)}
           tabIndex={-1}
           aria-label={showPassword ? "Hide password" : "Show password"}

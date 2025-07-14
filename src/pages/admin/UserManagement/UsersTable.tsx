@@ -20,12 +20,12 @@ export function UsersTable({
   onDeleteClick,
 }: UsersTableProps) {
   if (isLoading) {
-    return <LoadingSpinner size="lg" className="py-24" />
+    return <LoadingSpinner size="lg" className="py-24" />;
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-md overflow-x-auto">
-      <div className="px-6 py-4 border-b border-gray-200">
+    <div className="overflow-x-auto rounded-md border border-gray-200 bg-white">
+      <div className="border-b border-gray-200 px-6 py-4">
         <p className="text-sm text-gray-700">
           Total users:{" "}
           <span className="font-medium">{filteredUsers.length}</span>
@@ -42,24 +42,24 @@ export function UsersTable({
       <table className="min-w-full divide-y divide-gray-200 overflow-x-auto">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
               STT
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
               Name
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
               Email
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
               Role
             </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase">
               Actions
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200 bg-white">
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user, index) => (
               <tr key={user.id} className="hover:bg-gray-50">
@@ -95,13 +95,13 @@ export function UsersTable({
                     />
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
                   <button
                     onClick={() => onDeleteClick(user)}
                     disabled={currentUserEmail === user.email}
                     className={`text-red-500 hover:text-red-700 ${
                       currentUserEmail === user.email
-                        ? "opacity-50 cursor-not-allowed"
+                        ? "cursor-not-allowed opacity-50"
                         : "cursor-pointer"
                     }`}
                     title={
@@ -110,7 +110,7 @@ export function UsersTable({
                         : "Delete user"
                     }
                   >
-                    <TrashIcon className="w-5 h-5 inline" />
+                    <TrashIcon className="inline h-5 w-5" />
                   </button>
                 </td>
               </tr>

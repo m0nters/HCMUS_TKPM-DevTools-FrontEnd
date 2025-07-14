@@ -7,7 +7,7 @@ export function RadioInput({ field, value, onChange, error }: InputFieldProps) {
   };
 
   return (
-    <div className="flex my-6 mx-8">
+    <div className="mx-8 my-6 flex">
       {field.options?.map((option) => (
         <RadioButton
           key={option.value}

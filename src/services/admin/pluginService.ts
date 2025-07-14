@@ -34,7 +34,7 @@ export const getAllPluginsAdmin = async (): Promise<AdminPlugin[]> => {
  */
 export const togglePluginActive = async (
   pluginId: number,
-  isActive: boolean
+  isActive: boolean,
 ): Promise<boolean> => {
   try {
     await withAuth(`/admin/${pluginId}/activation?isActive=${isActive}`, {
@@ -54,7 +54,7 @@ export const togglePluginActive = async (
  */
 export const togglePluginPremium = async (
   pluginId: number,
-  isPremium: boolean
+  isPremium: boolean,
 ): Promise<boolean> => {
   try {
     await withAuth(`/admin/${pluginId}/premium?isPremium=${isPremium}`, {
@@ -112,7 +112,7 @@ export const getPluginStats = async () => {
  */
 export const uploadPlugin = async (
   pluginFile: File,
-  libraryFiles: File[] = []
+  libraryFiles: File[] = [],
 ): Promise<{ success: boolean; message: string }> => {
   try {
     const formData = new FormData();
@@ -131,7 +131,7 @@ export const uploadPlugin = async (
         method: "POST",
         body: formData,
         // Don't set Content-Type here - the browser will set it with the correct boundary
-      }
+      },
     );
 
     return response;

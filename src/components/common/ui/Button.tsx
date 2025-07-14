@@ -65,9 +65,9 @@ export function Button({
   // Hover effect spans
   const hoverEffect =
     variant === "primary" ? (
-      <span className="absolute inset-0 w-0 bg-white rounded-sm transition-all duration-300 ease-in-out group-hover:w-full"></span>
+      <span className="absolute inset-0 w-0 rounded-sm bg-white transition-all duration-300 ease-in-out group-hover:w-full"></span>
     ) : (
-      <span className="absolute inset-0 w-0 bg-black rounded-sm transition-all duration-300 ease-in-out group-hover:w-full"></span>
+      <span className="absolute inset-0 w-0 rounded-sm bg-black transition-all duration-300 ease-in-out group-hover:w-full"></span>
     );
 
   // Text that changes color on hover

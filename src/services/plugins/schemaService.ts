@@ -9,7 +9,7 @@ const schemaCache: Record<string, { schema: PluginSchema; timestamp: number }> =
   {};
 
 export const getPluginSchema = async (
-  pluginId: number
+  pluginId: number,
 ): Promise<PluginSchema> => {
   // Check cache first (with 5-minute expiry)
   const cached = schemaCache[pluginId];

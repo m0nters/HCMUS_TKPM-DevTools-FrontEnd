@@ -13,7 +13,7 @@ interface PasswordChangeRequest {
 }
 
 export const changePassword = async (
-  request: PasswordChangeRequest
+  request: PasswordChangeRequest,
 ): Promise<{ success: boolean; message: string }> => {
   try {
     const response = await withAuth<{ success: boolean; message: string }>(
@@ -21,7 +21,7 @@ export const changePassword = async (
       {
         method: "PUT",
         body: JSON.stringify(request),
-      }
+      },
     );
     return response;
   } catch (error) {

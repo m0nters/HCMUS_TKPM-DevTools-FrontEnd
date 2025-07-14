@@ -14,8 +14,8 @@ export function StatCard({
   subtext,
 }: StatCardProps) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 flex items-center">
-      <div className="bg-gray-50 p-3 rounded-lg mr-4">{icon}</div>
+    <div className="flex items-center rounded-lg border border-gray-200 bg-white p-6">
+      <div className="mr-4 rounded-lg bg-gray-50 p-3">{icon}</div>
       <div>
         <h3 className="text-sm font-medium text-gray-500">{title}</h3>
         <div className="flex items-end">
@@ -26,7 +26,7 @@ export function StatCard({
             </span>
           )}
         </div>
-        {subtext && <p className="text-xs text-gray-500 mt-1">{subtext}</p>}
+        {subtext && <p className="mt-1 text-xs text-gray-500">{subtext}</p>}
       </div>
     </div>
   );

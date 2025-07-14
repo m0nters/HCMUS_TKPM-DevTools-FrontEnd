@@ -23,7 +23,7 @@ export const getAllUsers = async (): Promise<UserProfile[]> => {
  */
 export const changeUserRole = async (
   userId: string,
-  role: UserRole
+  role: UserRole,
 ): Promise<{ success: boolean; message: string }> => {
   try {
     const response = await withAuth<{ success: boolean; message: string }>(
@@ -31,7 +31,7 @@ export const changeUserRole = async (
       {
         method: "POST",
         body: JSON.stringify({ userId, role }),
-      }
+      },
     );
     return response;
   } catch (error) {
@@ -45,14 +45,14 @@ export const changeUserRole = async (
  * @param userId - The ID of the user to delete
  */
 export const deleteUser = async (
-  userId: string
+  userId: string,
 ): Promise<{ success: boolean; message: string }> => {
   try {
     const response = await withAuth<{ success: boolean; message: string }>(
       `/admin/user?userId=${userId}`,
       {
         method: "DELETE",
-      }
+      },
     );
     return response;
   } catch (error) {

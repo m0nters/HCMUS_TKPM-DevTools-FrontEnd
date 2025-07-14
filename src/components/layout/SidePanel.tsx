@@ -51,7 +51,7 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
     if (expandedCategories.includes(categoryName)) {
       // If category is already expanded, collapse it
       setExpandedCategories(
-        expandedCategories.filter((name) => name !== categoryName)
+        expandedCategories.filter((name) => name !== categoryName),
       );
     } else {
       // If category is collapsed, expand it
@@ -64,26 +64,26 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 z-10 transition-opacity"
+          className="fixed inset-0 z-10 bg-black opacity-50 transition-opacity"
           onClick={onClose} // Close panel when clicking outside the side panel
         />
       )}
 
       {/* Sliding Panel */}
       <div
-        className={`fixed top-0 left-0 h-full w-96 bg-white z-20 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 z-20 h-full w-96 transform bg-white transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } flex flex-col`}
       >
         {/* Header */}
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex justify-between items-center">
+        <div className="border-b border-gray-200 p-6">
+          <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Tools Menu</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+              className="cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100"
             >
-              <XMarkIcon className="w-5 h-5" />
+              <XMarkIcon className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -91,11 +91,11 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
         {/* Categories List */}
         <div className="flex-1 overflow-y-auto">
           {isLoading ? (
-            <LoadingSpinner className="h-full"/>
+            <LoadingSpinner className="h-full" />
           ) : categories.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full px-6 py-12 text-center">
-              <ArchiveBoxIcon className="h-16 w-16 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">
+            <div className="flex h-full flex-col items-center justify-center px-6 py-12 text-center">
+              <ArchiveBoxIcon className="mb-4 h-16 w-16 text-gray-400" />
+              <h3 className="mb-1 text-lg font-medium text-gray-900">
                 No Categories Found
               </h3>
               <p className="text-gray-500">
@@ -104,7 +104,7 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
               </p>
               <button
                 onClick={fetchAllCategories}
-                className="mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-sm font-medium transition-colors"
+                className="mt-4 rounded-md bg-gray-100 px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-200"
               >
                 Refresh
               </button>
@@ -114,17 +114,17 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="border border-gray-200 rounded-md overflow-hidden"
+                  className="overflow-hidden rounded-md border border-gray-200"
                 >
                   <button
                     onClick={() => toggleCategory(category.name)}
-                    className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left cursor-pointer"
+                    className="flex w-full cursor-pointer items-center justify-between bg-gray-50 p-3 text-left transition-colors hover:bg-gray-100"
                   >
-                    <span className="font-medium line-clamp-1">
+                    <span className="line-clamp-1 font-medium">
                       {category.name}
                     </span>
                     <ChevronDownIcon
-                      className={`w-4 h-4 transition-transform ${
+                      className={`h-4 w-4 transition-transform ${
                         expandedCategories.includes(category.name)
                           ? "rotate-180"
                           : ""
@@ -140,20 +140,20 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
                           reloadDocument
                           to={`/tools/${slugify(plugin.name)}`}
                           key={plugin.id}
-                          className="bg-white flex items-center justify-between p-3 hover:bg-gray-50 border-t border-gray-100 group"
+                          className="group flex items-center justify-between border-t border-gray-100 bg-white p-3 hover:bg-gray-50"
                           onClick={onClose}
                         >
-                          <div className="flex items-center gap-2 group-hover:gap-4 transition-all ease-in-out duration-200">
+                          <div className="flex items-center gap-2 transition-all duration-200 ease-in-out group-hover:gap-4">
                             {/* Tool Icon */}
                             <div
-                              className="flex-shrink-0 w-5 h-5 text-gray-700 flex items-center justify-center overflow-hidden"
+                              className="flex h-5 w-5 flex-shrink-0 items-center justify-center overflow-hidden text-gray-700"
                               dangerouslySetInnerHTML={{
                                 __html: plugin.icon || "",
                               }}
                             />
 
                             {/* Tool Name */}
-                            <span className="text-gray-800 truncate">
+                            <span className="truncate text-gray-800">
                               {truncate(plugin.name, 20)}
                             </span>
                           </div>
@@ -163,7 +163,7 @@ export function SidePanel({ isOpen, onClose }: SidePanelProps) {
                             {plugin.isPremium && (
                               <PremiumBadge variant="outlined" />
                             )}
-                            <ChevronRightIcon className="w-4 h-4 text-gray-400" />
+                            <ChevronRightIcon className="h-4 w-4 text-gray-400" />
                           </div>
                         </Link>
                       ))}

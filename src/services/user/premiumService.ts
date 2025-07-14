@@ -13,7 +13,7 @@ export const requestPremiumUpgrade = async (): Promise<{
       "/account/me/premium/upgrade-submit",
       {
         method: "POST",
-      }
+      },
     );
     return response;
   } catch (error) {

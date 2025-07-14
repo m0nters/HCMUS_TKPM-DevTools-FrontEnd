@@ -57,7 +57,7 @@ export const SplitText = ({
           observer.unobserve(ref.current);
         }
       },
-      { threshold, rootMargin }
+      { threshold, rootMargin },
     );
 
     observer.observe(ref.current);
@@ -83,13 +83,13 @@ export const SplitText = ({
         : animationFrom,
       delay: i * delay,
       config: { easing },
-    }))
+    })),
   );
 
   return (
     <p
       ref={ref}
-      className={`split-parent overflow-hidden inline ${className}`}
+      className={`split-parent inline overflow-hidden ${className}`}
       style={{ textAlign, whiteSpace: "normal", wordWrap: "break-word" }}
     >
       {words.map((word, wordIndex) => (

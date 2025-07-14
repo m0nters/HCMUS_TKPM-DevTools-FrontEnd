@@ -43,29 +43,22 @@ export function PremiumBadge({
 
   return (
     <span
-      className={`
-        inline-flex items-center rounded-full font-medium ${sizeClasses[size]} 
-        ${variantClasses[variant]} transition-all duration-200 
-        ${
-          onClick
-            ? "cursor-pointer hover:shadow-md hover:scale-105 active:scale-95"
-            : ""
-        }
-        ${className}
-      `}
+      className={`inline-flex items-center rounded-full font-medium ${sizeClasses[size]} ${variantClasses[variant]} transition-all duration-200 ${
+        onClick
+          ? "cursor-pointer hover:scale-105 hover:shadow-md active:scale-95"
+          : ""
+      } ${className} `}
       onClick={onClick}
     >
       {showIcon && (
         <SparklesIcon
-          className={`
-          ${
+          className={` ${
             size === "sm"
-              ? "w-3 h-3 mr-1"
+              ? "mr-1 h-3 w-3"
               : size === "md"
-              ? "w-3.5 h-3.5 mr-1.5"
-              : "w-4 h-4 mr-2"
-          }
-        `}
+                ? "mr-1.5 h-3.5 w-3.5"
+                : "mr-2 h-4 w-4"
+          } `}
         />
       )}
       {label}

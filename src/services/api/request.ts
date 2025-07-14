@@ -3,7 +3,7 @@
  */
 export async function apiRequest<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
   const url = `/api/v1${endpoint}`;
 

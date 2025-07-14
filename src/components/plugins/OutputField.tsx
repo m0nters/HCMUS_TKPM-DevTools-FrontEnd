@@ -62,7 +62,7 @@ export function OutputField({
         return <XMLOutput field={field} value={value} isLoading={isLoading} />;
       default:
         return (
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+          <div className="rounded-md border border-yellow-200 bg-yellow-50 p-4">
             <p className="text-sm text-yellow-800">
               Unsupported output type: {field.type}
             </p>
@@ -73,26 +73,26 @@ export function OutputField({
 
   return (
     <div className="output-field-container">
-      <div className="flex items-center justify-between mb-1">
+      <div className="mb-1 flex items-center justify-between">
         <label className="block text-sm font-medium text-gray-700">
           {field.label}
         </label>
         {hasValue(value) && (
           <button
             onClick={copyToClipboard}
-            className="text-gray-500 hover:text-black transition-colors"
+            className="text-gray-500 transition-colors hover:text-black"
             title="Copy to clipboard"
             disabled={isLoading || copied}
           >
             {copied ? (
               <>
-                <CheckIcon className="w-5 h-5 text-green-600" />
-                <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-green-50 border border-green-200 text-green-800 rounded-md p-4 shadow-md z-50 animate-fade-in-up">
+                <CheckIcon className="h-5 w-5 text-green-600" />
+                <div className="animate-fade-in-up fixed bottom-5 left-1/2 z-50 -translate-x-1/2 transform rounded-md border border-green-200 bg-green-50 p-4 text-green-800 shadow-md">
                   Copied to clipboard!
                 </div>
               </>
             ) : (
-              <ClipboardDocumentIcon className="w-5 h-5 cursor-pointer" />
+              <ClipboardDocumentIcon className="h-5 w-5 cursor-pointer" />
             )}
           </button>
         )}

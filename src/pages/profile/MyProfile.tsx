@@ -33,19 +33,19 @@ export function MyProfile() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto pt-24 px-6 pb-12">
-      <h1 className="text-3xl font-bold mb-8">My Profile</h1>
+    <div className="mx-auto w-full max-w-7xl px-6 pt-24 pb-12">
+      <h1 className="mb-8 text-3xl font-bold">My Profile</h1>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col gap-8 md:flex-row">
         {/* Left Sidebar */}
         <ProfileSidePanel profile={profile} isLoading={isLoading} />
 
         {/* Main Content Area */}
-        <div className="w-full bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+        <div className="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           {isLoading ? (
-            <LoadingSpinner size="lg" className="h-full"/>
+            <LoadingSpinner size="lg" className="h-full" />
           ) : error ? (
-            <div className="bg-red-50 border border-red-200 rounded-md p-4 text-red-800">
+            <div className="rounded-md border border-red-200 bg-red-50 p-4 text-red-800">
               {error}
             </div>
           ) : (

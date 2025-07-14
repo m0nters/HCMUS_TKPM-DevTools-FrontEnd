@@ -61,7 +61,7 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
     (pluginId: number): boolean => {
       return favorites.has(pluginId);
     },
-    [favorites]
+    [favorites],
   );
 
   // Function to toggle favorite status

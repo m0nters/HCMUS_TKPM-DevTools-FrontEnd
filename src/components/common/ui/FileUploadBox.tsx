@@ -103,7 +103,7 @@ export function FileUploadBox({
         setIsDraggingOver(true);
       }
     },
-    [disabled]
+    [disabled],
   );
 
   const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -118,7 +118,7 @@ export function FileUploadBox({
       // Validate files against accepted types
       const { validFiles, invalidFiles } = validateFileTypes(
         inputFiles,
-        accept
+        accept,
       );
 
       // Handle invalid files
@@ -143,10 +143,10 @@ export function FileUploadBox({
       onChange(
         multiple
           ? [...fileList, ...validFiles].slice(0, maxFiles)
-          : validFiles[0]
+          : validFiles[0],
       );
     },
-    [multiple, accept, fileTypes, onChange, fileList, maxFiles, onError]
+    [multiple, accept, fileTypes, onChange, fileList, maxFiles, onError],
   );
 
   const handleDrop = useCallback(
@@ -167,7 +167,7 @@ export function FileUploadBox({
       // Process the dropped files
       processFiles(Array.from(e.dataTransfer.files));
     },
-    [disabled, onError, processFiles]
+    [disabled, onError, processFiles],
   );
 
   const handleFileInputChange = useCallback(
@@ -180,7 +180,7 @@ export function FileUploadBox({
       // Process the selected files
       processFiles(Array.from(e.target.files));
     },
-    [disabled, processFiles]
+    [disabled, processFiles],
   );
 
   const dropZoneClasses = isDraggingOver
@@ -190,9 +190,9 @@ export function FileUploadBox({
   const dropContent = isDraggingOver ? (
     <>
       {multiple ? (
-        <PlusCircleIcon className="w-12 h-12 text-blue-500 animate-bounce" />
+        <PlusCircleIcon className="h-12 w-12 animate-bounce text-blue-500" />
       ) : (
-        <DocumentArrowUpIcon className="w-12 h-12 text-blue-500 animate-bounce" />
+        <DocumentArrowUpIcon className="h-12 w-12 animate-bounce text-blue-500" />
       )}
       <p className="mt-2 text-sm font-medium text-blue-600">
         {multiple ? "Release to add files" : "Release to upload file"}
@@ -201,9 +201,9 @@ export function FileUploadBox({
   ) : (
     <>
       {multiple ? (
-        <PlusCircleIcon className="w-10 h-10 text-gray-400" />
+        <PlusCircleIcon className="h-10 w-10 text-gray-400" />
       ) : (
-        <DocumentArrowUpIcon className="w-10 h-10 text-gray-400" />
+        <DocumentArrowUpIcon className="h-10 w-10 text-gray-400" />
       )}
       <p className="mt-1 text-sm text-gray-600">
         {title ||
@@ -211,13 +211,13 @@ export function FileUploadBox({
             ? `Drop files here or click to browse`
             : `Drop file here or click to browse`)}
       </p>
-      {helperText && <p className="text-xs text-gray-500 mt-1">{helperText}</p>}
+      {helperText && <p className="mt-1 text-xs text-gray-500">{helperText}</p>}
     </>
   );
 
   return (
     <>
-      <div className="flex items-center justify-between mb-1">
+      <div className="mb-1 flex items-center justify-between">
         <label className="block text-sm font-medium text-gray-700">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
@@ -229,15 +229,15 @@ export function FileUploadBox({
       </div>
 
       <div
-        className={`flex items-center justify-center text-center w-full h-32 border-2 border-dashed rounded-lg hover:bg-gray-100 transition-colors ${dropZoneClasses} ${
-          disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+        className={`flex h-32 w-full items-center justify-center rounded-lg border-2 border-dashed text-center transition-colors hover:bg-gray-100 ${dropZoneClasses} ${
+          disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => !disabled && fileInputRef.current?.click()}
       >
-        <div className="relative flex flex-col items-center justify-center pt-5 pb-6 pointer-events-none min-w-24">
+        <div className="pointer-events-none relative flex min-w-24 flex-col items-center justify-center pt-5 pb-6">
           {!multiple && fileList.length > 0 ? (
             // Single file selected view
             <>
@@ -247,16 +247,16 @@ export function FileUploadBox({
                   e.stopPropagation();
                   onChange(null);
                 }}
-                className="absolute top-2 right-0 p-1 text-gray-500 hover:text-red-500 hover:bg-gray-200 rounded-full cursor-pointer pointer-events-auto"
+                className="pointer-events-auto absolute top-2 right-0 cursor-pointer rounded-full p-1 text-gray-500 hover:bg-gray-200 hover:text-red-500"
                 aria-label="Remove file"
               >
-                <XMarkIcon className="w-5 h-5" />
+                <XMarkIcon className="h-5 w-5" />
               </button>
-              <DocumentPlusIcon className="w-10 h-10 text-green-500" />
-              <p className="mt-1 text-sm text-gray-700 font-medium">
+              <DocumentPlusIcon className="h-10 w-10 text-green-500" />
+              <p className="mt-1 text-sm font-medium text-gray-700">
                 {fileList[0].name}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="mt-1 text-xs text-gray-500">
                 {(fileList[0].size / 1024).toFixed(2)} KB
               </p>
             </>
@@ -278,21 +278,21 @@ export function FileUploadBox({
 
       {/* File list for multiple files */}
       {multiple && fileList.length > 0 && (
-        <div className="mt-3 border rounded-lg border-gray-200 overflow-hidden">
-          <h3 className="px-4 py-2 bg-gray-50 border-b border-gray-200 text-sm font-medium">
+        <div className="mt-3 overflow-hidden rounded-lg border border-gray-200">
+          <h3 className="border-b border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium">
             Selected Files
           </h3>
           <ul className="divide-y divide-gray-200">
             {fileList.map((file, index) => (
               <li
                 key={index}
-                className="px-4 py-3 flex items-center justify-between"
+                className="flex items-center justify-between px-4 py-3"
               >
                 <div className="flex items-start">
-                  <p className="text-sm font-medium text-gray-700 mr-4">
+                  <p className="mr-4 text-sm font-medium text-gray-700">
                     {index + 1}
                   </p>
-                  <DocumentArrowUpIcon className="w-5 h-5 text-gray-400 mr-2" />
+                  <DocumentArrowUpIcon className="mr-2 h-5 w-5 text-gray-400" />
                   <div>
                     <p className="text-sm font-medium text-gray-700">
                       {file.name}
@@ -310,7 +310,7 @@ export function FileUploadBox({
                   }`}
                   disabled={disabled}
                 >
-                  <TrashIcon className="w-5 h-5" />
+                  <TrashIcon className="h-5 w-5" />
                 </button>
               </li>
             ))}

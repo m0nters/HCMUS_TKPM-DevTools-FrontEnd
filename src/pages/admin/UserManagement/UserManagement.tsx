@@ -126,7 +126,7 @@ export function UserManagement() {
       (user) =>
         user.fullName.toLowerCase().includes(lowercaseQuery) ||
         user.email.toLowerCase().includes(lowercaseQuery) ||
-        user.role.toLowerCase().includes(lowercaseQuery)
+        user.role.toLowerCase().includes(lowercaseQuery),
     );
     setFilteredUsers(filteredUsersResult);
 
@@ -135,7 +135,7 @@ export function UserManagement() {
       (user) =>
         user.fullName.toLowerCase().includes(lowercaseQuery) ||
         user.email.toLowerCase().includes(lowercaseQuery) ||
-        user.role.toLowerCase().includes(lowercaseQuery)
+        user.role.toLowerCase().includes(lowercaseQuery),
     );
     setFilteredPremiumRequests(filteredRequestsResult);
     setIsSearching(false);
@@ -149,8 +149,8 @@ export function UserManagement() {
         // Update the local state to reflect the change
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
-            user.id === chosenUser.id ? { ...user, role } : user
-          )
+            user.id === chosenUser.id ? { ...user, role } : user,
+          ),
         );
         fetchPremiumRequests();
         setActionStatus({
@@ -186,7 +186,7 @@ export function UserManagement() {
         // Remove the user from the local state
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
         setFilteredUsers((prevUsers) =>
-          prevUsers.filter((user) => user.id !== userId)
+          prevUsers.filter((user) => user.id !== userId),
         );
         fetchPremiumRequests();
         setActionStatus({
@@ -219,7 +219,7 @@ export function UserManagement() {
 
   const handleProcessRequest = async (
     user: UserProfile,
-    isAccepted: boolean
+    isAccepted: boolean,
   ) => {
     setIsProcessing(user.id);
     try {
@@ -229,7 +229,7 @@ export function UserManagement() {
         // Remove the processed request from the list
         setPremiumRequests((prev) => prev.filter((req) => req.id !== user.id));
         setFilteredPremiumRequests((prev) =>
-          prev.filter((req) => req.id !== user.id)
+          prev.filter((req) => req.id !== user.id),
         );
         if (isAccepted) fetchUsers();
         setActionStatus({
@@ -293,8 +293,8 @@ export function UserManagement() {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
           <Button onClick={refreshAllData} variant="primary" size="sm">
-            <div className="flex justify-center items-center gap-2 group-hover:gap-4 transition-all duration-50">
-              <ArrowPathIcon className="w-4 h-4" />
+            <div className="flex items-center justify-center gap-2 transition-all duration-50 group-hover:gap-4">
+              <ArrowPathIcon className="h-4 w-4" />
               <span>Refresh</span>
             </div>
           </Button>
@@ -324,17 +324,17 @@ export function UserManagement() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveView(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors cursor-pointer ${
+                  className={`cursor-pointer border-b-2 px-1 py-4 text-sm font-medium transition-colors ${
                     isActive
                       ? "border-black text-black"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   }`}
                 >
                   <div className="flex items-center">
-                    <Icon className="w-5 h-5 mr-2" />
+                    <Icon className="mr-2 h-5 w-5" />
                     {tab.label}
                     {badgeCount && (
-                      <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                      <span className="ml-2 inline-flex items-center justify-center rounded-full bg-red-500 px-2 py-1 text-xs leading-none font-bold text-white">
                         {badgeCount}
                       </span>
                     )}
@@ -347,16 +347,16 @@ export function UserManagement() {
 
         {/* Search and filter */}
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             {isSearching ? (
-              <ArrowPathIcon className="w-5 h-5 text-gray-400 animate-spin" />
+              <ArrowPathIcon className="h-5 w-5 animate-spin text-gray-400" />
             ) : (
-              <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
+              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
             )}
           </div>
           <input
             type="text"
-            className={`block w-full p-2 pl-10 text-sm border rounded-lg bg-white transition-colors`}
+            className={`block w-full rounded-lg border bg-white p-2 pl-10 text-sm transition-colors`}
             placeholder={`Search ${
               activeView === "users" ? "users" : "premium requests"
             }...`}
@@ -368,7 +368,7 @@ export function UserManagement() {
           />
 
           {isSearching && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="absolute top-1/2 right-3 -translate-y-1/2">
               <span className="text-xs text-blue-500">Searching...</span>
             </div>
           )}

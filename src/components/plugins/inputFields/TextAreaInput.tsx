@@ -13,12 +13,12 @@ export function TextAreaInput({
     field.resize === "x"
       ? "resize-x"
       : field.resize === "y"
-      ? "resize-y"
-      : field.resize === "both"
-      ? "resize"
-      : field.resize === "none"
-      ? "resize-none"
-      : "resize-y"; // Default to vertical resize
+        ? "resize-y"
+        : field.resize === "both"
+          ? "resize"
+          : field.resize === "none"
+            ? "resize-none"
+            : "resize-y"; // Default to vertical resize
   return (
     <textarea
       id={field.id}
@@ -26,9 +26,9 @@ export function TextAreaInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       rows={field.rows}
-      className={`w-full p-3 border ${
+      className={`w-full border p-3 ${
         error ? "border-red-500" : "border-white-300"
-      } rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent ${resizeClass} `}
+      } rounded-md focus:border-transparent focus:ring-2 focus:ring-black focus:outline-none ${resizeClass} `}
     />
   );
 }

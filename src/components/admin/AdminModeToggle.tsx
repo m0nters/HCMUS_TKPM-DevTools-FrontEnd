@@ -19,15 +19,15 @@ export function AdminModeToggle({
 
   return (
     <div
-      className={`flex items-center gap-6 w-fit p-3 rounded-md mb-4 shadow-md transition-all duration-300 ${
+      className={`mb-4 flex w-fit items-center gap-6 rounded-md p-3 shadow-md transition-all duration-300 ${
         isAdminMode
           ? "bg-gradient-to-r from-blue-600 to-purple-600"
-          : "bg-gray-100 border border-gray-200"
+          : "border border-gray-200 bg-gray-100"
       }`}
     >
       <div className="flex items-center">
         <ShieldCheckIcon
-          className={`w-5 h-5 mr-2 ${
+          className={`mr-2 h-5 w-5 ${
             isAdminMode ? "text-white" : "text-gray-500"
           }`}
         />
@@ -40,22 +40,22 @@ export function AdminModeToggle({
         </span>
       </div>
 
-      <label className="relative inline-flex items-center cursor-pointer">
+      <label className="relative inline-flex cursor-pointer items-center">
         <input
           type="checkbox"
-          className="sr-only peer"
+          className="peer sr-only"
           checked={isAdminMode}
           onChange={(e) => onToggle(e.target.checked)}
         />
         <div
-          className={`w-12 h-6 rounded-full peer transition-all ${
+          className={`peer h-6 w-12 rounded-full transition-all ${
             isAdminMode
               ? "bg-white shadow-inner"
-              : "bg-gray-200 border border-gray-300"
+              : "border border-gray-300 bg-gray-200"
           } peer-focus:ring-2 peer-focus:ring-blue-200`}
         >
           <div
-            className={`absolute w-4 h-4 rounded-full transform transition-all top-1 ${
+            className={`absolute top-1 h-4 w-4 transform rounded-full transition-all ${
               isAdminMode
                 ? "translate-x-7 bg-purple-600"
                 : "translate-x-1 bg-gray-500"

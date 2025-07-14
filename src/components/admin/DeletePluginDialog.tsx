@@ -59,38 +59,38 @@ export function DeletePluginDialog({
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
       onClick={onCancel} // Close on background click
     >
       <div
-        className="bg-white rounded-lg w-full max-w-lg overflow-hidden shadow-2xl"
+        className="w-full max-w-lg overflow-hidden rounded-lg bg-white shadow-2xl"
         onClick={handleDialogClick}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-200">
+        <div className="flex items-center justify-between border-b border-gray-200 p-5">
           <h3 className="text-lg font-semibold text-gray-800">
             Delete tool {plugin.name}
           </h3>
           <button
             onClick={onCancel}
-            className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full p-1 cursor-pointer"
+            className="cursor-pointer rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
           >
-            <XMarkIcon className="w-5 h-5" />
+            <XMarkIcon className="h-5 w-5" />
           </button>
         </div>
 
         {/* Dialog content - Step 1 */}
         {confirmationStep === 1 && (
-          <div className="p-6 flex flex-col items-center">
+          <div className="flex flex-col items-center p-6">
             {/* Plugin Icon */}
             {plugin.icon && (
               <div
-                className="w-24 h-24 mb-4 flex items-center justify-center text-gray-800"
+                className="mb-4 flex h-24 w-24 items-center justify-center text-gray-800"
                 dangerouslySetInnerHTML={{ __html: plugin.icon }}
               />
             )}
 
-            <div className="text-center mb-8">
+            <div className="mb-8 text-center">
               <p className="mb-2 font-medium text-gray-800">{plugin.name}</p>
               <p className="text-sm text-gray-600">
                 This will permanently delete this tool and all associated data.
@@ -99,7 +99,7 @@ export function DeletePluginDialog({
 
             <button
               onClick={toNextStep}
-              className="w-full p-3 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors cursor-pointer"
+              className="w-full cursor-pointer rounded-md bg-red-600 p-3 text-white transition-colors hover:bg-red-700"
             >
               I want to delete this tool
             </button>
@@ -109,10 +109,10 @@ export function DeletePluginDialog({
         {/* Dialog content - Step 2 */}
         {confirmationStep === 2 && (
           <div className="p-6">
-            <div className="flex items-center mb-6">
+            <div className="mb-6 flex items-center">
               {plugin.icon && (
                 <div
-                  className="w-10 h-10 mr-3 flex-shrink-0 flex items-center justify-center text-gray-800"
+                  className="mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center text-gray-800"
                   dangerouslySetInnerHTML={{ __html: plugin.icon }}
                 />
               )}
@@ -120,7 +120,7 @@ export function DeletePluginDialog({
             </div>
 
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">
+              <p className="mb-2 text-sm text-gray-600">
                 To confirm, type{" "}
                 <span className="font-bold text-gray-800">"{plugin.name}"</span>{" "}
                 in the box below
@@ -130,22 +130,22 @@ export function DeletePluginDialog({
                 type="text"
                 value={confirmationText}
                 onChange={handleInputChange}
-                className={`w-full p-2 border rounded-md ${
+                className={`w-full rounded-md border p-2 ${
                   error ? "border-red-500" : "border-gray-300"
-                } focus:outline-none focus:ring-2 focus:ring-red-500`}
+                } focus:ring-2 focus:ring-red-500 focus:outline-none`}
                 placeholder={`Type ${plugin.name} to confirm`}
                 disabled={isDeleting}
               />
-              {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+              {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
             </div>
 
             <button
               onClick={handleConfirmDelete}
               disabled={confirmationText !== plugin.name || isDeleting}
-              className={`w-full p-3 text-white rounded-md transition-colors ${
+              className={`w-full rounded-md p-3 text-white transition-colors ${
                 confirmationText === plugin.name && !isDeleting
-                  ? "bg-red-600 hover:bg-red-700 cursor-pointer"
-                  : "bg-gray-300 cursor-not-allowed"
+                  ? "cursor-pointer bg-red-600 hover:bg-red-700"
+                  : "cursor-not-allowed bg-gray-300"
               }`}
             >
               {isDeleting ? "Deleting..." : "Delete this plugin"}

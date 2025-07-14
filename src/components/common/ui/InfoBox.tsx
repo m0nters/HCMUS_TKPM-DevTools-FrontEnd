@@ -104,7 +104,7 @@ export function InfoBox({
 
   return (
     <div
-      className={`${currentStyle.bg} border-l-4 ${currentStyle.border} p-4 rounded ${className}`}
+      className={`${currentStyle.bg} border-l-4 ${currentStyle.border} rounded p-4 ${className}`}
     >
       <div className="flex items-start">
         <div className="mr-3 shrink-0">{icon || defaultIcon}</div>

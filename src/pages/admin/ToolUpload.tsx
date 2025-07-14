@@ -107,7 +107,7 @@ export function ToolUpload() {
       )}
 
       {/* Upload Form */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="rounded-lg border border-gray-200 bg-white p-6">
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
             {/* Main Plugin File upload */}
@@ -159,8 +159,8 @@ export function ToolUpload() {
                 {uploading
                   ? "Uploading..."
                   : !mainFile
-                  ? "Waiting for the main file..."
-                  : "Upload Plugin"}
+                    ? "Waiting for the main file..."
+                    : "Upload Plugin"}
               </Button>
             </div>
           </div>

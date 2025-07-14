@@ -21,11 +21,11 @@ const App = () => {
   return (
     <AuthProvider>
       <FavoritesProvider>
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="flex min-h-screen flex-col bg-gray-50">
           {/* Header appears on all pages */}
           <Header />
           {/* Main content */}
-          <main className="flex-grow flex justify-center pt-[74px]">
+          <main className="flex flex-grow justify-center pt-[74px]">
             <AppRoutes />
           </main>
           {/* Footer appears on all pages */}
