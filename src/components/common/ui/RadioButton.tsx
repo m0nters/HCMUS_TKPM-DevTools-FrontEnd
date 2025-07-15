@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { motion } from "framer-motion";
+import type { ReactNode } from "react";
 
 type RadioButtonProps = {
   name: string;
@@ -18,10 +19,18 @@ export function RadioButton({
   className = "",
 }: RadioButtonProps) {
   return (
-    <label
-      className={`flex cursor-pointer items-center transition-all duration-50 ease-in-out ${className} ${
-        checked ? "relative -left-9 mr-6" : "mr-12"
-      }`}
+    <motion.label
+      className={`flex cursor-pointer items-center ${className}`}
+      animate={{
+        x: checked ? -36 : 0,
+        marginRight: checked ? 24 : 48,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 18,
+        mass: 1,
+      }}
     >
       <input
         type="radio"
@@ -33,24 +42,29 @@ export function RadioButton({
       />
 
       <div className="relative flex items-center">
-        {/* Animated circle that transforms into chip */}
-        <div
-          className={`absolute rounded-full border-2 border-black transition-all duration-300 ease-in-out ${
-            checked
-              ? "right-0 left-0 h-10 bg-black"
-              : "-left-7 h-8 w-8 bg-transparent"
-          }`}
+        {/* Circle that transforms into chip */}
+        <motion.div
+          className="absolute rounded-full border-2 border-black"
+          animate={{
+            left: checked ? 0 : -28,
+            right: checked ? 0 : "auto",
+            width: checked ? "100%" : 32,
+            height: checked ? 40 : 32,
+            backgroundColor: checked ? "#000000" : "transparent",
+          }}
         />
 
-        {/* Text content */}
-        <span
-          className={`px-4 font-medium transition-all duration-300 ${
-            checked ? "relative z-10 text-white" : "text-gray-700"
-          }`}
+        {/* Text */}
+        <motion.span
+          className="px-4 font-medium"
+          animate={{
+            color: checked ? "#ffffff" : "#000000",
+            zIndex: checked ? 2 : 1,
+          }}
         >
           {children}
-        </span>
+        </motion.span>
       </div>
-    </label>
+    </motion.label>
   );
 }
