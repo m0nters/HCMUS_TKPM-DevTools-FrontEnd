@@ -1,55 +1,40 @@
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   AlertMessage,
   Button,
   LoadingSpinner,
   PluginCard,
 } from "../../components/";
-import { useFavorites } from "../../hooks/";
-import { getFavorites } from "../../services/";
+import { useFavorites, useFavoritesQuery } from "../../hooks/";
 import { Plugin } from "../../types/";
 
 export function FavoritesSection() {
-  const [favorites, setFavorites] = useState<Plugin[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
   // Get access to the favorites context
   const { isFavorite, favorites: favoriteIds } = useFavorites();
 
-  // Fetch favorite plugins
-  const fetchFavorites = async () => {
-    try {
-      setIsLoading(true);
-      const favoritePlugins = await getFavorites();
-      setFavorites(favoritePlugins);
-    } catch (err) {
-      console.error("Failed to load favorites:", err);
-      setError("Failed to load your favorite tools. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Load favorites on component mount
-  useEffect(() => {
-    fetchFavorites();
-  }, []);
+  // Use React Query to fetch favorites
+  const {
+    data: favorites = [],
+    isLoading,
+    error,
+    refetch,
+  } = useFavoritesQuery();
 
   // Listen to changes in the favorites list from context
   useEffect(() => {
-    // If favorites context has changed, update our local list by filtering out removed items
-    if (!isLoading && favorites.length > 0) {
-      const updatedFavorites = favorites.filter((plugin) =>
+    // If favorites context has changed, refetch to get updated list
+    if (favorites.length > 0) {
+      const updatedFavorites = favorites.filter((plugin: Plugin) =>
         isFavorite(plugin.id),
       );
 
-      // Only update state if something was actually removed
+      // Only refetch if something was actually removed
       if (updatedFavorites.length !== favorites.length) {
-        setFavorites(updatedFavorites);
+        refetch();
       }
     }
-  }, [favoriteIds, isFavorite]); // React to changes in the favorites context
+  }, [favoriteIds, isFavorite, favorites.length, refetch]); // React to changes in the favorites context
 
   if (isLoading) {
     return <LoadingSpinner size="lg" className="h-full" />;
@@ -59,12 +44,15 @@ export function FavoritesSection() {
     return (
       <div className="space-y-4">
         <AlertMessage
-          message={error}
+          message={
+            error instanceof Error
+              ? error.message
+              : "Failed to load your favorite tools. Please try again."
+          }
           isError={true}
           duration={3000}
-          onDismiss={() => setError("")}
         />
-        <Button onClick={fetchFavorites} variant="secondary">
+        <Button onClick={refetch} variant="secondary">
           Try Again
         </Button>
       </div>

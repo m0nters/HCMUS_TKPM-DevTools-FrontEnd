@@ -12,6 +12,8 @@ import {
 } from "../../../components/common";
 import { useAuth, useDebounce } from "../../../hooks/";
 import {
+  bulkChangeUserRoles,
+  bulkDeleteUsers,
   changeUserRole,
   deleteUser,
   getAllUsers,
@@ -31,7 +33,7 @@ const VIEW_TABS = [
     id: "users" as ViewType,
     label: "All Users",
     icon: UsersIcon,
-    getBadgeCount: (data: any) => null, // No badge for users tab
+    getBadgeCount: () => null, // No badge for users tab
   },
   {
     id: "premium-requests" as ViewType,
@@ -58,6 +60,18 @@ export function UserManagement() {
   const [isUsersLoading, setIsUsersLoading] = useState(true);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<UserProfile | null>(null);
+
+  // Selection state
+  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
+
+  // Bulk operations state
+  const [isBulkConfirmDialogOpen, setIsBulkConfirmDialogOpen] = useState(false);
+  const [bulkOperation, setBulkOperation] = useState<{
+    type: "delete" | "roleChange";
+    users: UserProfile[];
+    newRole?: UserRole;
+  } | null>(null);
+  const [isBulkProcessing, setIsBulkProcessing] = useState(false);
 
   // Premium requests state
   const [premiumRequests, setPremiumRequests] = useState<UserProfile[]>([]);
@@ -112,6 +126,9 @@ export function UserManagement() {
 
   // Apply search filters for current view
   useEffect(() => {
+    // Clear selection when switching views or searching
+    setSelectedUsers(new Set());
+
     if (debouncedSearchQuery.trim() === "") {
       setFilteredUsers(users);
       setFilteredPremiumRequests(premiumRequests);
@@ -139,7 +156,7 @@ export function UserManagement() {
     );
     setFilteredPremiumRequests(filteredRequestsResult);
     setIsSearching(false);
-  }, [debouncedSearchQuery, users, premiumRequests]);
+  }, [debouncedSearchQuery, users, premiumRequests, activeView]);
 
   // User actions
   const handleRoleChange = async (chosenUser: UserProfile, role: UserRole) => {
@@ -205,6 +222,88 @@ export function UserManagement() {
         isError: true,
         message: "Failed to delete user",
       });
+    }
+  };
+
+  // Bulk operations handlers
+  const handleBulkRoleChange = (users: UserProfile[], role: UserRole) => {
+    setBulkOperation({ type: "roleChange", users, newRole: role });
+    setIsBulkConfirmDialogOpen(true);
+  };
+
+  const handleBulkDelete = (users: UserProfile[]) => {
+    setBulkOperation({ type: "delete", users });
+    setIsBulkConfirmDialogOpen(true);
+  };
+
+  const executeBulkOperation = async () => {
+    if (!bulkOperation) return;
+
+    setIsBulkProcessing(true);
+    try {
+      if (bulkOperation.type === "delete") {
+        const userIds = bulkOperation.users.map((user) => user.id);
+        const response = await bulkDeleteUsers(userIds);
+
+        if (response.success) {
+          // Remove deleted users from local state
+          setUsers((prevUsers) =>
+            prevUsers.filter((user) => !userIds.includes(user.id)),
+          );
+          setFilteredUsers((prevUsers) =>
+            prevUsers.filter((user) => !userIds.includes(user.id)),
+          );
+          fetchPremiumRequests();
+          setSelectedUsers(new Set()); // Clear selection
+          setActionStatus({
+            isError: false,
+            message: `Successfully deleted ${bulkOperation.users.length} user(s)`,
+          });
+        } else {
+          setActionStatus({
+            isError: true,
+            message: response.message || "Failed to delete users",
+          });
+        }
+      } else if (bulkOperation.type === "roleChange" && bulkOperation.newRole) {
+        const userIds = bulkOperation.users.map((user) => user.id);
+        const response = await bulkChangeUserRoles(
+          userIds,
+          bulkOperation.newRole,
+        );
+
+        if (response.success) {
+          // Update roles in local state
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              userIds.includes(user.id)
+                ? { ...user, role: bulkOperation.newRole! }
+                : user,
+            ),
+          );
+          fetchPremiumRequests();
+          setSelectedUsers(new Set()); // Clear selection
+          setActionStatus({
+            isError: false,
+            message: `Successfully changed role for ${bulkOperation.users.length} user(s) to ${bulkOperation.newRole}`,
+          });
+        } else {
+          setActionStatus({
+            isError: true,
+            message: response.message || "Failed to change user roles",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error executing bulk operation:", error);
+      setActionStatus({
+        isError: true,
+        message: "Failed to execute bulk operation",
+      });
+    } finally {
+      setIsBulkProcessing(false);
+      setIsBulkConfirmDialogOpen(false);
+      setBulkOperation(null);
     }
   };
 
@@ -287,6 +386,53 @@ export function UserManagement() {
             setIsConfirmDialogOpen(false);
           }}
           onCancel={() => setIsConfirmDialogOpen(false)}
+        />
+      )}
+
+      {isBulkConfirmDialogOpen && bulkOperation && (
+        <ConfirmDialog
+          isOpen={isBulkConfirmDialogOpen}
+          title={
+            bulkOperation.type === "delete"
+              ? "Confirm Bulk Deletion"
+              : "Confirm Bulk Role Change"
+          }
+          message={
+            <>
+              {bulkOperation.type === "delete" ? (
+                <>
+                  Are you sure you want to delete{" "}
+                  <span className="font-medium text-gray-700">
+                    {bulkOperation.users.length} user(s)
+                  </span>
+                  ? This action cannot be undone.
+                </>
+              ) : (
+                <>
+                  Are you sure you want to change the role of{" "}
+                  <span className="font-medium text-gray-700">
+                    {bulkOperation.users.length} user(s)
+                  </span>{" "}
+                  to{" "}
+                  <span className="font-medium text-gray-700">
+                    {bulkOperation.newRole}
+                  </span>
+                  ?
+                </>
+              )}
+            </>
+          }
+          confirmText={
+            bulkOperation.type === "delete" ? "Delete All" : "Change Role"
+          }
+          cancelText="Cancel"
+          confirmButtonColor={bulkOperation.type === "delete" ? "red" : "blue"}
+          onConfirm={executeBulkOperation}
+          onCancel={() => {
+            setIsBulkConfirmDialogOpen(false);
+            setBulkOperation(null);
+          }}
+          isLoading={isBulkProcessing}
         />
       )}
       <div className="space-y-6">
@@ -383,6 +529,10 @@ export function UserManagement() {
             currentUserEmail={currentUser?.email}
             onRoleChange={handleRoleChange}
             onDeleteClick={handleDelete}
+            onBulkRoleChange={handleBulkRoleChange}
+            onBulkDelete={handleBulkDelete}
+            selectedUsers={selectedUsers}
+            onSelectionChange={setSelectedUsers}
           />
         ) : (
           <PremiumRequestsTable

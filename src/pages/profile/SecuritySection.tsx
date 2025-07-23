@@ -1,61 +1,54 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { AlertMessage, Button, PasswordInput } from "../../components/";
-import { changePassword } from "../../services/";
+import { useChangePasswordMutation } from "../../hooks/";
+import {
+  PasswordChangeFormData,
+  passwordChangeSchema,
+} from "../../schemas/profile";
 import { estimateReadingTime } from "../../utils/";
 
 export function SecuritySection() {
-  const [oldPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmPassword] = useState("");
   const [updateStatus, setUpdateStatus] = useState<{
     message: string;
     isError: boolean;
   } | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<PasswordChangeFormData>({
+    resolver: zodResolver(passwordChangeSchema),
+    defaultValues: {
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    },
+  });
+
+  const changePasswordMutation = useChangePasswordMutation();
+
+  const onSubmit = async (data: PasswordChangeFormData) => {
     setUpdateStatus(null);
-
-    if (newPassword !== confirmNewPassword) {
-      setUpdateStatus({
-        isError: true,
-        message: "New passwords don't match.",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await changePassword({
-        oldPassword,
-        newPassword,
-        confirmNewPassword,
-      });
-      if (response.success) {
-        // Success case
+    changePasswordMutation.mutate(data, {
+      onSuccess: (response: any) => {
         setUpdateStatus({
           isError: false,
-          message: response.message,
+          message: response.message || "Password changed successfully!",
         });
-      } else {
+        reset(); // Clear form
+      },
+      onError: (err: any) => {
         setUpdateStatus({
           isError: true,
-          message: response.message,
+          message:
+            err.message || "Failed to change password. Please try again.",
         });
-      }
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-    } catch (err: any) {
-      // Handle error from API
-      setUpdateStatus({
-        isError: true,
-        message: err.message,
-      });
-    } finally {
-      setIsLoading(false);
-    }
+      },
+    });
   };
 
   return (
@@ -73,32 +66,38 @@ export function SecuritySection() {
         />
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <PasswordInput
           label="Current Password"
-          value={oldPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          required
+          {...register("oldPassword")}
+          error={errors.oldPassword?.message}
+          disabled={changePasswordMutation.isPending}
         />
 
         <PasswordInput
           label="New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
+          {...register("newPassword")}
+          error={errors.newPassword?.message}
           helpText="Minimum 8 characters, with uppercase, lowercase, number and special character."
+          disabled={changePasswordMutation.isPending}
         />
 
         <PasswordInput
           label="Confirm New Password"
-          value={confirmNewPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
+          {...register("confirmNewPassword")}
+          error={errors.confirmNewPassword?.message}
+          disabled={changePasswordMutation.isPending}
         />
 
         <div className="pt-4">
-          <Button type="submit" variant="primary" disabled={isLoading}>
-            {isLoading ? "Updating..." : "Change Password"}
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={changePasswordMutation.isPending}
+          >
+            {changePasswordMutation.isPending
+              ? "Updating..."
+              : "Change Password"}
           </Button>
         </div>
       </form>

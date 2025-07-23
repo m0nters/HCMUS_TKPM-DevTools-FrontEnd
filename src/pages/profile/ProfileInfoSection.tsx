@@ -9,19 +9,19 @@ import {
   ConfirmDialog,
   PasswordConfirmDialog,
 } from "../../components/";
-import { useAuth } from "../../hooks/";
-import { deleteAccount } from "../../services/";
+import { useAuth, useDeleteAccountMutation } from "../../hooks/";
 
 export function ProfileInfoSection() {
   const { profile } = useOutletContext<any>();
   const { isPremium, logout } = useAuth();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     message: string;
     isError: boolean;
   } | null>(null);
+
+  const deleteAccountMutation = useDeleteAccountMutation();
 
   const handleInitialDeleteConfirm = () => {
     setShowDeleteConfirm(false);
@@ -29,38 +29,36 @@ export function ProfileInfoSection() {
   };
 
   const handleDeleteAccount = async (password: string) => {
-    setIsDeleting(true);
-    try {
-      await deleteAccount({
-        password,
-      });
+    deleteAccountMutation.mutate(
+      { password },
+      {
+        onSuccess: () => {
+          // Show success message briefly before logout
+          setStatusMessage({
+            message: "Account deleted successfully. Redirecting...",
+            isError: false,
+          });
 
-      // Show success message briefly before logout
-      setStatusMessage({
-        message: "Account deleted successfully. Redirecting...",
-        isError: false,
-      });
-
-      // Logout after a short delay
-      setTimeout(() => {
-        logout();
-      }, 2000);
-    } catch (error) {
-      setStatusMessage({
-        message:
-          "Failed to delete account. Please check your password and try again.",
-        isError: true,
-      });
-    } finally {
-      setIsDeleting(false);
-      setShowPasswordConfirm(false);
-    }
+          // Logout after a short delay
+          setTimeout(() => {
+            logout();
+          }, 2000);
+        },
+        onError: (error: any) => {
+          setStatusMessage({
+            message:
+              error.message ||
+              "Failed to delete account. Please check your password and try again.",
+            isError: true,
+          });
+        },
+      },
+    );
   };
 
   const handleCancelDelete = () => {
     setShowDeleteConfirm(false);
     setShowPasswordConfirm(false);
-    setIsDeleting(false);
   };
 
   return (
@@ -108,7 +106,7 @@ export function ProfileInfoSection() {
           </div>
         </div>
         {/* Danger Zone */}
-        <div className="mt-12 rounded-lg border border-red-200 bg-red-50 p-6">
+        <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-6">
           <div className="flex items-start gap-3">
             <ExclamationTriangleIcon className="mt-0.5 h-6 w-6 text-red-600" />
             <div className="flex-1">
@@ -122,11 +120,13 @@ export function ProfileInfoSection() {
               </p>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                disabled={isDeleting}
+                disabled={deleteAccountMutation.isPending}
                 className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-red-600 px-4 py-2 font-medium text-white transition-colors hover:bg-red-700 disabled:bg-red-400"
               >
                 <TrashIcon className="h-4 w-4" />
-                {isDeleting ? "Deleting..." : "Delete Account"}
+                {deleteAccountMutation.isPending
+                  ? "Deleting..."
+                  : "Delete Account"}
               </button>
             </div>
           </div>
@@ -155,7 +155,7 @@ export function ProfileInfoSection() {
           message="Please enter your password to confirm account deletion."
           confirmText="Delete My Account"
           cancelText="Cancel"
-          isLoading={isDeleting}
+          isLoading={deleteAccountMutation.isPending}
           onConfirm={handleDeleteAccount}
           onCancel={handleCancelDelete}
         />

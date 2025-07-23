@@ -62,6 +62,52 @@ export const deleteUser = async (
 };
 
 /**
+ * Bulk delete users
+ * @param userIds - Array of user IDs to delete
+ */
+export const bulkDeleteUsers = async (
+  userIds: string[],
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const response = await withAuth<{ success: boolean; message: string }>(
+      "/admin/bulk",
+      {
+        method: "DELETE",
+        body: JSON.stringify({ userIds }),
+      },
+    );
+    return response;
+  } catch (error) {
+    console.error("Failed to bulk delete users:", error);
+    throw error;
+  }
+};
+
+/**
+ * Bulk change user roles
+ * @param userIds - Array of user IDs to update
+ * @param newRole - The new role to assign to all users
+ */
+export const bulkChangeUserRoles = async (
+  userIds: string[],
+  newRole: UserRole,
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const response = await withAuth<{ success: boolean; message: string }>(
+      "/admin/bulk/role",
+      {
+        method: "PUT",
+        body: JSON.stringify({ userIds, newRole }),
+      },
+    );
+    return response;
+  } catch (error) {
+    console.error("Failed to bulk change user roles:", error);
+    throw error;
+  }
+};
+
+/**
  * Get user statistics summary
  */
 export const getUserStats = async () => {
