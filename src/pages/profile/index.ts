@@ -1,4 +1,4 @@
-export * from "./FavoritesSection";
 export * from "./MyProfile";
-export * from "./ProfileInfoSection";
-export * from "./SecuritySection";
+export * from "./FavoritesSection/index";
+export * from "./ProfileInfoSection/index";
+export * from "./SecuritySection/index";

@@ -5,6 +5,7 @@ export * from "./contexts/index";
 export * from "./hooks/index";
 export * from "./pages/index";
 export * from "./routes/index";
+export * from "./schemas/index";
 export * from "./services/index";
 export * from "./types/index";
 export * from "./utils/index";
